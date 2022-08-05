@@ -1,0 +1,39 @@
+.nav {
+    height: 88px;
+    display: flex;
+    padding: 0 80px;
+}
+
+.main {
+    display: flex;
+    margin: auto;
+    width: 1280px;
+}
+
+.nav__item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 0 20px;
+    text-decoration: none;
+}
+
+.left {
+    display: flex;
+    flex-grow: 1;
+    gap: 8px;
+    width: calc(100% / 3);
+}
+
+.right {
+    display: flex;
+    flex-grow: 1;
+    justify-content: flex-end;
+    width: calc(100% / 3);
+}
+
+.center {
+    display: flex;
+    width: calc(100% / 3);
+    justify-content: center;
+}
