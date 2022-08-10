@@ -5,7 +5,7 @@ import style from './style.module.css';
 function Header() {
     return (
         <nav className={style.nav}>
-            <main className={style.main}>
+            <div className={style.main}>
                 <div className={style.left} >
                     <a href='#' className={style.nav__item}>
                         <BurgerIcon type="secondary" />
@@ -31,7 +31,7 @@ function Header() {
                         </span>
                     </a>
                 </div>
-            </main>
+            </div>
         </nav>
     );
 }
