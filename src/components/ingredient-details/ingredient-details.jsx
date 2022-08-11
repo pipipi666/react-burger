@@ -1,6 +1,6 @@
 import React from 'react';
 import style from './style.module.css';
-import PropTypes from 'prop-types';
+import { dataTypes } from '../../utils/types';
 
 function IngredientDetails({ data }) {
 
@@ -49,15 +49,7 @@ function IngredientDetails({ data }) {
 }
 
 IngredientDetails.propTypes = {
-    data: PropTypes.shape({
-        price: PropTypes.number,
-        calories: PropTypes.number,
-        proteins: PropTypes.number,
-        carbohydrates: PropTypes.number,
-        fat: PropTypes.number,
-        name: PropTypes.string,
-        image_large: PropTypes.string,
-    })
+    data: dataTypes
 };
 
 export default IngredientDetails;

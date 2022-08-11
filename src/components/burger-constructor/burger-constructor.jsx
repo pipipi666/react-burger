@@ -2,9 +2,10 @@ import { ConstructorElement, CurrencyIcon, DragIcon, Button } from '@ya.praktiku
 import style from './style.module.css';
 import PropTypes from 'prop-types';
 import Modal from '../modal/modal';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import OrderDetails from '../order-details/order-details';
 import ModalOverlay from '../modal/modal-overlay';
+import { dataTypes } from '../../utils/types';
 
 function Constructor({ data }) {
 
@@ -67,22 +68,20 @@ function Constructor({ data }) {
                 </Button>
             </div>
             {isModalVisible &&
-                <ModalOverlay close={modalClose}>
+                <>
+                    <ModalOverlay close={modalClose}>
+                    </ModalOverlay>
                     <Modal title="Детали ингредиента" close={modalClose}>
                         <OrderDetails />
                     </Modal>
-                </ModalOverlay>}
+                </>
+            }
         </section>
     );
 }
 
 Constructor.propTypes = {
-    data: PropTypes.arrayOf(
-        PropTypes.shape({
-            price: PropTypes.number,
-            name: PropTypes.string,
-            image: PropTypes.string,
-        })),
+    data: PropTypes.arrayOf(dataTypes),
 };
 
 export default Constructor;

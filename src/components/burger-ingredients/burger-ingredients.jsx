@@ -1,10 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Counter, CurrencyIcon, Tab } from '@ya.praktikum/react-developer-burger-ui-components';
 import style from './style.module.css';
 import PropTypes from 'prop-types';
 import Modal from '../modal/modal';
 import ModalOverlay from '../modal/modal-overlay';
 import IngredientDetails from '../ingredient-details/ingredient-details';
+import { dataTypes } from '../../utils/types';
 
 function Ingredients({ data }) {
     const [isModalVisible, setModalVisible] = useState(false);
@@ -22,16 +23,6 @@ function Ingredients({ data }) {
     const modalClose = () => {
         setModalVisible(false);
     }
-
-    useEffect(() => {
-        const modalEsc = (e) => {
-            if (e.keyCode === 27 && isModalVisible === true) {
-                setModalVisible(false);
-            }
-        }
-        window.addEventListener('keydown', modalEsc)
-        return () => window.removeEventListener('keydown', modalEsc)
-    }, [])
 
     return (
         <section className={style.container}>
@@ -85,23 +76,20 @@ function Ingredients({ data }) {
                 </div>
             </div>
             {isModalVisible &&
-                <ModalOverlay close={modalClose}>
+                <>
+                    <ModalOverlay close={modalClose}>
+                    </ModalOverlay>
                     <Modal title="Детали ингредиента" close={modalClose}>
                         <IngredientDetails data={targetIngredient} />
                     </Modal>
-                </ModalOverlay>}
+                </>
+            }
         </section>
     );
 }
 
 Ingredients.propTypes = {
-    data: PropTypes.arrayOf(
-        PropTypes.shape({
-            price: PropTypes.number,
-            name: PropTypes.string,
-            image: PropTypes.string,
-            type: PropTypes.oneOf(['bun', 'sauce', 'main']),
-        }))
+    data: PropTypes.arrayOf(dataTypes)
 };
 
 export default Ingredients;

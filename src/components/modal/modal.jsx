@@ -15,7 +15,7 @@ function Modal({ close, title, children }) {
         }
         window.addEventListener('keydown', modalEsc)
         return () => window.removeEventListener('keydown', modalEsc)
-    }, [])
+    }, [close])
 
     return ReactDOM.createPortal(
         <div className={style.modal} onClick={e => e.stopPropagation()}>
@@ -37,7 +37,8 @@ function Modal({ close, title, children }) {
 
 Modal.propTypes = {
     title: PropTypes.string,
-    children: PropTypes.element.isRequired
+    children: PropTypes.element.isRequired,
+    close: PropTypes.func,
 };
 
 

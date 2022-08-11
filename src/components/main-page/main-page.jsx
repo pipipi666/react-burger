@@ -3,29 +3,31 @@ import style from './style.module.css';
 import Header from '../app-header/app-header';
 import Ingredients from '../burger-ingredients/burger-ingredients';
 import Constructor from '../burger-constructor/burger-constructor';
+import { getIngredients } from '../../utils/burger-api';
 
 function Main() {
     const [isLoading, setLoading] = useState(true);
+    const [error, setError] = useState(true);
     const [ingredientsData, setIngredientsData] = useState([]);
     useEffect(() => {
-        fetch(process.env.REACT_APP_API_URL)
-            .then(response => response.json())
-            .then(res => {
-                setIngredientsData(res.data);
-                setLoading(false);
-            })
-            .catch(e => console.log(e.message))
+        getIngredients(setLoading, setIngredientsData, setError);
     }, []);
 
+    const done = (error ?
+        <p className="text text_type_main-large mt-10">
+            Ошибка во время выполнения запроса</p>
+        : <main className={style.main}>
+            <Ingredients data={ingredientsData} />
+            <Constructor data={ingredientsData} />
+        </main>);
+
     return (
-        <div>
+        <>
             <Header />
-            {!isLoading &&
-                <main className={style.main}>
-                    <Ingredients data={ingredientsData} />
-                    <Constructor data={ingredientsData} />
-                </main>}
-        </div>
+            {isLoading ?
+                <p className="text text_type_main-large mt-10">Загрузка...</p>
+                : done}
+        </>
     );
 }
 
