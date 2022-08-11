@@ -13,20 +13,19 @@ function Main() {
         getIngredients(setLoading, setIngredientsData, setError);
     }, []);
 
-    const done = (error ?
-        <p className="text text_type_main-large mt-10">
-            Ошибка во время выполнения запроса</p>
-        : <main className={style.main}>
-            <Ingredients data={ingredientsData} />
-            <Constructor data={ingredientsData} />
-        </main>);
+
+    if (isLoading) return (<p className="text text_type_main-large mt-10">Загрузка...</p>);
 
     return (
         <>
             <Header />
-            {isLoading ?
-                <p className="text text_type_main-large mt-10">Загрузка...</p>
-                : done}
+            {error ?
+                <p className="text text_type_main-large mt-10">
+                    Ошибка во время выполнения запроса</p>
+                : <main className={style.main}>
+                    <Ingredients data={ingredientsData} />
+                    <Constructor data={ingredientsData} />
+                </main>}
         </>
     );
 }

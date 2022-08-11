@@ -4,7 +4,6 @@ import PropTypes from 'prop-types';
 import Modal from '../modal/modal';
 import { useState } from 'react';
 import OrderDetails from '../order-details/order-details';
-import ModalOverlay from '../modal/modal-overlay';
 import { dataTypes } from '../../utils/types';
 
 function Constructor({ data }) {
@@ -69,8 +68,6 @@ function Constructor({ data }) {
             </div>
             {isModalVisible &&
                 <>
-                    <ModalOverlay close={modalClose}>
-                    </ModalOverlay>
                     <Modal title="Детали ингредиента" close={modalClose}>
                         <OrderDetails />
                     </Modal>

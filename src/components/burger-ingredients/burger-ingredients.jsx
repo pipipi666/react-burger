@@ -3,7 +3,6 @@ import { Counter, CurrencyIcon, Tab } from '@ya.praktikum/react-developer-burger
 import style from './style.module.css';
 import PropTypes from 'prop-types';
 import Modal from '../modal/modal';
-import ModalOverlay from '../modal/modal-overlay';
 import IngredientDetails from '../ingredient-details/ingredient-details';
 import { dataTypes } from '../../utils/types';
 
@@ -40,7 +39,7 @@ function Ingredients({ data }) {
                     {buns.map((item) => (
                         <div className={style.list__item} key={item._id} onClick={() => handleClick(item._id)}>
                             <div className={style.cntr}><Counter count={1} size="default" /></div>
-                            <img src={item.image} className={style.img} alt={item.name}></img>
+                            <img src={item.image} className={style.img} alt={item.name} />
                             <p className={`text text_type_main-default ${style.price}`}><span className='text text_type_digits-default'>{item.price}</span><CurrencyIcon /></p>
                             <p className={`text text_type_main-default ${style.item__title}`}>
                                 {item.name}
@@ -53,7 +52,7 @@ function Ingredients({ data }) {
                     {sauces.map((item) => (
                         <div className={style.list__item} key={item._id} onClick={() => handleClick(item._id)}>
                             <div className={style.cntr}><Counter count={1} size="default" /></div>
-                            <img src={item.image} className={style.img} alt={item.name}></img>
+                            <img src={item.image} className={style.img} alt={item.name} />
                             <p className={`text text_type_main-default ${style.price}`}><span className='text text_type_digits-default'>{item.price}</span><CurrencyIcon /></p>
                             <p className={`text text_type_main-default ${style.item__title}`}>
                                 {item.name}
@@ -66,7 +65,7 @@ function Ingredients({ data }) {
                     {ingredients.map((item) => (
                         <div className={style.list__item} key={item._id} onClick={() => handleClick(item._id)}>
                             <div className={style.cntr}><Counter count={1} size="default" /></div>
-                            <img src={item.image} className={style.img} alt={item.name}></img>
+                            <img src={item.image} className={style.img} alt={item.name} />
                             <p className={`text text_type_main-default ${style.price}`}><span className='text text_type_digits-default'>{item.price}</span><CurrencyIcon /></p>
                             <p className={`text text_type_main-default ${style.item__title}`}>
                                 {item.name}
@@ -77,8 +76,6 @@ function Ingredients({ data }) {
             </div>
             {isModalVisible &&
                 <>
-                    <ModalOverlay close={modalClose}>
-                    </ModalOverlay>
                     <Modal title="Детали ингредиента" close={modalClose}>
                         <IngredientDetails data={targetIngredient} />
                     </Modal>
