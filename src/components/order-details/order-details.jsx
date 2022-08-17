@@ -3,13 +3,12 @@ import style from './style.module.css';
 import PropTypes from 'prop-types';
 import { CheckMarkIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 
-function OrderDetails() {
-    let id = "034536";
+function OrderDetails({ order }) {
 
     return (
         <div className={style.content}>
             <p className="text text_type_digits-large mt-4 mb-8">
-                {id}
+                {order}
             </p>
             <p className="text text_type_main-medium">
                 идентификатор заказа

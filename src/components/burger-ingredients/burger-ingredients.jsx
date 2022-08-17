@@ -29,18 +29,50 @@ function Ingredients({ data }) {
                 Соберите бургер
             </h1>
             <nav className={style.nav}>
-                <Tab value="buns" active={current === 'buns'} onClick={setCurrent}>Булки</Tab>
-                <Tab value="sauces" active={current === 'sauces'} onClick={setCurrent}>Соусы</Tab>
-                <Tab value="ingredients" active={current === 'ingredients'} onClick={setCurrent}>Начинки</Tab>
+                <Tab
+                    value="buns"
+                    active={current === 'buns'}
+                    onClick={setCurrent}
+                >
+                    Булки
+                </Tab>
+                <Tab
+                    value="sauces"
+                    active={current === 'sauces'}
+                    onClick={setCurrent}
+                >
+                    Соусы
+                </Tab>
+                <Tab
+                    value="ingredients"
+                    active={current === 'ingredients'}
+                    onClick={setCurrent}
+                >
+                    Начинки
+                </Tab>
             </nav>
             <div className={style.ingredients}>
                 <h2 className="text text_type_main-medium mt-10 mb-6">Булки</h2>
                 <div className={style.list}>
                     {buns.map((item) => (
-                        <div className={style.list__item} key={item._id} onClick={() => handleClick(item._id)}>
-                            <div className={style.cntr}><Counter count={1} size="default" /></div>
-                            <img src={item.image} className={style.img} alt={item.name} />
-                            <p className={`text text_type_main-default ${style.price}`}><span className='text text_type_digits-default'>{item.price}</span><CurrencyIcon /></p>
+                        <div
+                            className={style.list__item}
+                            key={item._id}
+                            onClick={() => handleClick(item._id)}
+                        >
+                            <div className={style.cntr}>
+                                <Counter count={1} size="default" />
+                            </div>
+                            <img
+                                src={item.image}
+                                className={style.img}
+                                alt={item.name} />
+                            <p className={`text text_type_main-default ${style.price}`}>
+                                <span className='text text_type_digits-default'>
+                                    {item.price}
+                                </span>
+                                <CurrencyIcon />
+                            </p>
                             <p className={`text text_type_main-default ${style.item__title}`}>
                                 {item.name}
                             </p>
@@ -50,10 +82,25 @@ function Ingredients({ data }) {
                 <h2 className="text text_type_main-medium mt-10 mb-6">Соусы</h2>
                 <div className={style.list}>
                     {sauces.map((item) => (
-                        <div className={style.list__item} key={item._id} onClick={() => handleClick(item._id)}>
-                            <div className={style.cntr}><Counter count={1} size="default" /></div>
-                            <img src={item.image} className={style.img} alt={item.name} />
-                            <p className={`text text_type_main-default ${style.price}`}><span className='text text_type_digits-default'>{item.price}</span><CurrencyIcon /></p>
+                        <div
+                            className={style.list__item}
+                            key={item._id}
+                            onClick={() => handleClick(item._id)}
+                        >
+                            <div className={style.cntr}>
+                                <Counter count={1} size="default" />
+                            </div>
+                            <img
+                                src={item.image}
+                                className={style.img}
+                                alt={item.name}
+                            />
+                            <p className={`text text_type_main-default ${style.price}`}>
+                                <span className='text text_type_digits-default'>
+                                    {item.price}
+                                </span>
+                                <CurrencyIcon />
+                            </p>
                             <p className={`text text_type_main-default ${style.item__title}`}>
                                 {item.name}
                             </p>
@@ -63,10 +110,25 @@ function Ingredients({ data }) {
                 <h2 className="text text_type_main-medium mt-10 mb-6">Начинки</h2>
                 <div className={style.list}>
                     {ingredients.map((item) => (
-                        <div className={style.list__item} key={item._id} onClick={() => handleClick(item._id)}>
-                            <div className={style.cntr}><Counter count={1} size="default" /></div>
-                            <img src={item.image} className={style.img} alt={item.name} />
-                            <p className={`text text_type_main-default ${style.price}`}><span className='text text_type_digits-default'>{item.price}</span><CurrencyIcon /></p>
+                        <div
+                            className={style.list__item}
+                            key={item._id}
+                            onClick={() => handleClick(item._id)}
+                        >
+                            <div className={style.cntr}>
+                                <Counter count={1} size="default" />
+                            </div>
+                            <img
+                                src={item.image}
+                                className={style.img}
+                                alt={item.name}
+                            />
+                            <p className={`text text_type_main-default ${style.price}`}>
+                                <span className='text text_type_digits-default'>
+                                    {item.price}
+                                </span>
+                                <CurrencyIcon />
+                            </p>
                             <p className={`text text_type_main-default ${style.item__title}`}>
                                 {item.name}
                             </p>

@@ -1,4 +1,4 @@
-import { API_URL_INGREDIENTS } from "./consts";
+import { API_URL_INGREDIENTS, API_URL_ORDERS } from "./consts";
 
 const checkReponse = (res) => {
     return res.ok ? res.json() : res.json().then((err) => Promise.reject(err));
@@ -9,6 +9,24 @@ export function getIngredients(setLoading, setIngredientsData, setError) {
         .then(checkReponse)
         .then(res => {
             setIngredientsData(res.data);
+            setLoading(false);
+            setError(null);
+        })
+        .catch(e => {
+            setError(e);
+            setLoading(false);
+        });
+}
+
+export function getOrder(setLoading, setError, setOrder, ingredientsData) {
+    return fetch(API_URL_ORDERS, {
+        method: "POST", body: JSON.stringify({ ingredients: ingredientsData }), headers: {
+            'Content-Type': 'application/json;charset=utf-8'
+        }
+    })
+        .then(checkReponse)
+        .then(res => {
+            setOrder(res.order.number);
             setLoading(false);
             setError(null);
         })
