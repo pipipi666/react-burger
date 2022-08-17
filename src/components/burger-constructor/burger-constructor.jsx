@@ -1,10 +1,8 @@
 import { ConstructorElement, CurrencyIcon, DragIcon, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import style from './style.module.css';
-import PropTypes from 'prop-types';
 import Modal from '../modal/modal';
-import { useState, useContext, useReducer, useEffect } from 'react';
+import { useState, useContext, useReducer, useEffect, useMemo } from 'react';
 import OrderDetails from '../order-details/order-details';
-import { dataTypes } from '../../utils/types';
 import { IngredientsContext } from '../../services/ingredientsContext';
 import { getOrder } from '../../utils/burger-api';
 
@@ -15,7 +13,7 @@ function reducer(state, action) {
         case "set":
             state.sum = 0;
             let bunFlag = false;
-            let res = action.ingredients.reduce(function (accumulator, currentValue) {
+            const res = action.ingredients.reduce(function (accumulator, currentValue) {
                 if (currentValue.type === "bun") {
                     if (bunFlag) return accumulator;
                     bunFlag = true;
@@ -31,19 +29,19 @@ function reducer(state, action) {
     }
 }
 
-function Constructor() {
+function BurgerConstructor() {
 
     const [isModalVisible, setModalVisible] = useState(false);
     const [isLoading, setLoading] = useState(true);
-    const [error, setError] = useState(true);
-    const [order, setOrder] = useState(true);
+    const [error, setError] = useState(null);
+    const [order, setOrder] = useState(0);
     const { ingredientsData } = useContext(IngredientsContext);
-    let bun = ingredientsData && ingredientsData.find(item => item.type === "bun");
+    const bun = useMemo(() => ingredientsData && ingredientsData.find(item => item.type === "bun"), [ingredientsData]);
     const [totalState, totalDispatcher] = useReducer(reducer, totalInitialState);
 
     function handleOrder() {
         setModalVisible(true);
-        let ingredients = ingredientsData.map((item) => (item._id));
+        const ingredients = ingredientsData.map((item) => (item._id));
         getOrder(setLoading, setError, setOrder, ingredients);
     }
 
@@ -103,23 +101,17 @@ function Constructor() {
                 </Button>
             </div>
             {isModalVisible &&
-                <>
-                    <Modal
-                        title="Детали ингредиента"
-                        close={modalClose}
-                        isLoading={isLoading}
-                        error={error}
-                    >
-                        {order && <OrderDetails order={order} />}
-                    </Modal>
-                </>
+                <Modal
+                    title=""
+                    close={modalClose}
+                    isLoading={isLoading}
+                    error={error}
+                >
+                    <OrderDetails order={order} />
+                </Modal>
             }
         </section>
     );
 }
 
-Constructor.propTypes = {
-    ingredientsData: PropTypes.arrayOf(dataTypes),
-};
-
-export default Constructor;
+export default BurgerConstructor;

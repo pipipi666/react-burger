@@ -9,13 +9,13 @@ export function getIngredients(setLoading, setIngredientsData, setError) {
         .then(checkReponse)
         .then(res => {
             setIngredientsData(res.data);
-            setLoading(false);
             setError(null);
         })
         .catch(e => {
             setError(e);
-            setLoading(false);
-        });
+        })
+        .finally(setLoading(false));
+    ;
 }
 
 export function getOrder(setLoading, setError, setOrder, ingredientsData) {
@@ -27,11 +27,10 @@ export function getOrder(setLoading, setError, setOrder, ingredientsData) {
         .then(checkReponse)
         .then(res => {
             setOrder(res.order.number);
-            setLoading(false);
             setError(null);
         })
         .catch(e => {
             setError(e);
-            setLoading(false);
-        });
+        })
+        .finally(setLoading(false));
 }

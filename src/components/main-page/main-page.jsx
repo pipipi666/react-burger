@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
 import style from './style.module.css';
 import Header from '../app-header/app-header';
-import Ingredients from '../burger-ingredients/burger-ingredients';
-import Constructor from '../burger-constructor/burger-constructor';
+import BurgerIngredients from '../burger-ingredients/burger-ingredients';
+import BurgerConstructor from '../burger-constructor/burger-constructor';
 import { getIngredients } from '../../utils/burger-api';
 import { IngredientsContext } from '../../services/ingredientsContext';
 
@@ -25,20 +25,18 @@ function Main() {
     }
 
     return (
-        <>
+        <IngredientsContext.Provider
+            value={{ ingredientsData, setIngredientsData }}
+        >
             <Header />
             {error ?
                 <p className="text text_type_main-large mt-10">
                     Ошибка во время выполнения запроса</p>
                 : <main className={style.main}>
-                    <Ingredients data={ingredientsData} />
-                    <IngredientsContext.Provider
-                        value={{ ingredientsData, setIngredientsData }}
-                    >
-                        <Constructor />
-                    </IngredientsContext.Provider>
+                    <BurgerIngredients />
+                    <BurgerConstructor />
                 </main>}
-        </>
+        </IngredientsContext.Provider>
     );
 }
 
