@@ -3,6 +3,8 @@ import { Counter, CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-c
 import { useDrag } from 'react-dnd';
 import { useSelector } from 'react-redux';
 import { useMemo } from 'react';
+import PropTypes from 'prop-types';
+import { dataTypes } from '../../utils/types';
 
 function IngredientCard({ item, handleClick }) {
 
@@ -43,5 +45,10 @@ function IngredientCard({ item, handleClick }) {
         </div>
     );
 }
+
+IngredientCard.propTypes = {
+    handleClick: PropTypes.func.isRequired,
+    item: dataTypes.isRequired
+};
 
 export default IngredientCard;

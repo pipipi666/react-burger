@@ -38,7 +38,7 @@ function reducer(state, action) {
 function BurgerConstructor() {
     const dispatch = useDispatch();
     const { constructorIngredients } = useSelector(state => state.constructorIngredients);
-    const ingredients = constructorIngredients.filter(item => item.type !== "bun");
+    const ingredients = useMemo(() => constructorIngredients.filter(item => item.type !== "bun"), [constructorIngredients]);
     const [isModalVisible, setModalVisible] = useState(false);
     const [totalState, totalDispatcher] = useReducer(reducer, totalInitialState);
     const bun = useMemo(() =>
@@ -78,11 +78,6 @@ function BurgerConstructor() {
         },
     });
 
-    const sort = (a, b) => {
-        if (a.dropId > b.dropId) return 1;
-        else return -1;
-    }
-
     const targetClassName = `${style.container} ${isHover ? style.drop : ''}`;
 
     useEffect(() => {
@@ -111,7 +106,8 @@ function BurgerConstructor() {
                         />
                     </div>}
                 <div className={style.ingredients}>
-                    {ingredients.sort(sort).map((item) => <ConstructorElementWrapper key={item.dropId} item={item} />)}
+                    {ingredients.map((item) =>
+                        <ConstructorElementWrapper key={item.dropId} item={item} />)}
                 </div>
                 {bun &&
                     <div className="ml-8">

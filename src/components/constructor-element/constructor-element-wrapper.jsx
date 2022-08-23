@@ -4,9 +4,10 @@ import { useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useDrop, useDrag } from "react-dnd";
 import {
-    UPDATE_CONSTRUCTOR_LIST,
+    GET_INGREDIENTS_CONSTRUCTOR,
     DELETE_INGREDIENT_CONSTRUCTOR
 } from '../../services/actions/index.js';
+import { dataTypes } from '../../utils/types';
 
 function ConstructorElementWrapper({ item }) {
     const dispatch = useDispatch();
@@ -19,11 +20,11 @@ function ConstructorElementWrapper({ item }) {
                 handlerId: monitor.getHandlerId()
             }
         },
-        hover(itemHov, monitor) {
+        hover(dragItem, monitor) {
             if (!ref.current) {
                 return;
             }
-            const dragIndex = itemHov.item.dropId;
+            const dragIndex = dragItem.item.dropId;
             const hoverIndex = item.dropId;
             if (dragIndex === hoverIndex) {
                 return;
@@ -40,9 +41,12 @@ function ConstructorElementWrapper({ item }) {
             }
             const dragCard = constructorIngredients.find(card => card.dropId === dragIndex);
             const hoverCard = constructorIngredients.find(card => card.dropId === hoverIndex);
-            const newCards = [...constructorIngredients].map(item => item.dropId === dragCard.dropId ? hoverCard : item.dropId === hoverCard.dropId ? dragCard : item)
+            const newCards = constructorIngredients.map(item =>
+                item.dropId === dragCard.dropId ? hoverCard
+                    : item.dropId === hoverCard.dropId ? dragCard
+                        : item)
             dispatch({
-                type: UPDATE_CONSTRUCTOR_LIST,
+                type: GET_INGREDIENTS_CONSTRUCTOR,
                 constructorIngredients: newCards
             })
         }
@@ -56,7 +60,7 @@ function ConstructorElementWrapper({ item }) {
     });
     const opacity = isDragging ? 0 : 1;
     drag(drop(ref));
-    const preventDefault = (e) => e.preventDefault();
+    const preventDefault = e => e.preventDefault();
 
 
     const handleRemove = item => {
@@ -74,7 +78,6 @@ function ConstructorElementWrapper({ item }) {
             onDrop={preventDefault}
             data-handler-id={handlerId}
         >
-            <div>{item.dropId}</div>
             <DragIcon />
             <ConstructorElement
                 text={item.name}
@@ -85,5 +88,9 @@ function ConstructorElementWrapper({ item }) {
         </div>
     );
 }
+
+ConstructorElementWrapper.propTypes = {
+    item: dataTypes.isRequired
+};
 
 export default ConstructorElementWrapper;

@@ -11,8 +11,7 @@ import {
     DELETE_CURRENT_INGREDIENT,
     GET_ORDER_REQUEST,
     GET_ORDER_SUCCESS,
-    GET_ORDER_FAILED,
-    UPDATE_CONSTRUCTOR_LIST
+    GET_ORDER_FAILED
 } from '../actions/index.js';
 
 const ingredientsInitialState = {
@@ -86,11 +85,6 @@ export const constructorReducer = (state = constructorInitialState, action) => {
             return {
                 ...state,
                 constructorIngredients: ingredients
-            }
-        case UPDATE_CONSTRUCTOR_LIST:
-            return {
-                ...state,
-                constructorIngredients: action.constructorIngredients
             }
         default: {
             return state;

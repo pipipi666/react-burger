@@ -1,4 +1,4 @@
-import { useMemo, useState, useEffect, useRef } from 'react';
+import { useMemo, useState, useEffect, useRef, useCallback } from 'react';
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
 import style from './style.module.css';
 import Modal from '../modal/modal';
@@ -29,11 +29,11 @@ function BurgerIngredients() {
     const refSauces = useRef(null);
     const refIngredients = useRef(null);
 
-    const handleClick = (currentId) => {
+    const handleClick = useCallback((currentId) => {
         const id = ingredients.find(item => item._id === currentId)
         dispatch({ type: GET_CURRENT_INGREDIENT, id })
         setModalVisible(true);
-    };
+    }, [ingredients, dispatch]);
 
     const handleClose = () => {
         setModalVisible(false);
