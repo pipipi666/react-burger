@@ -1,10 +1,16 @@
-import { ConstructorElement, CurrencyIcon, DragIcon, Button } from '@ya.praktikum/react-developer-burger-ui-components';
+import { ConstructorElement, CurrencyIcon, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import style from './style.module.css';
 import Modal from '../modal/modal';
-import { useState, useContext, useReducer, useEffect, useMemo } from 'react';
+import { useState, useReducer, useEffect, useMemo } from 'react';
 import OrderDetails from '../order-details/order-details';
-import { IngredientsContext } from '../../services/ingredientsContext';
-import { getOrder } from '../../utils/burger-api';
+import { useDispatch, useSelector } from 'react-redux';
+import { getOrder } from '../../services/actions/index.js';
+import { useDrop } from "react-dnd";
+import {
+    ADD_INGREDIENT_CONSTRUCTOR,
+    DELETE_INGREDIENT_CONSTRUCTOR,
+} from '../../services/actions/index.js';
+import ConstructorElementWrapper from '../constructor-element/constructor-element-wrapper';
 
 const totalInitialState = { sum: 0 };
 
@@ -30,63 +36,94 @@ function reducer(state, action) {
 }
 
 function BurgerConstructor() {
-
+    const dispatch = useDispatch();
+    const { constructorIngredients } = useSelector(state => state.constructorIngredients);
+    const ingredients = constructorIngredients.filter(item => item.type !== "bun");
     const [isModalVisible, setModalVisible] = useState(false);
-    const [isLoading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
-    const [order, setOrder] = useState(0);
-    const { ingredientsData } = useContext(IngredientsContext);
-    const bun = useMemo(() => ingredientsData && ingredientsData.find(item => item.type === "bun"), [ingredientsData]);
     const [totalState, totalDispatcher] = useReducer(reducer, totalInitialState);
+    const bun = useMemo(() =>
+        constructorIngredients && constructorIngredients.find(item => item.type === "bun"
+        ), [constructorIngredients]);
 
     function handleOrder() {
         setModalVisible(true);
-        const ingredients = ingredientsData.map((item) => (item._id));
-        getOrder(setLoading, setError, setOrder, ingredients);
+        const ingredients = constructorIngredients.map((item) => (item._id));
+        dispatch(getOrder(ingredients));
     }
 
-    const modalClose = () => {
+    const handleClose = () => {
         setModalVisible(false);
     }
 
+    const handleRemove = item => {
+        dispatch({
+            type: DELETE_INGREDIENT_CONSTRUCTOR,
+            item,
+        });
+    }
+
+    const [{ isHover }, dropTarget] = useDrop({
+        accept: "ingredient",
+        collect: monitor => ({
+            isHover: monitor.isOver()
+        }),
+        drop(item) {
+            if (item.type === "bun" && bun) {
+                handleRemove(bun);
+            }
+            dispatch({
+                type: ADD_INGREDIENT_CONSTRUCTOR,
+                item,
+            });
+        },
+    });
+
+    const sort = (a, b) => {
+        if (a.dropId > b.dropId) return 1;
+        else return -1;
+    }
+
+    const targetClassName = `${style.container} ${isHover ? style.drop : ''}`;
+
     useEffect(() => {
-        totalDispatcher({ type: "set", ingredients: ingredientsData });
-    }, [ingredientsData]);
+        totalDispatcher({ type: "set", ingredients: constructorIngredients });
+    }, [constructorIngredients]);
+
+    if (constructorIngredients.length === 0) {
+        return (
+            <section ref={dropTarget} className={targetClassName}>
+                <h1>Перетащите ингредиенты сюда</h1>
+            </section>
+        )
+    }
 
     return (
-        <section className={style.container}>
+        <section ref={dropTarget} className={targetClassName}>
             <div className={style.main}>
-                <div className="ml-8">
-                    <ConstructorElement
-                        type="top"
-                        isLocked={true}
-                        text={bun.name + " (верх)"}
-                        price={bun.price}
-                        thumbnail={bun.image}
-                    />
-                </div>
+                {bun &&
+                    <div className="ml-8">
+                        <ConstructorElement
+                            type="top"
+                            isLocked={true}
+                            text={bun.name + " (верх)"}
+                            price={bun.price}
+                            thumbnail={bun.image}
+                        />
+                    </div>}
                 <div className={style.ingredients}>
-                    {ingredientsData.map((item) => (
-                        (item.type !== "bun") &&
-                        <div className={style.list__item} key={item._id}>
-                            <DragIcon />
-                            <ConstructorElement
-                                text={item.name}
-                                price={item.price}
-                                thumbnail={item.image}
-                            />
-                        </div>
-                    ))}
+                    {ingredients.sort(sort).map((item) => <ConstructorElementWrapper key={item.dropId} item={item} />)}
                 </div>
-                <div className="ml-8">
-                    <ConstructorElement
-                        type="bottom"
-                        isLocked={true}
-                        text={bun.name + " (низ)"}
-                        price={bun.price}
-                        thumbnail={bun.image}
-                    />
-                </div>
+                {bun &&
+                    <div className="ml-8">
+                        <ConstructorElement
+                            type="bottom"
+                            isLocked={true}
+                            text={bun.name + " (низ)"}
+                            price={bun.price}
+                            thumbnail={bun.image}
+                        />
+                    </div>
+                }
             </div>
             <div className={style.total}>
                 <span className="text text_type_digits-medium">
@@ -103,11 +140,9 @@ function BurgerConstructor() {
             {isModalVisible &&
                 <Modal
                     title=""
-                    close={modalClose}
-                    isLoading={isLoading}
-                    error={error}
+                    close={handleClose}
                 >
-                    <OrderDetails order={order} />
+                    <OrderDetails />
                 </Modal>
             }
         </section>

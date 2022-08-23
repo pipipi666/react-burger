@@ -28,7 +28,7 @@
 
 .ingredients {
     max-height: calc(100vh - 536px);
-    overflow-y: scroll;
+    overflow-y: auto;
     display: flex;
     flex-direction: column;
     gap: 16px;
@@ -44,4 +44,8 @@
 
 .ingredients::-webkit-scrollbar-thumb {
     background-color:#8585AD;
+}
+
+.drop {
+    border: 1px solid white;
 }
