@@ -16,6 +16,7 @@ export const GET_ORDER_REQUEST = 'GET_ORDER_REQUEST';
 export const GET_ORDER_SUCCESS = 'GET_ORDER_SUCCESS';
 export const GET_ORDER_FAILED = 'GET_ORDER_FAILED';
 
+export const GET_TOTAL = 'GET_TOTAL';
 
 const checkReponse = (res) => {
     return res.ok ? res.json() : res.json().then((err) => Promise.reject(err));
@@ -61,5 +62,46 @@ export function getOrder(ingredientsData) {
                     type: GET_ORDER_FAILED
                 })
             })
+    }
+}
+
+export function getTotal(constructorIngredients) {
+    return {
+        type: GET_TOTAL,
+        ingredients: constructorIngredients
+    }
+}
+
+export function addIngredientConstructor(item) {
+    return {
+        type: ADD_INGREDIENT_CONSTRUCTOR,
+        item,
+    }
+}
+
+export function getIngredientsConstructor(ingredients) {
+    return {
+        type: GET_INGREDIENTS_CONSTRUCTOR,
+        constructorIngredients: ingredients
+    }
+}
+
+export function deleteIngredientConstructor(item) {
+    return {
+        type: DELETE_INGREDIENT_CONSTRUCTOR,
+        item,
+    }
+}
+
+export function getCurrentIngredient(id) {
+    return {
+        type: GET_CURRENT_INGREDIENT,
+        id
+    }
+}
+
+export function deleteCurrentIngredient() {
+    return {
+        type: DELETE_CURRENT_INGREDIENT
     }
 }

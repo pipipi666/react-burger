@@ -3,7 +3,7 @@ import style from './style.module.css';
 
 function Header() {
     return (
-        <nav className={style.nav}>
+        <header className={style.nav}>
             <div className={style.main}>
                 <div className={style.left} >
                     <a href='#' className={style.nav__item}>
@@ -31,7 +31,7 @@ function Header() {
                     </a>
                 </div>
             </div>
-        </nav>
+        </header>
     );
 }
 

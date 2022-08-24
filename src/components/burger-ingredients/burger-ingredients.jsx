@@ -4,12 +4,8 @@ import style from './style.module.css';
 import Modal from '../modal/modal';
 import IngredientDetails from '../ingredient-details/ingredient-details';
 import { useSelector, useDispatch } from 'react-redux';
-import { getIngredients } from '../../services/actions/index.js';
+import { getIngredients, getCurrentIngredient, deleteCurrentIngredient } from '../../services/actions/index.js';
 import IngredientCard from '../ingredient-card/ingredient-card';
-import {
-    GET_CURRENT_INGREDIENT,
-    DELETE_CURRENT_INGREDIENT
-} from '../../services/actions/index.js';
 
 
 function BurgerIngredients() {
@@ -31,13 +27,13 @@ function BurgerIngredients() {
 
     const handleClick = useCallback((currentId) => {
         const id = ingredients.find(item => item._id === currentId)
-        dispatch({ type: GET_CURRENT_INGREDIENT, id })
+        dispatch(getCurrentIngredient(id))
         setModalVisible(true);
     }, [ingredients, dispatch]);
 
     const handleClose = () => {
         setModalVisible(false);
-        dispatch({ type: DELETE_CURRENT_INGREDIENT })
+        dispatch(deleteCurrentIngredient())
     };
 
     const handleScroll = (ref) => {
@@ -73,7 +69,7 @@ function BurgerIngredients() {
             <h1 className="text text_type_main-large mt-10 mb-5">
                 Соберите бургер
             </h1>
-            <nav className={style.nav}>
+            <section className={style.nav}>
                 <div onClick={() => { handleScroll(refBuns.current) }}>
                     <Tab
                         value="buns"
@@ -101,7 +97,7 @@ function BurgerIngredients() {
                         Начинки
                     </Tab>
                 </div>
-            </nav>
+            </section>
             <div className={style.ingredients} ref={refIngredients} onScroll={onScroll}>
                 <div ref={refBuns}>
                     <h2 className="text text_type_main-medium mt-10 mb-6">Булки</h2>

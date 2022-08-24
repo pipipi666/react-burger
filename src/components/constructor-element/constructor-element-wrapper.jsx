@@ -3,10 +3,7 @@ import { DragIcon, ConstructorElement } from '@ya.praktikum/react-developer-burg
 import { useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useDrop, useDrag } from "react-dnd";
-import {
-    GET_INGREDIENTS_CONSTRUCTOR,
-    DELETE_INGREDIENT_CONSTRUCTOR
-} from '../../services/actions/index.js';
+import { getIngredientsConstructor, deleteIngredientConstructor } from '../../services/actions/index.js';
 import { dataTypes } from '../../utils/types';
 
 function ConstructorElementWrapper({ item }) {
@@ -45,10 +42,7 @@ function ConstructorElementWrapper({ item }) {
                 item.dropId === dragCard.dropId ? hoverCard
                     : item.dropId === hoverCard.dropId ? dragCard
                         : item)
-            dispatch({
-                type: GET_INGREDIENTS_CONSTRUCTOR,
-                constructorIngredients: newCards
-            })
+            dispatch(getIngredientsConstructor(newCards))
         }
     })
     const [{ isDragging }, drag] = useDrag({
@@ -61,14 +55,7 @@ function ConstructorElementWrapper({ item }) {
     const opacity = isDragging ? 0 : 1;
     drag(drop(ref));
     const preventDefault = e => e.preventDefault();
-
-
-    const handleRemove = item => {
-        dispatch({
-            type: DELETE_INGREDIENT_CONSTRUCTOR,
-            item,
-        });
-    }
+    const handleRemove = item => dispatch(deleteIngredientConstructor(item));
 
     return (
         <div

@@ -1,6 +1,6 @@
 import style from './style.module.css';
-import { CheckMarkIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import { useSelector } from 'react-redux';
+import background from "../../image/graphics.svg";
 
 function OrderDetails() {
 
@@ -26,9 +26,7 @@ function OrderDetails() {
             <p className="text text_type_main-medium">
                 идентификатор заказа
             </p>
-            <div className={style.done__img}>
-                <CheckMarkIcon />
-            </div>
+            <img alt="done" src={background} className={style.done__img} />
             <p className="text text_type_main-default">
                 Ваш заказ начали готовить
             </p>

@@ -11,7 +11,8 @@ import {
     DELETE_CURRENT_INGREDIENT,
     GET_ORDER_REQUEST,
     GET_ORDER_SUCCESS,
-    GET_ORDER_FAILED
+    GET_ORDER_FAILED,
+    GET_TOTAL
 } from '../actions/index.js';
 
 const ingredientsInitialState = {
@@ -35,6 +36,33 @@ const orderInitialState = {
     order: {}
 };
 
+const totalInitialState = {
+    sum: 0
+};
+
+export const totalReducer = (state = totalInitialState, action) => {
+    switch (action.type) {
+        case GET_TOTAL: {
+            let sum = 0;
+            let bunFlag = false;
+            const res = action.ingredients.reduce(function (accumulator, currentValue) {
+                if (currentValue.type === "bun") {
+                    if (bunFlag) return accumulator;
+                    bunFlag = true;
+                    return accumulator + currentValue.price * 2;
+                }
+                return accumulator + currentValue.price;
+            }, sum);
+            return {
+                ...state,
+                sum: res
+            };
+        }
+        default: {
+            return state
+        }
+    }
+};
 
 export const ingredientsReducer = (state = ingredientsInitialState, action) => {
     switch (action.type) {
@@ -145,7 +173,8 @@ export const rootReducer = combineReducers({
     ingredients: ingredientsReducer,
     constructorIngredients: constructorReducer,
     currentIngredient: currentIngredientReducer,
-    order: orderReducer
+    order: orderReducer,
+    total: totalReducer
 });
 
 export const store = configureStore({ reducer: rootReducer });
