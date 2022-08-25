@@ -1,14 +1,14 @@
-import React from 'react';
 import style from './style.module.css';
-import { dataTypes } from '../../utils/types';
+import { useSelector } from 'react-redux';
 
-function IngredientDetails({ data }) {
+function IngredientDetails() {
+    const { currentIngredient } = useSelector(state => state.currentIngredient);
 
     return (
         <div className={style.content}>
-            <img src={data.image_large} alt={data.name} className={style.img} />
+            <img src={currentIngredient.image_large} alt={currentIngredient.name} className={style.img} />
             <p className="text text_type_main-medium mt-4 mb-8">
-                {data.name}
+                {currentIngredient.name}
             </p>
             <ul className={style.energy}>
                 <li className={style.energy__prop}>
@@ -16,7 +16,7 @@ function IngredientDetails({ data }) {
                         Калории, ккал
                     </p>
                     <p className='text text_type_digits-default text_color_inactive'>
-                        {data.calories}
+                        {currentIngredient.calories}
                     </p>
                 </li>
                 <li className={style.energy__prop}>
@@ -24,7 +24,7 @@ function IngredientDetails({ data }) {
                         Белки, г
                     </p>
                     <p className='text text_type_digits-default text_color_inactive'>
-                        {data.proteins}
+                        {currentIngredient.proteins}
                     </p>
                 </li>
                 <li className={style.energy__prop}>
@@ -32,7 +32,7 @@ function IngredientDetails({ data }) {
                         Жиры, г
                     </p>
                     <p className='text text_type_digits-default text_color_inactive mb-2'>
-                        {data.fat}
+                        {currentIngredient.fat}
                     </p>
                 </li>
                 <li className={style.energy__prop}>
@@ -40,16 +40,12 @@ function IngredientDetails({ data }) {
                         Углеводы, г
                     </p>
                     <p className='text text_type_digits-default text_color_inactive'>
-                        {data.carbohydrates}
+                        {currentIngredient.carbohydrates}
                     </p>
                 </li>
             </ul>
         </div>
     );
 }
-
-IngredientDetails.propTypes = {
-    data: dataTypes.isRequired
-};
 
 export default IngredientDetails;

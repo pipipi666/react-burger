@@ -1,146 +1,142 @@
-import React, { useContext, useMemo, useState } from 'react';
-import { Counter, CurrencyIcon, Tab } from '@ya.praktikum/react-developer-burger-ui-components';
+import { useMemo, useState, useEffect, useRef, useCallback } from 'react';
+import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
 import style from './style.module.css';
 import Modal from '../modal/modal';
 import IngredientDetails from '../ingredient-details/ingredient-details';
-import { IngredientsContext } from '../../services/ingredientsContext';
+import { useSelector, useDispatch } from 'react-redux';
+import { getIngredients, getCurrentIngredient, deleteCurrentIngredient } from '../../services/actions/index.js';
+import IngredientCard from '../ingredient-card/ingredient-card';
+
 
 function BurgerIngredients() {
+    const {
+        ingredients,
+        ingredientsRequest,
+        ingredientsFailed
+    } = useSelector(state => state.ingredients);
     const [isModalVisible, setModalVisible] = useState(false);
     const [current, setCurrent] = useState('buns');
-    const [targetIngredient, setTargetIngredient] = useState();
-    const { ingredientsData } = useContext(IngredientsContext);
-    const sauces = useMemo(() => ingredientsData.filter(item => item.type === "sauce"), [ingredientsData]);
-    const ingredients = useMemo(() => ingredientsData.filter(item => item.type === "main"), [ingredientsData]);
-    const buns = useMemo(() => ingredientsData.filter(item => item.type === "bun"), [ingredientsData]);
+    const sauces = useMemo(() => ingredients.filter(item => item.type === "sauce"), [ingredients]);
+    const filling = useMemo(() => ingredients.filter(item => item.type === "main"), [ingredients]);
+    const buns = useMemo(() => ingredients.filter(item => item.type === "bun"), [ingredients]);
+    const dispatch = useDispatch();
+    const refBuns = useRef(null);
+    const refFilling = useRef(null);
+    const refSauces = useRef(null);
+    const refIngredients = useRef(null);
 
-    const handleClick = (id) => {
-        setTargetIngredient(ingredientsData.find(item => item._id === id));
+    const handleClick = useCallback((currentId) => {
+        const id = ingredients.find(item => item._id === currentId)
+        dispatch(getCurrentIngredient(id))
         setModalVisible(true);
-    }
+    }, [ingredients, dispatch]);
 
-    const modalClose = () => {
+    const handleClose = () => {
         setModalVisible(false);
+        dispatch(deleteCurrentIngredient())
+    };
+
+    const handleScroll = (ref) => {
+        ref.scrollIntoView({ block: "start", behavior: "smooth" })
+    };
+
+    const onScroll = () => {
+        const scrollIng = refIngredients.current.scrollTop;
+        const startSauces = refBuns.current.clientHeight / 2;
+        const startFilling = refBuns.current.clientHeight + refSauces.current.clientHeight / 2;
+        if (scrollIng < startSauces) setCurrent('buns')
+        else if (scrollIng > startSauces && scrollIng < startFilling) setCurrent('sauces');
+        else if (scrollIng > startFilling) setCurrent('filling');
     }
 
-    return (
-        <section className={style.container}>
+    useEffect(() => {
+        dispatch(getIngredients());
+    }, [dispatch]);
+
+    const loading = (
+        <p className="text text_type_main-medium">
+            Загрузка...
+        </p>);
+
+    const fail = (
+        <p className="text text_type_main-medium">
+            Ошибка выполнения запроса
+        </p>
+    )
+
+    const content = (
+        <>
             <h1 className="text text_type_main-large mt-10 mb-5">
                 Соберите бургер
             </h1>
-            <nav className={style.nav}>
-                <Tab
-                    value="buns"
-                    active={current === 'buns'}
-                    onClick={setCurrent}
-                >
-                    Булки
-                </Tab>
-                <Tab
-                    value="sauces"
-                    active={current === 'sauces'}
-                    onClick={setCurrent}
-                >
-                    Соусы
-                </Tab>
-                <Tab
-                    value="ingredients"
-                    active={current === 'ingredients'}
-                    onClick={setCurrent}
-                >
-                    Начинки
-                </Tab>
-            </nav>
-            <div className={style.ingredients}>
-                <h2 className="text text_type_main-medium mt-10 mb-6">Булки</h2>
-                <div className={style.list}>
-                    {buns.map((item) => (
-                        <div
-                            className={style.list__item}
-                            key={item._id}
-                            onClick={() => handleClick(item._id)}
-                        >
-                            <div className={style.cntr}>
-                                <Counter count={1} size="default" />
-                            </div>
-                            <img
-                                src={item.image}
-                                className={style.img}
-                                alt={item.name} />
-                            <p className={`text text_type_main-default ${style.price}`}>
-                                <span className='text text_type_digits-default'>
-                                    {item.price}
-                                </span>
-                                <CurrencyIcon />
-                            </p>
-                            <p className={`text text_type_main-default ${style.item__title}`}>
-                                {item.name}
-                            </p>
-                        </div>
-                    ))}
+            <section className={style.nav}>
+                <div onClick={() => { handleScroll(refBuns.current) }}>
+                    <Tab
+                        value="buns"
+                        active={current === 'buns'}
+                        onClick={setCurrent}
+                    >
+                        Булки
+                    </Tab>
                 </div>
-                <h2 className="text text_type_main-medium mt-10 mb-6">Соусы</h2>
-                <div className={style.list}>
-                    {sauces.map((item) => (
-                        <div
-                            className={style.list__item}
-                            key={item._id}
-                            onClick={() => handleClick(item._id)}
-                        >
-                            <div className={style.cntr}>
-                                <Counter count={1} size="default" />
-                            </div>
-                            <img
-                                src={item.image}
-                                className={style.img}
-                                alt={item.name}
-                            />
-                            <p className={`text text_type_main-default ${style.price}`}>
-                                <span className='text text_type_digits-default'>
-                                    {item.price}
-                                </span>
-                                <CurrencyIcon />
-                            </p>
-                            <p className={`text text_type_main-default ${style.item__title}`}>
-                                {item.name}
-                            </p>
-                        </div>
-                    ))}
+                <div onClick={() => { handleScroll(refSauces.current) }}>
+                    <Tab
+                        value="sauces"
+                        active={current === 'sauces'}
+                        onClick={setCurrent}
+                    >
+                        Соусы
+                    </Tab>
                 </div>
-                <h2 className="text text_type_main-medium mt-10 mb-6">Начинки</h2>
-                <div className={style.list}>
-                    {ingredients.map((item) => (
-                        <div
-                            className={style.list__item}
-                            key={item._id}
-                            onClick={() => handleClick(item._id)}
-                        >
-                            <div className={style.cntr}>
-                                <Counter count={1} size="default" />
-                            </div>
-                            <img
-                                src={item.image}
-                                className={style.img}
-                                alt={item.name}
-                            />
-                            <p className={`text text_type_main-default ${style.price}`}>
-                                <span className='text text_type_digits-default'>
-                                    {item.price}
-                                </span>
-                                <CurrencyIcon />
-                            </p>
-                            <p className={`text text_type_main-default ${style.item__title}`}>
-                                {item.name}
-                            </p>
-                        </div>
-                    ))}
+                <div onClick={() => { handleScroll(refFilling.current) }}>
+                    <Tab
+                        value="filling"
+                        active={current === 'filling'}
+                        onClick={setCurrent}
+                    >
+                        Начинки
+                    </Tab>
+                </div>
+            </section>
+            <div className={style.ingredients} ref={refIngredients} onScroll={onScroll}>
+                <div ref={refBuns}>
+                    <h2 className="text text_type_main-medium mt-10 mb-6">Булки</h2>
+                    <div className={style.list}>
+                        {buns.map((item) => (
+                            <IngredientCard item={item} handleClick={handleClick} key={item._id} />
+                        ))}
+                    </div>
+                </div>
+                <div ref={refSauces}>
+                    <h2 className="text text_type_main-medium mt-10 mb-6">Соусы</h2>
+                    <div className={style.list}>
+                        {sauces.map((item) => (
+                            <IngredientCard item={item} handleClick={handleClick} key={item._id} />
+                        ))}
+                    </div>
+                </div>
+                <div ref={refFilling}>
+                    <h2 className="text text_type_main-medium mt-10 mb-6">Начинки</h2>
+                    <div className={style.list}>
+                        {filling.map((item) => (
+                            <IngredientCard item={item} handleClick={handleClick} key={item._id} />
+                        ))}
+                    </div>
                 </div>
             </div>
             {isModalVisible &&
-                <Modal title="Детали ингредиента" close={modalClose}>
-                    <IngredientDetails data={targetIngredient} />
+                <Modal title="Детали ингредиента" close={handleClose}>
+                    <IngredientDetails />
                 </Modal>
             }
+        </>
+    );
+
+    return (
+        <section className={style.container}>
+            {ingredientsRequest ? loading
+                : ingredientsFailed ? fail
+                    : content}
         </section>
     );
 }

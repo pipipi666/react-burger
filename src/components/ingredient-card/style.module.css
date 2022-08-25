@@ -1,0 +1,30 @@
+
+.list__item {
+    display: flex;
+    flex-direction: column;
+    gap:4px;
+    width: 240px;
+    padding: 0 16px;
+    text-align: center;
+}
+
+.price {
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+}
+
+.item__title {
+    height: 48px;
+}
+
+.img {
+    width: 240px;
+    height: 120px;
+}
+
+.cntr {
+    position: relative;
+    top: -10px;
+    left: 15px;
+}
