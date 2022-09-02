@@ -1,4 +1,8 @@
-import { API_URL_INGREDIENTS, API_URL_ORDERS } from "../../utils/consts";
+import {
+    API_URL_INGREDIENTS,
+    API_URL_ORDERS,
+} from "../../utils/constsAPI";
+import { checkReponse, getStorageToken } from "../../utils/utils";
 
 export const GET_INGREDIENTS_REQUEST = 'GET_INGREDIENTS_REQUEST';
 export const GET_INGREDIENTS_SUCCESS = 'GET_INGREDIENTS_SUCCESS';
@@ -18,10 +22,6 @@ export const GET_ORDER_FAILED = 'GET_ORDER_FAILED';
 
 export const GET_TOTAL = 'GET_TOTAL';
 
-const checkReponse = (res) => {
-    return res.ok ? res.json() : res.json().then((err) => Promise.reject(err));
-};
-
 export function getIngredients() {
     return function (dispatch) {
         dispatch({
@@ -40,17 +40,26 @@ export function getIngredients() {
                 })
             })
     }
-}
+};
 
-export function getOrder(ingredientsData) {
+export function getOrder(ingredients) {
     return function (dispatch) {
+        const token = getStorageToken();
         dispatch({
             type: GET_ORDER_REQUEST
         })
         fetch(API_URL_ORDERS, {
             method: "POST",
-            body: JSON.stringify({ ingredients: ingredientsData }),
-            headers: { 'Content-Type': 'application/json;charset=utf-8' }
+            mode: 'cors',
+            cache: 'no-cache',
+            credentials: 'same-origin',
+            headers: {
+                'Content-Type': 'application/json;charset=utf-8',
+                Authorization: 'Bearer ' + token
+            },
+            redirect: 'follow',
+            referrerPolicy: 'no-referrer',
+            body: JSON.stringify({ ingredients }),
         }).then(checkReponse)
             .then(res => {
                 dispatch({
@@ -63,45 +72,56 @@ export function getOrder(ingredientsData) {
                 })
             })
     }
-}
+};
 
 export function getTotal(constructorIngredients) {
+    let sum = 0;
+    let bunFlag = false;
+    const res = constructorIngredients.reduce(function (accumulator, currentValue) {
+        if (currentValue.type === "bun") {
+            if (bunFlag) return accumulator;
+            bunFlag = true;
+            return accumulator + currentValue.price * 2;
+        }
+        return accumulator + currentValue.price;
+    }, sum);
+
     return {
         type: GET_TOTAL,
-        ingredients: constructorIngredients
+        sum: res
     }
-}
+};
 
 export function addIngredientConstructor(item) {
     return {
         type: ADD_INGREDIENT_CONSTRUCTOR,
         item,
     }
-}
+};
 
 export function getIngredientsConstructor(ingredients) {
     return {
         type: GET_INGREDIENTS_CONSTRUCTOR,
         constructorIngredients: ingredients
     }
-}
+};
 
 export function deleteIngredientConstructor(item) {
     return {
         type: DELETE_INGREDIENT_CONSTRUCTOR,
         item,
     }
-}
+};
 
 export function getCurrentIngredient(id) {
     return {
         type: GET_CURRENT_INGREDIENT,
         id
     }
-}
+};
 
 export function deleteCurrentIngredient() {
     return {
         type: DELETE_CURRENT_INGREDIENT
     }
-}
+};

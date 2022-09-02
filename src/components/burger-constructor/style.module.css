@@ -1,29 +1,17 @@
-
 .container {
     width: 600px;
     padding-top: 100px;
     box-sizing: border-box;
 }
 
+.drop {
+    border: 1px solid white;
+}
+
 .main {
     display: flex;
     flex-direction: column;
     gap: 16px;
-}
-
-.list__item {
-    display: flex;
-    gap: 8px;
-    justify-content: center;
-    align-items: center;
-}
-
-.total {
-    margin-top: 40px;
-    display: flex;
-    justify-content: flex-end;
-    align-items: center;
-    gap: 40px;
 }
 
 .ingredients {
@@ -46,6 +34,17 @@
     background-color:#8585AD;
 }
 
-.drop {
-    border: 1px solid white;
+.list__item {
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+    align-items: center;
+}
+
+.total {
+    margin-top: 40px;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 40px;
 }

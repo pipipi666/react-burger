@@ -3,13 +3,15 @@ import { DragIcon, ConstructorElement } from '@ya.praktikum/react-developer-burg
 import { useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useDrop, useDrag } from "react-dnd";
-import { getIngredientsConstructor, deleteIngredientConstructor } from '../../services/actions/index.js';
-import { dataTypes } from '../../utils/types';
+import { getIngredientsConstructor, deleteIngredientConstructor } from 'services/actions/index.js';
+import { dataTypes } from 'utils/types';
 
-function ConstructorElementWrapper({ item }) {
+export default function ConstructorElementWrapper({ item }) {
+
     const dispatch = useDispatch();
     const { constructorIngredients } = useSelector(state => state.constructorIngredients);
     const ref = useRef(null);
+
     const [{ handlerId }, drop] = useDrop({
         accept: 'component',
         collect(monitor) {
@@ -44,7 +46,8 @@ function ConstructorElementWrapper({ item }) {
                         : item)
             dispatch(getIngredientsConstructor(newCards))
         }
-    })
+    });
+
     const [{ isDragging }, drag] = useDrag({
         type: 'component',
         item: () => ({ item }),
@@ -52,6 +55,7 @@ function ConstructorElementWrapper({ item }) {
             isDragging: monitor.isDragging(),
         }),
     });
+
     const opacity = isDragging ? 0 : 1;
     drag(drop(ref));
     const preventDefault = e => e.preventDefault();
@@ -79,5 +83,3 @@ function ConstructorElementWrapper({ item }) {
 ConstructorElementWrapper.propTypes = {
     item: dataTypes.isRequired
 };
-
-export default ConstructorElementWrapper;

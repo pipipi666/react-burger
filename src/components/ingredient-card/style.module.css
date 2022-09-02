@@ -8,14 +8,15 @@
     text-align: center;
 }
 
-.price {
-    display: flex;
-    gap: 8px;
-    justify-content: center;
+.link {
+    text-decoration: none;
+    color: #fff;
 }
 
-.item__title {
-    height: 48px;
+.cntr {
+    position: relative;
+    top: -10px;
+    left: 15px;
 }
 
 .img {
@@ -23,8 +24,8 @@
     height: 120px;
 }
 
-.cntr {
-    position: relative;
-    top: -10px;
-    left: 15px;
+.price {
+    display: flex;
+    gap: 8px;
+    justify-content: center;
 }

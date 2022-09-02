@@ -1,8 +1,8 @@
 import style from './style.module.css';
 import { useSelector } from 'react-redux';
-import background from "../../image/graphics.svg";
+import background from "image/graphics.svg";
 
-function OrderDetails() {
+export default function OrderDetails() {
 
     const { order, orderRequest, orderFailed } = useSelector(state => state.order);
 
@@ -46,5 +46,3 @@ function OrderDetails() {
         </div>
     );
 }
-
-export default OrderDetails;

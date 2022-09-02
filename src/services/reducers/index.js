@@ -1,19 +1,28 @@
-import { configureStore } from '@reduxjs/toolkit';
 import { combineReducers } from 'redux';
 import {
-    GET_INGREDIENTS_REQUEST,
-    GET_INGREDIENTS_SUCCESS,
-    GET_INGREDIENTS_FAILED,
     GET_INGREDIENTS_CONSTRUCTOR,
     ADD_INGREDIENT_CONSTRUCTOR,
     DELETE_INGREDIENT_CONSTRUCTOR,
     GET_CURRENT_INGREDIENT,
     DELETE_CURRENT_INGREDIENT,
+    GET_TOTAL,
+
+    GET_INGREDIENTS_REQUEST,
+    GET_INGREDIENTS_SUCCESS,
+    GET_INGREDIENTS_FAILED,
+
     GET_ORDER_REQUEST,
     GET_ORDER_SUCCESS,
     GET_ORDER_FAILED,
-    GET_TOTAL
-} from '../actions/index.js';
+} from 'services/actions/index.js';
+import {
+    userReducer,
+    registerReducer,
+    updateTokenReducer,
+    profileReducer,
+    resetPasswordReducer,
+    setPasswordReducer
+} from './auth.js';
 
 const ingredientsInitialState = {
     ingredientsRequest: false,
@@ -38,30 +47,6 @@ const orderInitialState = {
 
 const totalInitialState = {
     sum: 0
-};
-
-export const totalReducer = (state = totalInitialState, action) => {
-    switch (action.type) {
-        case GET_TOTAL: {
-            let sum = 0;
-            let bunFlag = false;
-            const res = action.ingredients.reduce(function (accumulator, currentValue) {
-                if (currentValue.type === "bun") {
-                    if (bunFlag) return accumulator;
-                    bunFlag = true;
-                    return accumulator + currentValue.price * 2;
-                }
-                return accumulator + currentValue.price;
-            }, sum);
-            return {
-                ...state,
-                sum: res
-            };
-        }
-        default: {
-            return state
-        }
-    }
 };
 
 export const ingredientsReducer = (state = ingredientsInitialState, action) => {
@@ -169,12 +154,30 @@ export const orderReducer = (state = orderInitialState, action) => {
     }
 };
 
+export const totalReducer = (state = totalInitialState, action) => {
+    switch (action.type) {
+        case GET_TOTAL: {
+            return {
+                ...state,
+                sum: action.sum
+            };
+        }
+        default: {
+            return state
+        }
+    }
+};
+
 export const rootReducer = combineReducers({
     ingredients: ingredientsReducer,
     constructorIngredients: constructorReducer,
     currentIngredient: currentIngredientReducer,
     order: orderReducer,
-    total: totalReducer
+    total: totalReducer,
+    resetPassword: resetPasswordReducer,
+    setPassword: setPasswordReducer,
+    user: userReducer,
+    register: registerReducer,
+    token: updateTokenReducer,
+    profile: profileReducer,
 });
-
-export const store = configureStore({ reducer: rootReducer });
