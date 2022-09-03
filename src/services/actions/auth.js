@@ -250,76 +250,103 @@ export const setProfileFormValue = (field, value) => ({
 
 export function getProfile() {
     return function (dispatch) {
-        const token = getStorageToken();
         const now = Date.now();
         const exp = localStorage.getItem('exp');
         if (now > exp) {
-            dispatch(updateToken())
-        }
-        dispatch({
-            type: GET_PROFILE_REQUEST
-        })
-        fetch(API_URL_USER, {
-            method: 'GET',
-            mode: 'cors',
-            cache: 'no-cache',
-            credentials: 'same-origin',
-            headers: {
-                'Content-Type': 'application/json',
-                Authorization: 'Bearer ' + token
-            },
-            redirect: 'follow',
-            referrerPolicy: 'no-referrer'
-        })
-            .then(checkReponse)
-            .then(res => {
-                dispatch({
-                    type: GET_PROFILE_SUCCESS,
-                    form: res.user
-                })
-            }).catch(err => {
-                localStorage.clear();
-                dispatch({
-                    type: GET_PROFILE_FAILED
-                })
+            const refreshToken = localStorage.getItem('refreshToken');
+            dispatch({
+                type: TOKEN_REQUEST
             })
+            fetch(API_URL_TOKEN, {
+                method: 'POST',
+                mode: 'cors',
+                cache: 'no-cache',
+                credentials: 'same-origin',
+                headers: { 'Content-Type': 'application/json;charset=utf-8' },
+                redirect: 'follow',
+                referrerPolicy: 'no-referrer',
+                body: JSON.stringify({ token: refreshToken }),
+            }).then(checkReponse)
+                .then(res => {
+                    getToken(res);
+                    dispatch({
+                        type: TOKEN_SUCCESS,
+                        accessToken: res.accessToken,
+                        refreshToken: res.refreshToken
+                    })
+                }).then(res => {
+                    const token = getStorageToken();
+                    dispatch({
+                        type: GET_PROFILE_REQUEST
+                    })
+                    fetch(API_URL_USER, {
+                        method: 'GET',
+                        mode: 'cors',
+                        cache: 'no-cache',
+                        credentials: 'same-origin',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            Authorization: 'Bearer ' + token
+                        },
+                        redirect: 'follow',
+                        referrerPolicy: 'no-referrer'
+                    })
+                        .then(checkReponse)
+                        .then(res => {
+                            dispatch({
+                                type: GET_PROFILE_SUCCESS,
+                                form: res.user
+                            })
+                        }).catch(err => {
+                            dispatch({
+                                type: GET_PROFILE_FAILED
+                            })
+                        })
+                }).catch(err => {
+                    logout();
+                    dispatch({
+                        type: TOKEN_FAILED
+                    });
+                })
+        }
+        else {
+            const token = getStorageToken();
+            dispatch({
+                type: GET_PROFILE_REQUEST
+            })
+            fetch(API_URL_USER, {
+                method: 'GET',
+                mode: 'cors',
+                cache: 'no-cache',
+                credentials: 'same-origin',
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: 'Bearer ' + token
+                },
+                redirect: 'follow',
+                referrerPolicy: 'no-referrer'
+            })
+                .then(checkReponse)
+                .then(res => {
+                    dispatch({
+                        type: GET_PROFILE_SUCCESS,
+                        form: res.user
+                    })
+                }).catch(err => {
+                    localStorage.clear();
+                    dispatch({
+                        type: GET_PROFILE_FAILED
+                    })
+                })
+        }
     }
 };
 
 export const updateProfile = () => (dispatch, getState) => {
-    const token = getStorageToken();
-    dispatch({
-        type: PROFILE_FORM_SUBMIT
-    });
-    fetch(API_URL_USER, {
-        method: 'PATCH',
-        mode: 'cors',
-        cache: 'no-cache',
-        credentials: 'same-origin',
-        headers: {
-            'Content-Type': 'application/json',
-            Authorization: 'Bearer ' + token
-        },
-        redirect: 'follow',
-        referrerPolicy: 'no-referrer',
-        body: JSON.stringify({ ...getState().profile.form })
-    }).then(checkReponse)
-        .then(res => {
-            dispatch({
-                type: PROFILE_FORM_SUBMIT_SUCCESS,
-            });
-        }).then(res => {
-            dispatch(getProfile());
-        }).catch(err => {
-            dispatch({
-                type: PROFILE_FORM_SUBMIT_FAILED,
-            });
-        })
-};
-
-export function updateToken() {
-    const refreshToken = localStorage.getItem('refreshToken');
-    return function (dispatch) {
+    const now = Date.now();
+    const exp = localStorage.getItem('exp');
+    if (now > exp) {
+        const refreshToken = localStorage.getItem('refreshToken');
         dispatch({
             type: TOKEN_REQUEST
         })
@@ -340,10 +367,65 @@ export function updateToken() {
                     accessToken: res.accessToken,
                     refreshToken: res.refreshToken
                 })
+            }).then(res => {
+                const token = getStorageToken();
+                dispatch({
+                    type: PROFILE_FORM_SUBMIT
+                });
+                fetch(API_URL_USER, {
+                    method: 'PATCH',
+                    mode: 'cors',
+                    cache: 'no-cache',
+                    credentials: 'same-origin',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        Authorization: 'Bearer ' + token
+                    },
+                    redirect: 'follow',
+                    referrerPolicy: 'no-referrer',
+                    body: JSON.stringify({ ...getState().profile.form })
+                }).then(checkReponse)
+                    .then(res => {
+                        dispatch({
+                            type: PROFILE_FORM_SUBMIT_SUCCESS,
+                        });
+                    }).catch(err => {
+                        dispatch({
+                            type: PROFILE_FORM_SUBMIT_FAILED,
+                        });
+                    })
             }).catch(err => {
                 logout();
                 dispatch({
                     type: TOKEN_FAILED
+                });
+            })
+    }
+    else {
+        const token = getStorageToken();
+        dispatch({
+            type: PROFILE_FORM_SUBMIT
+        });
+        fetch(API_URL_USER, {
+            method: 'PATCH',
+            mode: 'cors',
+            cache: 'no-cache',
+            credentials: 'same-origin',
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: 'Bearer ' + token
+            },
+            redirect: 'follow',
+            referrerPolicy: 'no-referrer',
+            body: JSON.stringify({ ...getState().profile.form })
+        }).then(checkReponse)
+            .then(res => {
+                dispatch({
+                    type: PROFILE_FORM_SUBMIT_SUCCESS,
+                });
+            }).catch(err => {
+                dispatch({
+                    type: PROFILE_FORM_SUBMIT_FAILED,
                 });
             })
     }

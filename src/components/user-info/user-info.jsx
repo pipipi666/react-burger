@@ -15,8 +15,8 @@ export default function UserInfo() {
     } = useSelector(state => state.profile.form);
 
     useEffect(() => {
-        dispatch(getProfile());
-    }, [dispatch]);
+        !email && dispatch(getProfile());
+    }, [dispatch, email]);
 
     const onFormChange = (e) => {
         dispatch(setProfileFormValue(e.target.name, e.target.value));

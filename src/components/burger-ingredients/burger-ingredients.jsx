@@ -32,8 +32,8 @@ export default function BurgerIngredients() {
     const [isModalVisible, setModalVisible] = useState(location.pathname !== ROUTES.HOME);
 
     useEffect(() => {
-        dispatch(getIngredients());
-    }, [dispatch]);
+        ingredients.length === 0 && dispatch(getIngredients());
+    }, [dispatch, ingredients]);
 
     useEffect(() => {
         if (!currentIngredient?._id && ingredients.length > 0) {

@@ -38,7 +38,7 @@ export default function BurgerConstructor() {
 
     useEffect(() => {
         dispatch(getTotal(constructorIngredients));
-    }, [dispatch, constructorIngredients]);
+    }, [constructorIngredients, dispatch]);
 
     const [{ isHover }, dropTarget] = useDrop({
         accept: "ingredient",
