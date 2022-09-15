@@ -1,38 +1,24 @@
-import { Logo, BurgerIcon, ListIcon, ProfileIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import style from './style.module.css';
+import { Logo } from '@ya.praktikum/react-developer-burger-ui-components';
+import { Link } from 'react-router-dom';
+import HeaderLink from 'components/header-link/header-link';
+import { ROUTES } from 'utils/constsRoute';
 
-function Header() {
+export default function Header() {
     return (
-        <header className={style.nav}>
+        <header className={style.header}>
             <div className={style.main}>
                 <div className={style.left} >
-                    <a href='#' className={style.nav__item}>
-                        <BurgerIcon type="secondary" />
-                        <span className={`text text_type_main-default text_color_inactive`}>
-                            Конструктор
-                        </span>
-                    </a>
-                    <a href='#' className={style.nav__item}>
-                        <ListIcon type="secondary" />
-                        <span className="text text_type_main-default text_color_inactive">
-                            Лента заказов
-                        </span>
-                    </a>
+                    <HeaderLink title="Конструктор" route={ROUTES.HOME} />
+                    <HeaderLink title="Лента заказов" route={ROUTES.FEED} />
                 </div>
-                <a href='#' className={style.center}>
+                <Link to={ROUTES.HOME} className={style.center}>
                     <Logo className={style.logo} />
-                </a>
+                </Link>
                 <div className={style.right}>
-                    <a href='#' className={style.nav__item}>
-                        <ProfileIcon type="secondary" />
-                        <span className="text text_type_main-default text_color_inactive">
-                            Личный кабинет
-                        </span>
-                    </a>
+                    <HeaderLink title="Личный кабинет" route={ROUTES.PROFILE} />
                 </div>
             </div>
         </header>
     );
 }
-
-export default Header;

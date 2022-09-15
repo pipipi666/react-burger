@@ -1,6 +1,5 @@
 import PropTypes from 'prop-types';
 
-
 export const dataTypes = PropTypes.shape({
     _id: PropTypes.string.isRequired,
     name: PropTypes.string.isRequired,
@@ -14,4 +13,4 @@ export const dataTypes = PropTypes.shape({
     image_mobile: PropTypes.string.isRequired,
     image_large: PropTypes.string.isRequired,
     __v: PropTypes.number.isRequired
-})
+});

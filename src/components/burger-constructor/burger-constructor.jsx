@@ -1,8 +1,8 @@
 import { ConstructorElement, CurrencyIcon, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import style from './style.module.css';
-import Modal from '../modal/modal';
 import { useState, useEffect, useMemo } from 'react';
-import OrderDetails from '../order-details/order-details';
+import { useDrop } from "react-dnd";
+import { useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import {
     getOrder,
@@ -10,32 +10,35 @@ import {
     addIngredientConstructor,
     getIngredientsConstructor,
     deleteIngredientConstructor
-} from '../../services/actions/index.js';
-import { useDrop } from "react-dnd";
-import ConstructorElementWrapper from '../constructor-element/constructor-element-wrapper';
+} from 'services/actions/index.js';
+import { isAuth } from 'utils/utils';
+import Modal from 'components/modal/modal';
+import ConstructorElementWrapper from 'components/constructor-element/constructor-element-wrapper';
+import OrderDetails from 'components/order-details/order-details';
+import { ROUTES } from 'utils/constsRoute';
 
-function BurgerConstructor() {
+export default function BurgerConstructor() {
+
     const dispatch = useDispatch();
     const { constructorIngredients } = useSelector(state => state.constructorIngredients);
     const { sum } = useSelector(state => state.total);
-    const ingredients = useMemo(() => constructorIngredients.filter(item => item.type !== "bun"), [constructorIngredients]);
+    const auth = isAuth();
+    const history = useHistory();
     const [isModalVisible, setModalVisible] = useState(false);
-    const bun = useMemo(() =>
-        constructorIngredients && constructorIngredients.find(item => item.type === "bun"
+
+    const ingredients = useMemo(() =>
+        constructorIngredients.filter(item => item.type !== "bun"
         ), [constructorIngredients]);
 
-    function handleOrder() {
-        setModalVisible(true);
-        const ingredients = constructorIngredients.map((item) => (item._id));
-        dispatch(getOrder(ingredients))
-    }
+    const bun = useMemo(() =>
+        constructorIngredients &&
+        constructorIngredients.find(
+            item => item.type === "bun"
+        ), [constructorIngredients]);
 
-    const handleClose = () => {
-        setModalVisible(false);
-        dispatch(getIngredientsConstructor([]))
-    }
-
-    const handleRemove = item => dispatch(deleteIngredientConstructor(item));
+    useEffect(() => {
+        dispatch(getTotal(constructorIngredients));
+    }, [constructorIngredients, dispatch]);
 
     const [{ isHover }, dropTarget] = useDrop({
         accept: "ingredient",
@@ -50,11 +53,23 @@ function BurgerConstructor() {
         },
     });
 
-    const targetClassName = `${style.container} ${isHover ? style.drop : ''}`;
+    function handleOrder() {
+        if (auth) {
+            setModalVisible(true);
+            const ingredients = constructorIngredients.map((item) => (item._id));
+            dispatch(getOrder(ingredients))
+        }
+        else history.push(ROUTES.LOGIN)
+    }
 
-    useEffect(() => {
-        dispatch(getTotal(constructorIngredients));
-    }, [dispatch, constructorIngredients]);
+    const handleClose = () => {
+        setModalVisible(false);
+        dispatch(getIngredientsConstructor([]))
+    }
+
+    const handleRemove = item => dispatch(deleteIngredientConstructor(item));
+
+    const targetClassName = `${style.container} ${isHover ? style.drop : ''}`;
 
     if (constructorIngredients.length === 0) {
         return (
@@ -116,5 +131,3 @@ function BurgerConstructor() {
         </section>
     );
 }
-
-export default BurgerConstructor;

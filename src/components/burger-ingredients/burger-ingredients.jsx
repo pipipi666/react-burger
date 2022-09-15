@@ -1,44 +1,46 @@
 import { useMemo, useState, useEffect, useRef, useCallback } from 'react';
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
 import style from './style.module.css';
-import Modal from '../modal/modal';
-import IngredientDetails from '../ingredient-details/ingredient-details';
+import Modal from 'components/modal/modal';
+import IngredientDetails from 'components/ingredient-details/ingredient-details';
 import { useSelector, useDispatch } from 'react-redux';
-import { getIngredients, getCurrentIngredient, deleteCurrentIngredient } from '../../services/actions/index.js';
-import IngredientCard from '../ingredient-card/ingredient-card';
+import { getIngredients, getCurrentIngredient, deleteCurrentIngredient } from 'services/actions/index.js';
+import { useLocation, useHistory, useParams } from "react-router-dom";
+import { ROUTES } from 'utils/constsRoute';
+import IngredientsCategory from '../ingredients-category/ingredients-category';
 
+export default function BurgerIngredients() {
 
-function BurgerIngredients() {
+    const dispatch = useDispatch();
+    const location = useLocation();
+    const history = useHistory();
+    const { id } = useParams();
+    const [current, setCurrent] = useState('buns');
     const {
         ingredients,
         ingredientsRequest,
         ingredientsFailed
     } = useSelector(state => state.ingredients);
-    const [isModalVisible, setModalVisible] = useState(false);
-    const [current, setCurrent] = useState('buns');
+    const { currentIngredient } = useSelector(state => state.currentIngredient);
     const sauces = useMemo(() => ingredients.filter(item => item.type === "sauce"), [ingredients]);
     const filling = useMemo(() => ingredients.filter(item => item.type === "main"), [ingredients]);
     const buns = useMemo(() => ingredients.filter(item => item.type === "bun"), [ingredients]);
-    const dispatch = useDispatch();
     const refBuns = useRef(null);
     const refFilling = useRef(null);
     const refSauces = useRef(null);
     const refIngredients = useRef(null);
+    const [isModalVisible, setModalVisible] = useState(location.pathname !== ROUTES.HOME);
 
-    const handleClick = useCallback((currentId) => {
-        const id = ingredients.find(item => item._id === currentId)
-        dispatch(getCurrentIngredient(id))
-        setModalVisible(true);
-    }, [ingredients, dispatch]);
+    useEffect(() => {
+        ingredients.length === 0 && dispatch(getIngredients());
+    }, [dispatch, ingredients]);
 
-    const handleClose = () => {
-        setModalVisible(false);
-        dispatch(deleteCurrentIngredient())
-    };
-
-    const handleScroll = (ref) => {
-        ref.scrollIntoView({ block: "start", behavior: "smooth" })
-    };
+    useEffect(() => {
+        if (!currentIngredient?._id && ingredients.length > 0) {
+            const tmp = ingredients.find(item => item._id === id)
+            dispatch(getCurrentIngredient(tmp))
+        }
+    }, [dispatch, currentIngredient, ingredients, id]);
 
     const onScroll = () => {
         const scrollIng = refIngredients.current.scrollTop;
@@ -49,9 +51,23 @@ function BurgerIngredients() {
         else if (scrollIng > startFilling) setCurrent('filling');
     }
 
-    useEffect(() => {
-        dispatch(getIngredients());
-    }, [dispatch]);
+    const handleClick = useCallback((currentId) => {
+        const id = ingredients.find(item => item._id === currentId)
+        dispatch(getCurrentIngredient(id))
+        setModalVisible(true);
+    }, [ingredients, dispatch]);
+
+    const handleClose = () => {
+        setModalVisible(false);
+        dispatch(deleteCurrentIngredient())
+        history.replace({
+            pathname: ROUTES.HOME
+        });
+    };
+
+    const handleScroll = (ref) => {
+        ref.scrollIntoView({ block: "start", behavior: "smooth" })
+    };
 
     const loading = (
         <p className="text text_type_main-medium">
@@ -69,7 +85,7 @@ function BurgerIngredients() {
             <h1 className="text text_type_main-large mt-10 mb-5">
                 Соберите бургер
             </h1>
-            <section className={style.nav}>
+            <div className={style.nav}>
                 <div onClick={() => { handleScroll(refBuns.current) }}>
                     <Tab
                         value="buns"
@@ -97,31 +113,16 @@ function BurgerIngredients() {
                         Начинки
                     </Tab>
                 </div>
-            </section>
+            </div>
             <div className={style.ingredients} ref={refIngredients} onScroll={onScroll}>
                 <div ref={refBuns}>
-                    <h2 className="text text_type_main-medium mt-10 mb-6">Булки</h2>
-                    <div className={style.list}>
-                        {buns.map((item) => (
-                            <IngredientCard item={item} handleClick={handleClick} key={item._id} />
-                        ))}
-                    </div>
+                    <IngredientsCategory title='Булки' ingredients={buns} handleClick={handleClick} />
                 </div>
-                <div ref={refSauces}>
-                    <h2 className="text text_type_main-medium mt-10 mb-6">Соусы</h2>
-                    <div className={style.list}>
-                        {sauces.map((item) => (
-                            <IngredientCard item={item} handleClick={handleClick} key={item._id} />
-                        ))}
-                    </div>
+                <div ref={refSauces} >
+                    <IngredientsCategory title='Соусы' ingredients={sauces} handleClick={handleClick} />
                 </div>
                 <div ref={refFilling}>
-                    <h2 className="text text_type_main-medium mt-10 mb-6">Начинки</h2>
-                    <div className={style.list}>
-                        {filling.map((item) => (
-                            <IngredientCard item={item} handleClick={handleClick} key={item._id} />
-                        ))}
-                    </div>
+                    <IngredientsCategory title='Начинки' ingredients={filling} handleClick={handleClick} />
                 </div>
             </div>
             {isModalVisible &&
@@ -140,5 +141,3 @@ function BurgerIngredients() {
         </section>
     );
 }
-
-export default BurgerIngredients;

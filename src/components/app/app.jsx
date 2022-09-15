@@ -1,22 +1,54 @@
-import style from './app.module.css';
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import {
+  HomePage,
+  ForgotPasswordPage,
+  LoginPage,
+  NotFoundPage,
+  ProfilePage,
+  RegisterPage,
+  ResetPasswordPage,
+  FeedPage
+} from '../../pages'
 import Header from '../app-header/app-header';
-import BurgerIngredients from '../burger-ingredients/burger-ingredients';
-import BurgerConstructor from '../burger-constructor/burger-constructor';
-import { DndProvider } from "react-dnd";
-import { HTML5Backend } from "react-dnd-html5-backend";
+import { ProtectedRoute } from '../protected-route/protected-route';
+import { ROUTES } from '../../utils/constsRoute';
 
-function App() {
+export default function App() {
   return (
-    <div className={style.App}>
+    <Router>
       <Header />
-      <main className={style.main}>
-        <DndProvider backend={HTML5Backend}>
-          <BurgerIngredients />
-          <BurgerConstructor />
-        </DndProvider>
-      </main>
-    </div>
+      <Switch>
+        <Route path={ROUTES.HOME} exact>
+          <HomePage />
+        </Route>
+        <Route path={ROUTES.FEED} exact>
+          <FeedPage />
+        </Route>
+        <Route path={ROUTES.LOGIN} exact>
+          <LoginPage />
+        </Route>
+        <Route path={ROUTES.REGISTER} exact>
+          <RegisterPage />
+        </Route>
+        <ProtectedRoute path={ROUTES.PROFILE} exact>
+          <ProfilePage />
+        </ProtectedRoute>
+        <ProtectedRoute path={ROUTES.ORDERS} exact>
+          <ProfilePage />
+        </ProtectedRoute>
+        <Route path={ROUTES.FORGOT_PASSWORD} exact>
+          <ForgotPasswordPage />
+        </Route>
+        <Route path={ROUTES.RESET_PASSWORD} exact>
+          <ResetPasswordPage />
+        </Route>
+        <Route path={ROUTES.INGREDIENT} exact>
+          <HomePage />
+        </Route>
+        <Route>
+          <NotFoundPage />
+        </Route>
+      </Switch>
+    </Router>
   );
 }
-
-export default App;
