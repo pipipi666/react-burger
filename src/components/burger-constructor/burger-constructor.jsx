@@ -4,29 +4,24 @@ import { useState, useEffect, useMemo } from 'react';
 import { useDrop } from "react-dnd";
 import { useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import {
-    getOrder,
-    getTotal,
-    addIngredientConstructor,
-    getIngredientsConstructor,
-    deleteIngredientConstructor
-} from 'services/actions/index.js';
 import { isAuth } from 'utils/utils';
 import Modal from 'components/modal/modal';
 import ConstructorElementWrapper from 'components/constructor-element/constructor-element-wrapper';
 import OrderDetails from 'components/order-details/order-details';
 import { ROUTES } from 'utils/constsRoute';
+import { addIngredient, deleteIngredient, fetchOrder, setIngredients, total } from 'services/slices/ingredientsSlice';
 
 export default function BurgerConstructor() {
 
     const dispatch = useDispatch();
-    const { constructorIngredients } = useSelector(state => state.constructorIngredients);
-    const { sum } = useSelector(state => state.total);
+    const { constructorIngredients } = useSelector(state => state.ingredients);
+    const { sum } = useSelector(state => state.ingredients);
     const auth = isAuth();
     const history = useHistory();
     const [isModalVisible, setModalVisible] = useState(false);
 
     const ingredients = useMemo(() =>
+        constructorIngredients &&
         constructorIngredients.filter(item => item.type !== "bun"
         ), [constructorIngredients]);
 
@@ -37,7 +32,7 @@ export default function BurgerConstructor() {
         ), [constructorIngredients]);
 
     useEffect(() => {
-        dispatch(getTotal(constructorIngredients));
+        dispatch(total(constructorIngredients));
     }, [constructorIngredients, dispatch]);
 
     const [{ isHover }, dropTarget] = useDrop({
@@ -49,7 +44,7 @@ export default function BurgerConstructor() {
             if (item.type === "bun" && bun) {
                 handleRemove(bun);
             }
-            dispatch(addIngredientConstructor(item));
+            dispatch(addIngredient(item));
         },
     });
 
@@ -57,17 +52,17 @@ export default function BurgerConstructor() {
         if (auth) {
             setModalVisible(true);
             const ingredients = constructorIngredients.map((item) => (item._id));
-            dispatch(getOrder(ingredients))
+            dispatch(fetchOrder(ingredients))
         }
         else history.push(ROUTES.LOGIN)
     }
 
     const handleClose = () => {
         setModalVisible(false);
-        dispatch(getIngredientsConstructor([]))
+        dispatch(setIngredients([]));
     }
 
-    const handleRemove = item => dispatch(deleteIngredientConstructor(item));
+    const handleRemove = item => dispatch(deleteIngredient(item));
 
     const targetClassName = `${style.container} ${isHover ? style.drop : ''}`;
 

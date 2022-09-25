@@ -2,12 +2,14 @@
     height: 88px;
     display: flex;
     background-color: #1C1C21;
+   overflow: auto;
+   min-width: 1280px;
 }
 
 .main {
     display: flex;
     margin: auto;
-    width: 1280px;
+    min-width: 1280px;
 }
 
 .left {
@@ -26,4 +28,8 @@
     display: flex;
     justify-content: center;
     width: calc(100% / 3);
+}
+
+@media only screen and (max-width: 767px) {
+
 }

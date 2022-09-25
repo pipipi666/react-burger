@@ -2,9 +2,10 @@ import { Input } from '@ya.praktikum/react-developer-burger-ui-components';
 import Registration from 'components/registration/registration';
 import { useHistory, Redirect } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { setResetPasswordFormValue, resetPassword } from 'services/actions/auth';
 import { ROUTES } from 'utils/constsRoute';
 import { isAuth } from 'utils/utils';
+import { fetchForgotPassword, forgotPasswordFormSet } from 'services/slices/authSlice';
+import { useState } from 'react';
 
 export default function ForgotPasswordPage() {
 
@@ -18,24 +19,28 @@ export default function ForgotPasswordPage() {
     const history = useHistory();
     const dispatch = useDispatch();
     const auth = isAuth();
-    const { email } = useSelector(state => state.resetPassword.form);
+    const [isEmptyEmail, setEmptyEmail] = useState(false);
+    const { email } = useSelector(state => state.auth.formForgotPassword);
 
     const onFormChange = (e) => {
-        dispatch(setResetPasswordFormValue(e.target.name, e.target.value))
+        dispatch(forgotPasswordFormSet([e.target.name, e.target.value]))
     }
 
     const handleFormSubmit = (e) => {
         e.preventDefault();
-        dispatch(resetPassword());
-        history.push({
-            pathname: ROUTES.RESET_PASSWORD,
-            state: { from: ROUTES.FORGOT_PASSWORD }
-        });
+        if (email) {
+            dispatch(fetchForgotPassword());
+            history.push({
+                pathname: ROUTES.RESET_PASSWORD,
+                state: { from: ROUTES.FORGOT_PASSWORD }
+            });
+        }
+        else setEmptyEmail(true)
     }
 
     if (auth) {
         return (
-            <Redirect to={{ pathname: ROUTES.HOME }} />
+            <Redirect to={ROUTES.HOME} />
         );
     }
 
@@ -52,6 +57,7 @@ export default function ForgotPasswordPage() {
                 onChange={onFormChange}
                 value={email}
                 name={'email'}
+                error={isEmptyEmail}
             />
         </Registration>
     )

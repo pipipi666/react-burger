@@ -10,6 +10,12 @@
     align-items: center;
 }
 
+.container p {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
 .main {
     display: flex;
     flex-direction: column;

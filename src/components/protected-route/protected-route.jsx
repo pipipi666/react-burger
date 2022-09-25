@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 
 export function ProtectedRoute({ children, ...rest }) {
 
-    let auth = isAuth();
+    const auth = isAuth();
 
     return (
         <Route

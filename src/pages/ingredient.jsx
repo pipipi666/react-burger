@@ -2,18 +2,18 @@ import style from './ingredient.module.css';
 import { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useParams } from "react-router-dom";
-import { getCurrentIngredient, getIngredients } from 'services/actions';
 import IngredientDetails from 'components/ingredient-details/ingredient-details';
+import { fetchIngredients, getCurrentIngredient } from 'services/slices/ingredientsSlice';
 
 export default function IngredientPage() {
 
     const dispatch = useDispatch();
     const { id } = useParams();
-    const { currentIngredient } = useSelector(state => state.currentIngredient);
+    const { currentIngredient } = useSelector(state => state.ingredients);
     const { ingredients } = useSelector(state => state.ingredients);
 
     useEffect(() => {
-        dispatch(getIngredients());
+        dispatch(fetchIngredients());
     }, [dispatch]);
 
     useEffect(() => {
@@ -24,8 +24,13 @@ export default function IngredientPage() {
     }, [dispatch, currentIngredient, ingredients, id]);
 
     return (
-        <main className={style.main}>
-            {currentIngredient && currentIngredient._id && <IngredientDetails />}
-        </main>
+        <>
+            <h1 className="text text_type_main-large mt-30">
+                Детали ингредиента
+            </h1>
+            <main className={style.main}>
+                {currentIngredient && currentIngredient._id && <IngredientDetails />}
+            </main>
+        </>
     )
 }

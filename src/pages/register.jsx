@@ -1,11 +1,11 @@
-import { Input, PasswordInput } from '@ya.praktikum/react-developer-burger-ui-components';
-import { useEffect, useState } from 'react';
+import { Input } from '@ya.praktikum/react-developer-burger-ui-components';
+import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Redirect } from 'react-router-dom';
-import { setRegFormValue, register } from 'services/actions/auth';
 import { isAuth } from 'utils/utils';
 import Registration from 'components/registration/registration';
 import { ROUTES } from 'utils/constsRoute';
+import { fetchRegister, registerFormSet } from 'services/slices/authSlice';
 
 export default function RegisterPage() {
 
@@ -21,35 +21,29 @@ export default function RegisterPage() {
     const [errorEmail, setErrorEmail] = useState(false);
     const [errorPassword, setErrorPassword] = useState(false);
     const auth = isAuth();
-    const { error } = useSelector(state => state.register);
-    const { registerFailed } = useSelector(state => state.register);
+    const { error } = useSelector(state => state.auth);
+    const { registerFailed } = useSelector(state => state.auth);
     const {
         name,
         email,
         password
-    } = useSelector(state => state.register.form);
-
-    useEffect(() => {
-        if (registerFailed) {
-            if (name === '') setErrorName(true);
-            if (email === '') setErrorEmail(true);
-            if (password === '') setErrorPassword(true);
-            else setErrorEmail(true);
-        }
-    }, [registerFailed, email, name, password]);
+    } = useSelector(state => state.auth.formRegister);
 
     const onFormChange = (e) => {
-        dispatch(setRegFormValue(e.target.name, e.target.value))
+        dispatch(registerFormSet([e.target.name, e.target.value]))
     }
 
     const handleFormSubmit = (e) => {
         e.preventDefault();
-        dispatch(register());
+        if (name && email && password) dispatch(fetchRegister());
+        setErrorName(!name);
+        setErrorEmail(!email);
+        setErrorPassword(!password);
     }
 
     if (auth) {
         return (
-            <Redirect to={{ pathname: ROUTES.HOME }} />
+            <Redirect to={ROUTES.HOME} />
         );
     }
 
@@ -68,7 +62,6 @@ export default function RegisterPage() {
                 value={name}
                 name={'name'}
                 error={errorName}
-                errorText={error}
             />
             <Input
                 type={'email'}
@@ -76,15 +69,16 @@ export default function RegisterPage() {
                 onChange={onFormChange}
                 value={email}
                 name={'email'}
-                error={errorEmail}
-                errorText={error}
+                error={errorEmail || registerFailed}
+                errorText={errorEmail ? "" : error}
             />
-            <PasswordInput
+            <Input
+                type={'password'}
+                placeholder={'Пароль'}
                 onChange={onFormChange}
                 value={password}
                 name={'password'}
                 error={errorPassword}
-                errorText={error}
             />
         </Registration>
     )

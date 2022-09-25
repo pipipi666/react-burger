@@ -1,4 +1,4 @@
-import style from './profile.module.css';
+import style from './profile.module.scss';
 import { useLocation } from 'react-router-dom';
 import UserInfo from 'components/user-info/user-info';
 import OrdersList from 'components/orders-list/orders-list';

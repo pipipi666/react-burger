@@ -17,7 +17,7 @@ export default function Registration({
         <div className={style.wrapper}>
             <div className={style.container}>
                 <form className={style.main} onSubmit={handleFormSubmit}>
-                    <h2 className="text text_type_main-medium">
+                    <h2 className="text text_type_main-medium mt-10">
                         {title}
                     </h2>
                     {children}

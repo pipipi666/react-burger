@@ -1,12 +1,11 @@
 import style from './style.module.css';
-import { BurgerIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import { NavLink } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
-export default function HeaderLink({ title, route }) {
+export default function HeaderLink({ title, route, children }) {
     return (
         <NavLink exact to={route} className={style.link} activeClassName={style.active} >
-            <BurgerIcon type="secondary" />
+            {children}
             <span className={"text text_type_main-default text_color_inactive"}>
                 {title}
             </span>

@@ -4,10 +4,10 @@ import style from './style.module.css';
 import Modal from 'components/modal/modal';
 import IngredientDetails from 'components/ingredient-details/ingredient-details';
 import { useSelector, useDispatch } from 'react-redux';
-import { getIngredients, getCurrentIngredient, deleteCurrentIngredient } from 'services/actions/index.js';
 import { useLocation, useHistory, useParams } from "react-router-dom";
 import { ROUTES } from 'utils/constsRoute';
 import IngredientsCategory from '../ingredients-category/ingredients-category';
+import { deleteCurrentIngredient, fetchIngredients, getCurrentIngredient } from 'services/slices/ingredientsSlice';
 
 export default function BurgerIngredients() {
 
@@ -21,7 +21,7 @@ export default function BurgerIngredients() {
         ingredientsRequest,
         ingredientsFailed
     } = useSelector(state => state.ingredients);
-    const { currentIngredient } = useSelector(state => state.currentIngredient);
+    const { currentIngredient } = useSelector(state => state.ingredients);
     const sauces = useMemo(() => ingredients.filter(item => item.type === "sauce"), [ingredients]);
     const filling = useMemo(() => ingredients.filter(item => item.type === "main"), [ingredients]);
     const buns = useMemo(() => ingredients.filter(item => item.type === "bun"), [ingredients]);
@@ -32,7 +32,7 @@ export default function BurgerIngredients() {
     const [isModalVisible, setModalVisible] = useState(location.pathname !== ROUTES.HOME);
 
     useEffect(() => {
-        ingredients.length === 0 && dispatch(getIngredients());
+        ingredients.length === 0 && dispatch(fetchIngredients());
     }, [dispatch, ingredients]);
 
     useEffect(() => {
@@ -70,12 +70,12 @@ export default function BurgerIngredients() {
     };
 
     const loading = (
-        <p className="text text_type_main-medium">
+        <p className="text text_type_main-medium mt-10">
             Загрузка...
         </p>);
 
     const fail = (
-        <p className="text text_type_main-medium">
+        <p className="text text_type_main-medium mt-10">
             Ошибка выполнения запроса
         </p>
     )

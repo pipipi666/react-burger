@@ -1,38 +1,50 @@
 import { Input, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { setProfileFormValue, getProfile, updateProfile } from 'services/actions/auth';
+import { fetchProfile, profileFormSet, updateProfile } from 'services/slices/authSlice';
 import style from './style.module.css';
 
 export default function UserInfo() {
 
     const dispatch = useDispatch();
     const [changed, setChanged] = useState(false);
-    const { getProfileRequest, getProfileFailed } = useSelector(state => state.profile);
+    const { getProfileRequest, getProfileFailed, setProfileRequest, setProfileFailed } = useSelector(state => state.auth);
+    const {
+        nameUser,
+        emailUser
+    } = useSelector(state => state.auth.user);
     const {
         name,
         email
-    } = useSelector(state => state.profile.form);
+    } = useSelector(state => state.auth.formProfile);
+    const [errorEmail, setErrorEmail] = useState(false);
+    const [errorName, setErrorName] = useState(false);
 
     useEffect(() => {
-        !email && dispatch(getProfile());
-    }, [dispatch, email]);
+        !nameUser && !emailUser && dispatch(fetchProfile());
+    }, [nameUser, emailUser, dispatch]);
+
+    useEffect(() => {
+        (email !== emailUser || name !== nameUser) ? setChanged(true) : setChanged(false);
+    }, [email, emailUser, name, nameUser]);
 
     const onFormChange = (e) => {
-        dispatch(setProfileFormValue(e.target.name, e.target.value));
-        setChanged(true);
+        dispatch(profileFormSet([e.target.name, e.target.value]));
     }
 
-    const handleClick = (e) => {
+    const handleSubmit = (e) => {
         e.preventDefault();
-        dispatch(updateProfile());
-        setChanged(true);
+        if (email && name) dispatch(updateProfile());
+        else {
+            setErrorName(!name);
+            setErrorEmail(!email);
+        }
     }
 
     const handleCancelClick = (e) => {
         e.preventDefault();
-        dispatch(getProfile());
-        setChanged(false);
+        dispatch(profileFormSet(['email', emailUser]));
+        dispatch(profileFormSet(['name', nameUser]));
     }
 
     const loading = (
@@ -48,7 +60,7 @@ export default function UserInfo() {
     );
 
     const success = (
-        <div className={style.content}>
+        <form className={style.content} onSubmit={handleSubmit}>
             <Input
                 type={'text'}
                 placeholder={'Имя'}
@@ -56,6 +68,7 @@ export default function UserInfo() {
                 value={name}
                 name={'name'}
                 icon='EditIcon'
+                error={errorName}
             />
             <Input
                 type={'email'}
@@ -64,6 +77,7 @@ export default function UserInfo() {
                 value={email}
                 name={'email'}
                 icon='EditIcon'
+                error={errorEmail}
             />
             <Input
                 type={'password'}
@@ -86,19 +100,18 @@ export default function UserInfo() {
                             htmlType="submit"
                             type='primary'
                             size='large'
-                            onClick={handleClick}
                         >
                             Сохранить
                         </Button>
                     </div>
                 )}
-        </div>
+        </form>
     )
 
     return (
         <div className={style.wrapper}>
-            {getProfileRequest ? loading
-                : getProfileFailed ? fail
+            {getProfileRequest || setProfileRequest ? loading
+                : getProfileFailed || setProfileFailed ? fail
                     : success}
         </div>
     );

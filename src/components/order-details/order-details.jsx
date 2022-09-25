@@ -4,12 +4,10 @@ import background from "image/graphics.svg";
 
 export default function OrderDetails() {
 
-    const { order, orderRequest, orderFailed } = useSelector(state => state.order);
+    const { order, orderRequest, orderFailed } = useSelector(state => state.ingredients);
 
     const loading = (
-        <p className="text text_type_main-medium">
-            Загрузка...
-        </p>
+        <div className={style.loader}>Loading...</div>
     );
 
     const fail = (

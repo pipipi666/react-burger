@@ -23,7 +23,7 @@ export default function Modal({ close, title, children }) {
             </ModalOverlay>
             <div className={style.modal} onClick={e => e.stopPropagation()}>
                 <header className={style.header}>
-                    <span className="text text_type_main-medium">
+                    <span className="text text_type_main-large">
                         {title}
                     </span>
                     <div onClick={() => close()}>

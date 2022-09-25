@@ -1,10 +1,11 @@
 import { Input } from '@ya.praktikum/react-developer-burger-ui-components';
 import { useDispatch, useSelector } from 'react-redux';
-import { useHistory, Redirect, useLocation } from 'react-router-dom';
-import { setSetPasswordFormValue, setPassword } from 'services/actions/auth';
+import { Redirect, useLocation } from 'react-router-dom';
 import Registration from 'components/registration/registration';
 import { isAuth } from 'utils/utils';
 import { ROUTES } from 'utils/constsRoute';
+import { fetchResetPassword, resetPasswordFormSet } from 'services/slices/authSlice';
+import { useState } from 'react';
 
 export default function ResetPasswordPage() {
 
@@ -17,29 +18,41 @@ export default function ResetPasswordPage() {
     ];
     const dispatch = useDispatch();
     const location = useLocation();
-    const history = useHistory();
     const auth = isAuth();
-    const { password, token } = useSelector(state => state.setPassword.form);
+    const [isEmptyPassword, setEmptyPassword] = useState(false);
+    const [isEmptyToken, setEmptyToken] = useState(false);
+    const { error, resetPasswordFailed } = useSelector(state => state.auth);
+    const { password, token } = useSelector(state => state.auth.formResetPassword);
+    const { resetPasswordSuccess } = useSelector(state => state.auth);
 
     const onFormChange = (e) => {
-        dispatch(setSetPasswordFormValue(e.target.name, e.target.value))
+        dispatch(resetPasswordFormSet([e.target.name, e.target.value]))
     }
 
     const handleFormSubmit = (e) => {
         e.preventDefault();
-        dispatch(setPassword());
-        history.push({ pathname: ROUTES.LOGIN });
+        if (password && token) dispatch(fetchResetPassword());
+        else {
+            setEmptyPassword(!password)
+            setEmptyToken(!token)
+        }
     }
 
     if (auth) {
         return (
-            <Redirect to={{ pathname: ROUTES.HOME }} />
+            <Redirect to={ROUTES.HOME} />
         );
     }
 
     if (location.state?.from !== ROUTES.FORGOT_PASSWORD) {
         return (
-            <Redirect to={{ pathname: ROUTES.FORGOT_PASSWORD }} />
+            <Redirect to={ROUTES.FORGOT_PASSWORD} />
+        );
+    }
+
+    if (resetPasswordSuccess) {
+        return (
+            <Redirect to={ROUTES.LOGIN} />
         );
     }
 
@@ -57,6 +70,7 @@ export default function ResetPasswordPage() {
                 onChange={onFormChange}
                 value={password}
                 name={'password'}
+                error={isEmptyPassword}
             />
             <Input
                 type={'text'}
@@ -64,6 +78,8 @@ export default function ResetPasswordPage() {
                 onChange={onFormChange}
                 value={token}
                 name={'token'}
+                error={isEmptyToken}
+                errorText={resetPasswordFailed ? error : ''}
             />
         </Registration>
     )

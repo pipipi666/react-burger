@@ -4,7 +4,7 @@ import { useMemo } from 'react';
 
 export default function IngredientDetails() {
 
-    const { currentIngredient } = useSelector(state => state.currentIngredient);
+    const { currentIngredient } = useSelector(state => state.ingredients);
     const stats = useMemo(() => [
         {
             name: 'Калории, ккал',

@@ -1,10 +1,11 @@
-import { Input, PasswordInput } from '@ya.praktikum/react-developer-burger-ui-components';
+import { Input } from '@ya.praktikum/react-developer-burger-ui-components';
 import { useDispatch, useSelector } from 'react-redux';
 import { Redirect, useLocation } from 'react-router-dom';
-import { setLoginFormValue, login } from 'services/actions/auth';
 import { isAuth } from 'utils/utils';
 import Registration from 'components/registration/registration';
+import { fetchLogin, loginFormSet } from 'services/slices/authSlice';
 import { ROUTES } from 'utils/constsRoute';
+import { useState } from 'react';
 
 export default function LoginPage() {
     const links = [
@@ -21,18 +22,24 @@ export default function LoginPage() {
     ];
     const dispatch = useDispatch();
     const location = useLocation();
-    const { error } = useSelector(state => state.user);
-    let auth = isAuth();
-    const { email, password } = useSelector(state => state.user.form);
+    const { error, loginFailed } = useSelector(state => state.auth);
+    const [errorEmail, setErrorEmail] = useState(false);
+    const [errorPassword, setErrorPassword] = useState(false);
+    const auth = isAuth();
+    const { email, password } = useSelector(state => state.auth.formLogin);
     const nextLocation = location.state?.from.pathname || ROUTES.HOME;
 
     const onFormChange = (e) => {
-        dispatch(setLoginFormValue(e.target.name, e.target.value))
+        dispatch(loginFormSet([e.target.name, e.target.value]));
     }
 
     const handleFormSubmit = (e) => {
         e.preventDefault();
-        dispatch(login());
+        if (email && password) dispatch(fetchLogin());
+        else {
+            setErrorPassword(!password);
+            setErrorEmail(!email);
+        }
     }
 
     if (auth) {
@@ -54,15 +61,16 @@ export default function LoginPage() {
                 onChange={onFormChange}
                 value={email}
                 name={'email'}
-                error={!!error}
-                errorText={error}
+                error={errorEmail || loginFailed}
             />
-            <PasswordInput
+            <Input
+                type={'password'}
+                placeholder={'Пароль'}
                 onChange={onFormChange}
                 value={password}
                 name={'password'}
-                error={!!error}
-                errorText={error}
+                error={errorPassword || loginFailed}
+                errorText={loginFailed ? error : ""}
             />
         </Registration>
     )

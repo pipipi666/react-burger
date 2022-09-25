@@ -1,8 +1,8 @@
 import { NavLink, useHistory, useLocation } from 'react-router-dom';
 import { ROUTES } from 'utils/constsRoute';
-import { logout } from 'services/actions/auth';
 import { useDispatch } from 'react-redux';
 import style from './style.module.css';
+import { fetchLogout } from 'services/slices/authSlice';
 
 export default function AsideNav() {
 
@@ -13,7 +13,7 @@ export default function AsideNav() {
     const classLinkActive = `text text_type_main-medium ${style.active}`;
 
     const handleLogOutClick = e => {
-        dispatch(logout());
+        dispatch(fetchLogout());
         history.replace(ROUTES.LOGIN);
     };
 

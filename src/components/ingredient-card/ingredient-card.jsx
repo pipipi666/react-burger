@@ -10,7 +10,7 @@ import { ROUTES } from '../../utils/constsRoute';
 
 export default function IngredientCard({ item, handleClick }) {
 
-    const { constructorIngredients } = useSelector(state => state.constructorIngredients);
+    const { constructorIngredients } = useSelector(state => state.ingredients);
 
     const counter = useMemo(() =>
         constructorIngredients &&
