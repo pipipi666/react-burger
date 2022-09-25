@@ -1,4 +1,4 @@
-import style from './style.module.css';
+import style from './style.module.scss';
 import IngredientCard from 'components/ingredient-card/ingredient-card';
 import PropTypes from 'prop-types';
 import { dataTypes } from 'utils/types';

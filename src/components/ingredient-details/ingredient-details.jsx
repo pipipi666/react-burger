@@ -1,4 +1,4 @@
-import style from './style.module.css';
+import style from './style.module.scss';
 import { useSelector } from 'react-redux';
 import { useMemo } from 'react';
 

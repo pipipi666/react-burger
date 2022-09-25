@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { checkReponse, getAccessToken } from "utils/utils";
+import { checkReponse, fetchWithRefresh, getAccessToken } from "utils/utils";
 import { API_URL_INGREDIENTS, API_URL_ORDERS } from "utils/constsAPI";
 
 export const fetchIngredients = createAsyncThunk(
@@ -10,15 +10,17 @@ export const fetchIngredients = createAsyncThunk(
 
 export const fetchOrder = createAsyncThunk(
     'ingredients/fetchOrder',
-    (ingredients) => fetch(API_URL_ORDERS, {
+    (ingredients, { dispatch, rejectWithValue }) => fetchWithRefresh(
+        API_URL_ORDERS, {
         method: "POST",
+        mode: 'cors',
+        credentials: 'same-origin',
         headers: {
             'Content-Type': 'application/json;charset=utf-8',
             Authorization: 'Bearer ' + getAccessToken()
         },
-        body: JSON.stringify({ ingredients }),
-    })
-        .then(res => checkReponse(res))
+        body: JSON.stringify({ ingredients })
+    }, dispatch, rejectWithValue)
 )
 
 const initialState = {

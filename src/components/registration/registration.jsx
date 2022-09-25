@@ -1,4 +1,4 @@
-import style from './style.module.css';
+import style from './style.module.scss';
 import { Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import { useHistory } from 'react-router-dom';
 import PropTypes from 'prop-types';

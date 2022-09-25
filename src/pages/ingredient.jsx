@@ -1,4 +1,4 @@
-import style from './ingredient.module.css';
+import style from './ingredient.module.scss';
 import { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useParams } from "react-router-dom";

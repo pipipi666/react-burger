@@ -1,4 +1,4 @@
-import style from './style.module.css';
+import style from './style.module.scss';
 import OrderCard from 'components/order-card/order-card';
 
 export default function OrdersList() {

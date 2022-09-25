@@ -8,16 +8,14 @@
     position: absolute;
     top: 10%;
     left: calc(50% - 360px);
-}
-
-.header {
-    height: 64px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-}
-
-.content {
-    width: 520px;
-    margin: 0 60px 20px;
+    .header {
+        height: 64px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+    .content {
+        width: 520px;
+        margin: 0 60px 20px;
+    }
 }

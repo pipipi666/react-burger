@@ -1,4 +1,4 @@
-import style from './not-found.module.css'
+import style from './not-found.module.scss'
 
 export default function NotFoundPage() {
 

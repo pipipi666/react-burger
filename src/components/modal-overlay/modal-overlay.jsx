@@ -1,4 +1,4 @@
-import style from './style.module.css';
+import style from './style.module.scss';
 import PropTypes from 'prop-types';
 
 export default function ModalOverlay({ close }) {

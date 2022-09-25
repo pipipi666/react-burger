@@ -1,5 +1,5 @@
 import { ConstructorElement, CurrencyIcon, Button } from '@ya.praktikum/react-developer-burger-ui-components';
-import style from './style.module.css';
+import style from './style.module.scss';
 import { useState, useEffect, useMemo } from 'react';
 import { useDrop } from "react-dnd";
 import { useHistory } from 'react-router-dom';

@@ -1,6 +1,6 @@
 import OrdersList from 'components/orders-list/orders-list';
 import FeedInfo from 'components/feed-info/feed-info';
-import style from './feed.module.css';
+import style from './feed.module.scss';
 
 export default function FeedPage() {
     return (

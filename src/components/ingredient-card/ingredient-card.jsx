@@ -1,4 +1,4 @@
-import style from './style.module.css';
+import style from './style.module.scss';
 import { Counter, CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import { Link } from "react-router-dom";
 import { useDrag } from 'react-dnd';

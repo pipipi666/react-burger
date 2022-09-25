@@ -1,4 +1,4 @@
-import style from './style.module.css';
+import style from './style.module.scss';
 import { DragIcon, ConstructorElement } from '@ya.praktikum/react-developer-burger-ui-components';
 import { useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';

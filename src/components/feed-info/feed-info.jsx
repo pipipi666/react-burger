@@ -1,4 +1,4 @@
-import style from './style.module.css';
+import style from './style.module.scss';
 
 export default function FeedInfo() {
     const done = [
@@ -10,7 +10,7 @@ export default function FeedInfo() {
     ]
 
     return (
-        <section className={style.wrapper}>
+        <section>
             <div className={style.lists}>
                 <div className={style.list}>
                     <p className="text text_type_main-medium">Готовы:</p>

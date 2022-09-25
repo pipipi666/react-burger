@@ -3,13 +3,11 @@
     gap: 60px;
     width: 1240px;
     margin: auto;
-}
-
-.info {
-    width: 860px;
-}
-
-.list {
-    margin-top: 44px;
-    height: calc(100vh - 132px);
+    .info {
+        width: 860px;
+        .list {
+            margin-top: 44px;
+            height: calc(100vh - 132px);
+        }
+    }
 }

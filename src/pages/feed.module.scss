@@ -1,0 +1,15 @@
+.wrapper {
+    width: 1240px;
+    margin: auto;
+    .main {
+        display: flex;
+        gap: 60px;
+        .list {
+            width: 600px;
+            height: calc(100vh - 188px);
+        }
+        .stats {
+            width: 580px;
+        }
+    }
+}

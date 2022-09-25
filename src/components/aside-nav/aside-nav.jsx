@@ -1,7 +1,7 @@
 import { NavLink, useHistory, useLocation } from 'react-router-dom';
 import { ROUTES } from 'utils/constsRoute';
 import { useDispatch } from 'react-redux';
-import style from './style.module.css';
+import style from './style.module.scss';
 import { fetchLogout } from 'services/slices/authSlice';
 
 export default function AsideNav() {

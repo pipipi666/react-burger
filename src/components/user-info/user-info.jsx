@@ -2,7 +2,7 @@ import { Input, Button } from '@ya.praktikum/react-developer-burger-ui-component
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchProfile, profileFormSet, updateProfile } from 'services/slices/authSlice';
-import style from './style.module.css';
+import style from './style.module.scss';
 
 export default function UserInfo() {
 

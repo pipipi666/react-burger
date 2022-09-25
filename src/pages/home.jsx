@@ -4,7 +4,7 @@ import { useLocation } from 'react-router-dom';
 import IngredientPage from "./ingredient";
 import BurgerConstructor from "components/burger-constructor/burger-constructor";
 import BurgerIngredients from "components/burger-ingredients/burger-ingredients";
-import style from './home.module.css';
+import style from './home.module.scss';
 import { ROUTES } from "utils/constsRoute";
 
 export default function HomePage() {
