@@ -1,0 +1,17 @@
+.wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    overflow:auto;
+    height: 100%;
+    width: 100%;
+    &::-webkit-scrollbar {
+        width: 8px;
+    }
+    &::-webkit-scrollbar-track {
+        background: #2F2F37;
+    }
+    &::-webkit-scrollbar-thumb {
+        background-color:#8585AD;
+    }
+}
