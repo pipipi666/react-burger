@@ -1,8 +1,14 @@
 import style from './style.module.scss';
 import { NavLink } from 'react-router-dom';
-import PropTypes from 'prop-types';
+import {FC, ReactNode} from 'react';
 
-export default function HeaderLink({ title, route, children }) {
+interface IProps {
+    title: string;
+    route: string;
+    children: ReactNode;
+}
+
+export const HeaderLink: FC<IProps> = ({ title, route, children }) => {
     return (
         <NavLink exact to={route} className={style.link} activeClassName={style.active} >
             {children}
@@ -12,8 +18,3 @@ export default function HeaderLink({ title, route, children }) {
         </NavLink>
     );
 }
-
-HeaderLink.propTypes = {
-    title: PropTypes.string.isRequired,
-    route: PropTypes.string.isRequired
-};

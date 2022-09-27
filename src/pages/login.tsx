@@ -2,10 +2,16 @@ import { Input } from '@ya.praktikum/react-developer-burger-ui-components';
 import { useDispatch, useSelector } from 'react-redux';
 import { Redirect, useLocation } from 'react-router-dom';
 import { isAuth } from 'utils/utils';
-import Registration from 'components/registration/registration';
+import { Registration } from 'components/registration/registration';
 import { fetchLogin, loginFormSet } from 'services/slices/authSlice';
 import { ROUTES } from 'utils/constsRoute';
-import { useState } from 'react';
+import { ChangeEvent, FormEvent, useState } from 'react';
+
+interface LocationState {
+    from: {
+        pathname: string;
+    }
+}
 
 export default function LoginPage() {
     const links = [
@@ -20,20 +26,20 @@ export default function LoginPage() {
             path: ROUTES.FORGOT_PASSWORD
         }
     ];
-    const dispatch = useDispatch();
-    const location = useLocation();
-    const { error, loginFailed } = useSelector(state => state.auth);
+    const dispatch = useDispatch<any>();
+    const location = useLocation<LocationState>();
+    const { error, loginFailed } = useSelector((state: any) => state.auth);
     const [errorEmail, setErrorEmail] = useState(false);
     const [errorPassword, setErrorPassword] = useState(false);
     const auth = isAuth();
-    const { email, password } = useSelector(state => state.auth.formLogin);
+    const { email, password } = useSelector((state: any) => state.auth.formLogin);
     const nextLocation = location.state?.from.pathname || ROUTES.HOME;
 
-    const onFormChange = (e) => {
+    const onFormChange = (e: ChangeEvent<HTMLInputElement>) => {
         dispatch(loginFormSet([e.target.name, e.target.value]));
     }
 
-    const handleFormSubmit = (e) => {
+    const handleFormSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         if (email && password) dispatch(fetchLogin());
         else {

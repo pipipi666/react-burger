@@ -1,4 +1,7 @@
 import PropTypes from 'prop-types';
+import { store } from 'services/store';
+
+export type AppDispatch = typeof store.dispatch;
 
 export const dataTypes = PropTypes.shape({
     _id: PropTypes.string.isRequired,
@@ -15,18 +18,20 @@ export const dataTypes = PropTypes.shape({
     __v: PropTypes.number.isRequired
 });
 
-// export interface IData {
-//     readonly _id: string;
-//     readonly name: string;
-//     readonly  type: 'bun' | 'sauce' | 'main';
-//     readonly proteins: number;
-//     readonly fat: number;
-//     readonly carbohydrates: number;
-//     readonly calories: number;
-//     readonly price: number;
-//     readonly image: string;
-//     readonly image_mobile: string;
-//     readonly image_large: string;
-//     readonly __v: number;
-// }
+export interface IData {
+    readonly _id: string;
+    readonly name: string;
+    readonly  type: 'bun' | 'sauce' | 'main';
+    readonly proteins: number;
+    readonly fat: number;
+    readonly carbohydrates: number;
+    readonly calories: number;
+    readonly price: number;
+    readonly image: string;
+    readonly image_mobile: string;
+    readonly image_large: string;
+    readonly __v: number;
+    dropId?: number;
+}
 
+//export type TDropData  = IData & {dropId: number};

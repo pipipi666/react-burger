@@ -1,8 +1,20 @@
 import { CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import style from './style.module.scss';
 import PropTypes from 'prop-types';
+import { FC } from 'react';
 
-export default function OrderCard({ order }) {
+interface IProps {
+    order: {
+        id: string;
+        time: string;
+        name: string;
+        status: string;
+        price: number;
+    };
+    key: string;
+}
+
+export const OrderCard: FC<IProps> = ({ order }) => {
 
     return (
         <div className={style.container}>
@@ -24,7 +36,7 @@ export default function OrderCard({ order }) {
                     <span className="text text_type_digits-default">
                         {order.price}
                     </span>
-                    <CurrencyIcon />
+                    <CurrencyIcon type='primary'/>
                 </span>
             </div>
         </div>

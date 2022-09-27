@@ -3,18 +3,22 @@ import { Counter, CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-c
 import { Link } from "react-router-dom";
 import { useDrag } from 'react-dnd';
 import { useSelector } from 'react-redux';
-import { useMemo } from 'react';
-import PropTypes from 'prop-types';
-import { dataTypes } from 'utils/types';
+import { FC, useMemo } from 'react';
+import { IData } from 'utils/types';
 import { ROUTES } from '../../utils/constsRoute';
 
-export default function IngredientCard({ item, handleClick }) {
+interface IProps {
+    item: IData;
+    handleClick: (currentId: string) => void;
+}
 
-    const { constructorIngredients } = useSelector(state => state.ingredients);
+export const IngredientCard: FC<IProps> = ({ item, handleClick }) => {
+
+    const { constructorIngredients } = useSelector((state: any) => state.ingredients);
 
     const counter = useMemo(() =>
         constructorIngredients &&
-        constructorIngredients.filter(it => it._id === item._id).length
+        constructorIngredients.filter((it: IData) => it._id === item._id).length
         , [constructorIngredients, item]);
 
     const [, dragRef] = useDrag({
@@ -48,7 +52,7 @@ export default function IngredientCard({ item, handleClick }) {
                     <span className='text text_type_digits-default'>
                         {item.price}
                     </span>
-                    <CurrencyIcon />
+                    <CurrencyIcon type='primary' />
                 </p>
                 <p className={'text text_type_main-default'}>
                     {item.name}
@@ -57,8 +61,3 @@ export default function IngredientCard({ item, handleClick }) {
         </div>
     );
 }
-
-IngredientCard.propTypes = {
-    handleClick: PropTypes.func.isRequired,
-    item: dataTypes.isRequired
-};

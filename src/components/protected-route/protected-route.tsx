@@ -2,8 +2,15 @@ import { Route, Redirect } from 'react-router-dom';
 import { isAuth } from 'utils/utils';
 import { ROUTES } from 'utils/constsRoute';
 import PropTypes from 'prop-types';
+import {FC, ReactNode} from 'react';
 
-export function ProtectedRoute({ children, ...rest }) {
+interface IProps {
+    children: ReactNode;
+    path?: string;
+    exact?: boolean;
+}
+
+export const ProtectedRoute: FC<IProps> = ({ children, ...rest }) => {
 
     const auth = isAuth();
 

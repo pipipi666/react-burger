@@ -1,34 +1,35 @@
-import { useMemo, useState, useEffect, useRef, useCallback } from 'react';
+import React, { useMemo, useState, useEffect, useRef, useCallback } from 'react';
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
 import style from './style.module.scss';
-import Modal from 'components/modal/modal';
+import { Modal } from 'components/modal/modal';
 import IngredientDetails from 'components/ingredient-details/ingredient-details';
 import { useSelector, useDispatch } from 'react-redux';
 import { useLocation, useHistory, useParams } from "react-router-dom";
 import { ROUTES } from 'utils/constsRoute';
-import IngredientsCategory from '../ingredients-category/ingredients-category';
+import { IngredientsCategory } from '../ingredients-category/ingredients-category';
 import { deleteCurrentIngredient, fetchIngredients, getCurrentIngredient } from 'services/slices/ingredientsSlice';
+import { IData } from 'utils/types';
 
 export default function BurgerIngredients() {
 
-    const dispatch = useDispatch();
+    const dispatch = useDispatch<any>();
     const location = useLocation();
     const history = useHistory();
-    const { id } = useParams();
+    const { id } = useParams<{ id: string }>();
     const [current, setCurrent] = useState('buns');
     const {
         ingredients,
         ingredientsRequest,
         ingredientsFailed
-    } = useSelector(state => state.ingredients);
-    const { currentIngredient } = useSelector(state => state.ingredients);
-    const sauces = useMemo(() => ingredients.filter(item => item.type === "sauce"), [ingredients]);
-    const filling = useMemo(() => ingredients.filter(item => item.type === "main"), [ingredients]);
-    const buns = useMemo(() => ingredients.filter(item => item.type === "bun"), [ingredients]);
-    const refBuns = useRef(null);
-    const refFilling = useRef(null);
-    const refSauces = useRef(null);
-    const refIngredients = useRef(null);
+    } = useSelector((state: any) => state.ingredients);
+    const { currentIngredient } = useSelector((state: any) => state.ingredients);
+    const sauces = useMemo(() => ingredients.filter((item: IData) => item.type === "sauce"), [ingredients]);
+    const filling = useMemo(() => ingredients.filter((item: IData) => item.type === "main"), [ingredients]);
+    const buns = useMemo(() => ingredients.filter((item: IData) => item.type === "bun"), [ingredients]);
+    const refBuns = useRef<HTMLDivElement>(null);
+    const refFilling = useRef<HTMLDivElement>(null);
+    const refSauces = useRef<HTMLDivElement>(null);
+    const refIngredients = useRef<HTMLDivElement>(null);
     const [isModalVisible, setModalVisible] = useState(location.pathname !== ROUTES.HOME);
 
     useEffect(() => {
@@ -37,22 +38,24 @@ export default function BurgerIngredients() {
 
     useEffect(() => {
         if (!currentIngredient?._id && ingredients.length > 0) {
-            const tmp = ingredients.find(item => item._id === id)
+            const tmp = ingredients.find((item: IData) => item._id === id)
             dispatch(getCurrentIngredient(tmp))
         }
     }, [dispatch, currentIngredient, ingredients, id]);
 
     const onScroll = () => {
-        const scrollIng = refIngredients.current.scrollTop;
-        const startSauces = refBuns.current.clientHeight / 2;
-        const startFilling = refBuns.current.clientHeight + refSauces.current.clientHeight / 2;
-        if (scrollIng < startSauces) setCurrent('buns')
-        else if (scrollIng > startSauces && scrollIng < startFilling) setCurrent('sauces');
-        else if (scrollIng > startFilling) setCurrent('filling');
+        const scrollIng = refIngredients.current?.scrollTop;
+        const startSauces = refBuns.current && refBuns.current?.clientHeight / 2;
+        const startFilling = refBuns.current && refSauces.current && refBuns.current?.clientHeight + refSauces.current.clientHeight / 2;
+        if (scrollIng && startSauces && startFilling) {
+            if (scrollIng < startSauces) setCurrent('buns')
+            else if (scrollIng > startSauces && scrollIng < startFilling) setCurrent('sauces');
+            else if (scrollIng > startFilling) setCurrent('filling');
+        }
     }
 
-    const handleClick = useCallback((currentId) => {
-        const id = ingredients.find(item => item._id === currentId)
+    const handleClick = useCallback((currentId: string) => {
+        const id = ingredients.find((item: IData) => item._id === currentId)
         dispatch(getCurrentIngredient(id))
         setModalVisible(true);
     }, [ingredients, dispatch]);
@@ -65,7 +68,7 @@ export default function BurgerIngredients() {
         });
     };
 
-    const handleScroll = (ref) => {
+    const handleScroll = (ref: HTMLDivElement) => {
         ref.scrollIntoView({ block: "start", behavior: "smooth" })
     };
 
@@ -86,7 +89,8 @@ export default function BurgerIngredients() {
                 Соберите бургер
             </h1>
             <div className={style.nav}>
-                <div onClick={() => { handleScroll(refBuns.current) }}>
+                <div onClick={() => { handleScroll(refBuns.current!) }}>
+                    {/* @ts-ignore */}
                     <Tab
                         value="buns"
                         active={current === 'buns'}
@@ -95,7 +99,8 @@ export default function BurgerIngredients() {
                         Булки
                     </Tab>
                 </div>
-                <div onClick={() => { handleScroll(refSauces.current) }}>
+                <div onClick={() => { handleScroll(refSauces.current!) }}>
+                    {/* @ts-ignore */}
                     <Tab
                         value="sauces"
                         active={current === 'sauces'}
@@ -104,7 +109,8 @@ export default function BurgerIngredients() {
                         Соусы
                     </Tab>
                 </div>
-                <div onClick={() => { handleScroll(refFilling.current) }}>
+                <div onClick={() => { handleScroll(refFilling.current!) }}>
+                    {/* @ts-ignore */}
                     <Tab
                         value="filling"
                         active={current === 'filling'}

@@ -1,15 +1,28 @@
 import style from './style.module.scss';
 import { Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import { useHistory } from 'react-router-dom';
-import PropTypes from 'prop-types';
+import { FC, FormEvent, ReactNode } from 'react';
 
-export default function Registration({
+interface ILink {
+    text: string;
+    button: string;
+    path: string;
+}
+
+interface IProps {
+    title: string;
+    buttonName: string;
+    links: Array<ILink>;
+    handleFormSubmit: (e: FormEvent<HTMLFormElement>) => void;
+    children: ReactNode;
+}
+
+export const Registration: FC<IProps> = ({
     title, buttonName, links, handleFormSubmit, children
-}) {
+}) => {
 
     const history = useHistory();
-
-    const handleClick = (path) => {
+    const handleClick = (path: string) => {
         history.push({ pathname: path });
     }
 
@@ -21,16 +34,18 @@ export default function Registration({
                         {title}
                     </h2>
                     {children}
+                    {/* @ts-ignore */}
                     <Button htmlType="submit" type='primary' size='large'>
                         {buttonName}
                     </Button>
                 </form>
-                {links.map((item, index) => (
+                {links.map((item, index: number) => (
                     <p
                         key={index}
                         className='text text_type_main-default text_color_inactive mb-4'
                     >
                         <span className='pr-2'>{item.text}</span>
+                        {/* @ts-ignore */}
                         <Button type="secondary" onClick={() => handleClick(item.path)}>
                             {item.button}
                         </Button>
@@ -40,15 +55,3 @@ export default function Registration({
         </div>
     );
 }
-
-Registration.propTypes = {
-    title: PropTypes.string.isRequired,
-    buttonName: PropTypes.string.isRequired,
-    links: PropTypes.arrayOf(PropTypes.shape({
-        text: PropTypes.string.isRequired,
-        button: PropTypes.string.isRequired,
-        path: PropTypes.string.isRequired,
-    }).isRequired).isRequired,
-    handleFormSubmit: PropTypes.func.isRequired,
-    children: PropTypes.any.isRequired,
-};

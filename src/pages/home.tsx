@@ -7,9 +7,13 @@ import BurgerIngredients from "components/burger-ingredients/burger-ingredients"
 import style from './home.module.scss';
 import { ROUTES } from "utils/constsRoute";
 
+interface LocationState {
+    from: string;
+}
+
 export default function HomePage() {
 
-    const location = useLocation();
+    const location = useLocation<LocationState>();
 
     if (location.pathname !== ROUTES.HOME && location.state?.from !== ROUTES.HOME) {
         return < IngredientPage />

@@ -1,16 +1,21 @@
-import { useEffect } from 'react';
+import React, { FC, ReactNode, useEffect } from 'react';
 import * as ReactDOM from 'react-dom';
 import style from './style.module.scss';
-import PropTypes from 'prop-types';
 import { CloseIcon } from '@ya.praktikum/react-developer-burger-ui-components';
-import ModalOverlay from 'components/modal-overlay/modal-overlay';
+import { ModalOverlay } from 'components/modal-overlay/modal-overlay';
 
-export default function Modal({ close, title, children }) {
+interface IProps {
+    close: () => void;
+    title: string;
+    children: ReactNode;
+}
 
-    const modalRoot = document.getElementById("react-modals");
+export const Modal: FC<IProps> = ({ close, title, children }) => {
+
+    const modalRoot = document.getElementById("react-modals")!;
 
     useEffect(() => {
-        const handleEsc = (e) => {
+        const handleEsc = (e: KeyboardEvent) => {
             e.key === "Escape" && close();
         }
         window.addEventListener('keydown', handleEsc)
@@ -19,15 +24,14 @@ export default function Modal({ close, title, children }) {
 
     return ReactDOM.createPortal(
         <>
-            <ModalOverlay close={close}>
-            </ModalOverlay>
+            <ModalOverlay close={close} />
             <div className={style.modal} onClick={e => e.stopPropagation()}>
                 <header className={style.header}>
                     <span className="text text_type_main-large">
                         {title}
                     </span>
                     <div onClick={() => close()}>
-                        <CloseIcon />
+                        <CloseIcon type='primary'/>
                     </div>
                 </header>
                 <div className={style.content}>
@@ -37,10 +41,4 @@ export default function Modal({ close, title, children }) {
         </>,
         modalRoot
     );
-};
-
-Modal.propTypes = {
-    title: PropTypes.string,
-    children: PropTypes.element.isRequired,
-    close: PropTypes.func.isRequired,
 };

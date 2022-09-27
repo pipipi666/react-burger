@@ -1,5 +1,5 @@
 import style from './style.module.scss';
-import OrderCard from 'components/order-card/order-card';
+import { OrderCard } from 'components/order-card/order-card';
 
 export default function OrdersList() {
 
@@ -43,7 +43,7 @@ export default function OrdersList() {
 
     return (
         <section className={style.wrapper}>
-            {orders.map((order) => <OrderCard order={order} key={order.id} />)}
+            {orders.map(order => <OrderCard order={order} key={order.id} />)}
         </section >
     );
 }

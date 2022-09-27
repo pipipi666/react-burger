@@ -1,25 +1,25 @@
 import style from './style.module.scss';
 import { DragIcon, ConstructorElement } from '@ya.praktikum/react-developer-burger-ui-components';
-import { useRef } from 'react';
+import React, { DragEvent, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useDrop, useDrag } from "react-dnd";
-import { dataTypes } from 'utils/types';
 import { deleteIngredient, setIngredients } from 'services/slices/ingredientsSlice';
+import { IData } from '../../utils/types';
+import { FC } from 'react';
 
-export default function ConstructorElementWrapper({ item }) {
+interface IProps {
+    item: IData;
+}
+
+export const ConstructorElementWrapper: FC<IProps> = ({ item }) => {
 
     const dispatch = useDispatch();
-    const { constructorIngredients } = useSelector(state => state.ingredients);
-    const ref = useRef(null);
+    const { constructorIngredients } = useSelector((state: any) => state.ingredients);
+    const ref = useRef<HTMLDivElement>(null);
 
     const [{ handlerId }, drop] = useDrop({
         accept: 'component',
-        collect(monitor) {
-            return {
-                handlerId: monitor.getHandlerId()
-            }
-        },
-        hover(dragItem, monitor) {
+        hover(dragItem: IProps, monitor) {
             if (!ref.current) {
                 return;
             }
@@ -31,20 +31,25 @@ export default function ConstructorElementWrapper({ item }) {
             const hoverBoundingRect = ref.current?.getBoundingClientRect();
             const hoverMiddleY = (hoverBoundingRect.bottom - hoverBoundingRect.top) / 2;
             const clientOffset = monitor.getClientOffset();
-            const hoverClientY = clientOffset.y - hoverBoundingRect.top;
-            if (dragIndex < hoverIndex && hoverClientY < hoverMiddleY) {
+            const hoverClientY = clientOffset!.y - hoverBoundingRect.top;
+            if (hoverIndex && dragIndex && dragIndex < hoverIndex && hoverClientY < hoverMiddleY) {
                 return;
             }
-            if (dragIndex > hoverIndex && hoverClientY > hoverMiddleY) {
+            if (hoverIndex && dragIndex && dragIndex > hoverIndex && hoverClientY > hoverMiddleY) {
                 return;
             }
-            const dragCard = constructorIngredients.find(card => card.dropId === dragIndex);
-            const hoverCard = constructorIngredients.find(card => card.dropId === hoverIndex);
-            const newCards = constructorIngredients.map(item =>
+            const dragCard = constructorIngredients.find((card: IData) => card.dropId === dragIndex);
+            const hoverCard = constructorIngredients.find((card: IData) => card.dropId === hoverIndex);
+            const newCards = constructorIngredients.map((item: IData) =>
                 item.dropId === dragCard.dropId ? hoverCard
                     : item.dropId === hoverCard.dropId ? dragCard
                         : item)
             dispatch(setIngredients(newCards))
+        },
+        collect(monitor) {
+            return {
+              handlerId: monitor.getHandlerId(),
+            };
         }
     });
 
@@ -58,8 +63,8 @@ export default function ConstructorElementWrapper({ item }) {
 
     const opacity = isDragging ? 0 : 1;
     drag(drop(ref));
-    const preventDefault = e => e.preventDefault();
-    const handleRemove = item => dispatch(deleteIngredient(item));
+    const preventDefault = (e: DragEvent<HTMLDivElement>) => e.preventDefault();
+    const handleRemove = (item: IData) => dispatch(deleteIngredient(item));
 
     return (
         <div
@@ -69,7 +74,7 @@ export default function ConstructorElementWrapper({ item }) {
             onDrop={preventDefault}
             data-handler-id={handlerId}
         >
-            <DragIcon />
+            <DragIcon type='primary'/>
             <ConstructorElement
                 text={item.name}
                 price={item.price}
@@ -79,7 +84,3 @@ export default function ConstructorElementWrapper({ item }) {
         </div>
     );
 }
-
-ConstructorElementWrapper.propTypes = {
-    item: dataTypes.isRequired
-};

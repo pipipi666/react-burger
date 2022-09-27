@@ -10,7 +10,7 @@ export const fetchIngredients = createAsyncThunk(
 
 export const fetchOrder = createAsyncThunk(
     'ingredients/fetchOrder',
-    (ingredients, { dispatch, rejectWithValue }) => fetchWithRefresh(
+    (ingredients, { rejectWithValue }) => fetchWithRefresh(
         API_URL_ORDERS, {
         method: "POST",
         mode: 'cors',
@@ -20,7 +20,7 @@ export const fetchOrder = createAsyncThunk(
             Authorization: 'Bearer ' + getAccessToken()
         },
         body: JSON.stringify({ ingredients })
-    }, dispatch, rejectWithValue)
+    }, rejectWithValue)
 )
 
 const initialState = {

@@ -6,13 +6,13 @@ import { fetchLogout } from 'services/slices/authSlice';
 
 export default function AsideNav() {
 
-    const dispatch = useDispatch();
+    const dispatch = useDispatch<any>();
     const history = useHistory();
     const location = useLocation();
     const classLink = `text text_type_main-medium text_color_inactive ${style.link}`;
     const classLinkActive = `text text_type_main-medium ${style.active}`;
 
-    const handleLogOutClick = e => {
+    const handleLogOutClick = () => {
         dispatch(fetchLogout());
         history.replace(ROUTES.LOGIN);
     };

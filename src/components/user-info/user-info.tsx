@@ -1,22 +1,22 @@
 import { Input, Button } from '@ya.praktikum/react-developer-burger-ui-components';
-import { useEffect, useState } from 'react';
+import React, { ChangeEvent, FormEvent, SyntheticEvent, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchProfile, profileFormSet, updateProfile } from 'services/slices/authSlice';
 import style from './style.module.scss';
 
 export default function UserInfo() {
 
-    const dispatch = useDispatch();
+    const dispatch = useDispatch<any>();
     const [changed, setChanged] = useState(false);
-    const { getProfileRequest, getProfileFailed, setProfileRequest, setProfileFailed } = useSelector(state => state.auth);
+    const { getProfileRequest, getProfileFailed, setProfileRequest, setProfileFailed } = useSelector((state: any) => state.auth);
     const {
         nameUser,
         emailUser
-    } = useSelector(state => state.auth.user);
+    } = useSelector((state: any) => state.auth.user);
     const {
         name,
         email
-    } = useSelector(state => state.auth.formProfile);
+    } = useSelector((state: any) => state.auth.formProfile);
     const [errorEmail, setErrorEmail] = useState(false);
     const [errorName, setErrorName] = useState(false);
 
@@ -28,11 +28,11 @@ export default function UserInfo() {
         (email !== emailUser || name !== nameUser) ? setChanged(true) : setChanged(false);
     }, [email, emailUser, name, nameUser]);
 
-    const onFormChange = (e) => {
+    const onFormChange = (e: ChangeEvent<HTMLInputElement>) => {
         dispatch(profileFormSet([e.target.name, e.target.value]));
     }
 
-    const handleSubmit = (e) => {
+    const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         if (email && name) dispatch(updateProfile());
         else {
@@ -41,7 +41,7 @@ export default function UserInfo() {
         }
     }
 
-    const handleCancelClick = (e) => {
+    const handleCancelClick = (e: SyntheticEvent<Element, Event>) => {
         e.preventDefault();
         dispatch(profileFormSet(['email', emailUser]));
         dispatch(profileFormSet(['name', nameUser]));
@@ -90,12 +90,14 @@ export default function UserInfo() {
             {
                 changed && (
                     <div className={style.btns}>
+                        {/* @ts-ignore */}
                         <Button
                             type="secondary"
                             onClick={handleCancelClick}
                         >
                             Отмена
                         </Button>
+                        {/* @ts-ignore */}
                         <Button
                             htmlType="submit"
                             type='primary'

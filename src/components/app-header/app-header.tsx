@@ -1,7 +1,7 @@
 import style from './style.module.scss';
 import { BurgerIcon, ListIcon, Logo, ProfileIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import { Link } from 'react-router-dom';
-import HeaderLink from 'components/header-link/header-link';
+import {HeaderLink} from 'components/header-link/header-link';
 import { ROUTES } from 'utils/constsRoute';
 
 export default function Header() {
@@ -17,7 +17,7 @@ export default function Header() {
                     </HeaderLink>
                 </div>
                 <Link to={ROUTES.HOME} className={style.center}>
-                    <Logo className={style.logo} />
+                    <Logo/>
                 </Link>
                 <div className={style.right}>
                     <HeaderLink title="Личный кабинет" route={ROUTES.PROFILE}>

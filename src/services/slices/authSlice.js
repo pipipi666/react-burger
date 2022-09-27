@@ -57,7 +57,7 @@ export const fetchLogout = createAsyncThunk(
 
 export const fetchProfile = createAsyncThunk(
     'auth/fetchProfile',
-    (_, { dispatch, rejectWithValue }) => fetchWithRefresh(
+    (_, { rejectWithValue }) => fetchWithRefresh(
         API_URL_USER,
         {
             mode: 'cors',
@@ -67,12 +67,12 @@ export const fetchProfile = createAsyncThunk(
                 Authorization: 'Bearer ' + getAccessToken()
             }
         },
-        dispatch, rejectWithValue)
+        rejectWithValue)
 );
 
 export const updateProfile = createAsyncThunk(
     'auth/updateProfile',
-    (_, { getState, dispatch, rejectWithValue }) => fetchWithRefresh(
+    (_, { getState, rejectWithValue }) => fetchWithRefresh(
         API_URL_USER,
         {
             method: 'PATCH',
@@ -83,7 +83,7 @@ export const updateProfile = createAsyncThunk(
                 Authorization: 'Bearer ' + getAccessToken()
             },
             body: JSON.stringify({ ...getState().auth.formProfile })
-        }, dispatch, rejectWithValue)
+        }, rejectWithValue)
 );
 
 const initialState = {

@@ -4,7 +4,7 @@ import background from "image/graphics.svg";
 
 export default function OrderDetails() {
 
-    const { order, orderRequest, orderFailed } = useSelector(state => state.ingredients);
+    const { order, orderRequest, orderFailed } = useSelector((state: any) => state.ingredients);
 
     const loading = (
         <div className={style.loader}>Loading...</div>

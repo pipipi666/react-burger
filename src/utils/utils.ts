@@ -1,14 +1,39 @@
 import { API_URL_TOKEN } from "./constsAPI";
 
-export const checkReponse = (res) => {
-    return res.ok ? res.json() : res.json().then((err) => Promise.reject(err));
-};
-
-export const setForm = (state, action, form) => {
-    state[form][action.payload[0]] = action.payload[1];
+interface ILogin {
+    accessToken: string;
+    refreshToken: string;
+    user: {
+        email: string;
+        name: string
+    };
+    success: boolean;
 }
 
-export const getToken = (res) => {
+interface IForm {
+    [name: string]: string;
+}
+
+interface IOptions {
+    method?: 'POST' | 'PATCH';
+    mode: 'cors';
+    credentials: 'same-origin';
+    headers: {
+        'Content-Type': 'application/json';
+        Authorization?: string;
+    },
+    body?: BodyInit;
+}
+
+export const checkReponse = (res: Response) => {
+    return res.ok ? res.json() : res.json().then((err: Error) => Promise.reject(err));
+};
+
+export const setForm = (state: any, action: any, form: string) => {
+    state[form][action.payload[0]] = action.payload[1];
+};
+
+export const getToken = (res: ILogin) => {
     if (res.accessToken && res.refreshToken) {
         const token = res.accessToken.split('Bearer ')[1];
         if (token) {
@@ -18,7 +43,7 @@ export const getToken = (res) => {
     }
 };
 
-export const fetchForm = (URL, form, rejectWithValue) =>
+export const fetchForm = (URL: string, form: IForm, rejectWithValue: any) =>
     fetch(URL, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -36,11 +61,11 @@ const fetchRefresh = () =>
     })
         .then(res => checkReponse(res))
 
-export const fetchWithRefresh = async (URL, options, dispatch, rejectWithValue) => {
+export const fetchWithRefresh = async (URL: string, options: IOptions, rejectWithValue: any) => {
     try {
         const res = await fetch(URL, options);
         return await checkReponse(res);
-    } catch (err) {
+    } catch (err: any) {
         if (err.message === "jwt expired") {
             const refresh = await fetchRefresh();
             getToken(refresh);

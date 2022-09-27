@@ -1,11 +1,11 @@
 import { Input } from '@ya.praktikum/react-developer-burger-ui-components';
-import Registration from 'components/registration/registration';
+import { Registration } from 'components/registration/registration';
 import { useHistory, Redirect } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { ROUTES } from 'utils/constsRoute';
 import { isAuth } from 'utils/utils';
 import { fetchForgotPassword, forgotPasswordFormSet } from 'services/slices/authSlice';
-import { useState } from 'react';
+import React, { ChangeEvent, FormEvent, useState } from 'react';
 
 export default function ForgotPasswordPage() {
 
@@ -17,16 +17,16 @@ export default function ForgotPasswordPage() {
         }
     ];
     const history = useHistory();
-    const dispatch = useDispatch();
+    const dispatch = useDispatch<any>();
     const auth = isAuth();
     const [isEmptyEmail, setEmptyEmail] = useState(false);
-    const { email } = useSelector(state => state.auth.formForgotPassword);
+    const { email } = useSelector((state: any) => state.auth.formForgotPassword);
 
-    const onFormChange = (e) => {
+    const onFormChange = (e: ChangeEvent<HTMLInputElement>) => {
         dispatch(forgotPasswordFormSet([e.target.name, e.target.value]))
     }
 
-    const handleFormSubmit = (e) => {
+    const handleFormSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         if (email) {
             dispatch(fetchForgotPassword());
