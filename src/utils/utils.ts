@@ -1,29 +1,5 @@
+import { ILogin, IForm, IOptions } from './types';
 import { API_URL_TOKEN } from "./constsAPI";
-
-interface ILogin {
-    accessToken: string;
-    refreshToken: string;
-    user: {
-        email: string;
-        name: string
-    };
-    success: boolean;
-}
-
-interface IForm {
-    [name: string]: string;
-}
-
-interface IOptions {
-    method?: 'POST' | 'PATCH';
-    mode: 'cors';
-    credentials: 'same-origin';
-    headers: {
-        'Content-Type': 'application/json';
-        Authorization?: string;
-    },
-    body?: BodyInit;
-}
 
 export const checkReponse = (res: Response) => {
     return res.ok ? res.json() : res.json().then((err: Error) => Promise.reject(err));
