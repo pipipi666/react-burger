@@ -6,6 +6,7 @@ import { useDrop, useDrag } from "react-dnd";
 import { deleteIngredient, setIngredients } from 'services/slices/ingredientsSlice';
 import { IData } from '../../utils/types';
 import { FC } from 'react';
+import { AppDispatch } from 'services/store';
 
 interface IProps {
     item: IData;
@@ -13,7 +14,7 @@ interface IProps {
 
 export const ConstructorElementWrapper: FC<IProps> = ({ item }) => {
 
-    const dispatch = useDispatch();
+    const dispatch = useDispatch<AppDispatch>();
     const { constructorIngredients } = useSelector((state: any) => state.ingredients);
     const ref = useRef<HTMLDivElement>(null);
 

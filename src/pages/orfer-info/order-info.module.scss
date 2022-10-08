@@ -1,0 +1,16 @@
+.container {
+    margin: 120px auto;
+    width: 640px;
+    .title {
+        text-align: center;
+    }
+    .total {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 40px;
+        .price {
+            display: flex;
+            gap: 9px;
+        }
+    }
+}

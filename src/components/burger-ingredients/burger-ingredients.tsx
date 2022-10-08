@@ -9,10 +9,12 @@ import { ROUTES } from 'utils/constsRoute';
 import { IngredientsCategory } from '../ingredients-category/ingredients-category';
 import { deleteCurrentIngredient, fetchIngredients, getCurrentIngredient } from 'services/slices/ingredientsSlice';
 import { IData } from 'utils/types';
+import { RootState } from 'services/store';
+import { useAppDispatch, useAppSelector } from 'utils/hooks';
 
 export default function BurgerIngredients() {
 
-    const dispatch = useDispatch<any>();
+    const dispatch = useAppDispatch();
     const location = useLocation();
     const history = useHistory();
     const { id } = useParams<{ id: string }>();
@@ -21,8 +23,8 @@ export default function BurgerIngredients() {
         ingredients,
         ingredientsRequest,
         ingredientsFailed
-    } = useSelector((state: any) => state.ingredients);
-    const { currentIngredient } = useSelector((state: any) => state.ingredients);
+    } = useAppSelector((state: RootState) => state.ingredients);
+    const { currentIngredient } = useAppSelector((state) => state.ingredients);
     const sauces = useMemo(() => ingredients.filter((item: IData) => item.type === "sauce"), [ingredients]);
     const filling = useMemo(() => ingredients.filter((item: IData) => item.type === "main"), [ingredients]);
     const buns = useMemo(() => ingredients.filter((item: IData) => item.type === "bun"), [ingredients]);
@@ -37,7 +39,7 @@ export default function BurgerIngredients() {
     }, [dispatch, ingredients]);
 
     useEffect(() => {
-        if (!currentIngredient?._id && ingredients.length > 0) {
+        if (!currentIngredient && ingredients.length > 0) {
             const tmp = ingredients.find((item: IData) => item._id === id)
             dispatch(getCurrentIngredient(tmp))
         }

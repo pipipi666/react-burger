@@ -6,6 +6,7 @@ import { isAuth } from 'utils/utils';
 import { Registration } from 'components/registration/registration';
 import { ROUTES } from 'utils/constsRoute';
 import { fetchRegister, registerFormSet } from 'services/slices/authSlice';
+import { RootState } from 'services/store';
 
 export default function RegisterPage() {
 
@@ -21,13 +22,13 @@ export default function RegisterPage() {
     const [errorEmail, setErrorEmail] = useState(false);
     const [errorPassword, setErrorPassword] = useState(false);
     const auth = isAuth();
-    const { error } = useSelector((state: any) => state.auth);
-    const { registerFailed } = useSelector((state: any) => state.auth);
+    const { error } = useSelector((state: RootState) => state.auth);
+    const { registerFailed } = useSelector((state: RootState) => state.auth);
     const {
         name,
         email,
         password
-    } = useSelector((state: any) => state.auth.formRegister);
+    } = useSelector((state: RootState) => state.auth.formRegister);
 
     const onFormChange = (e: ChangeEvent<HTMLInputElement>) => {
         dispatch(registerFormSet([e.target.name, e.target.value]))

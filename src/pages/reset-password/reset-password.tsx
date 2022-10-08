@@ -6,6 +6,7 @@ import { isAuth } from 'utils/utils';
 import { ROUTES } from 'utils/constsRoute';
 import { fetchResetPassword, resetPasswordFormSet } from 'services/slices/authSlice';
 import { ChangeEvent, FormEvent, useState } from 'react';
+import { RootState } from 'services/store';
 
 interface LocationState {
     from: string;
@@ -26,9 +27,9 @@ export default function ResetPasswordPage() {
     const auth = isAuth();
     const [isEmptyPassword, setEmptyPassword] = useState(false);
     const [isEmptyToken, setEmptyToken] = useState(false);
-    const { error, resetPasswordFailed } = useSelector((state: any) => state.auth);
-    const { password, token } = useSelector((state: any) => state.auth.formResetPassword);
-    const { resetPasswordSuccess } = useSelector((state: any) => state.auth);
+    const { error, resetPasswordFailed } = useSelector((state: RootState) => state.auth);
+    const { password, token } = useSelector((state: RootState) => state.auth.formResetPassword);
+    const { resetPasswordSuccess } = useSelector((state: RootState) => state.auth);
 
     const onFormChange = (e:  ChangeEvent<HTMLInputElement>) => {
         dispatch(resetPasswordFormSet([e.target.name, e.target.value]))

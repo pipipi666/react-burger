@@ -1,6 +1,17 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 import { checkReponse, fetchWithRefresh, getAccessToken } from "utils/utils";
 import { API_URL_INGREDIENTS, API_URL_ORDERS } from "utils/constsAPI";
+import { IData } from "utils/types";
+import { AppDispatch, RootState } from "services/store";
+
+export type TIngredientsActions = ReturnType<typeof fetchIngredients> |
+    ReturnType<typeof fetchOrder> |
+    ReturnType<typeof addIngredient> |
+    ReturnType<typeof deleteIngredient> |
+    ReturnType<typeof getCurrentIngredient> |
+    ReturnType<typeof deleteCurrentIngredient> |
+    ReturnType<typeof setIngredients> |
+    ReturnType<typeof total>
 
 export const fetchIngredients = createAsyncThunk(
     'ingredients/fetchIngredients',
@@ -16,14 +27,31 @@ export const fetchOrder = createAsyncThunk(
         mode: 'cors',
         credentials: 'same-origin',
         headers: {
-            'Content-Type': 'application/json;charset=utf-8',
+            'Content-Type': 'application/json',
             Authorization: 'Bearer ' + getAccessToken()
         },
         body: JSON.stringify({ ingredients })
     }, rejectWithValue)
 )
 
-const initialState = {
+type TOrder = {
+    number: string
+}
+
+type TIngredientsState = {
+    ingredientsRequest: boolean,
+    ingredientsFailed: boolean,
+    ingredients: Array<IData>,
+    constructorIngredients: Array<IData>,
+    lastIndexConstructor: number,
+    currentIngredient: IData | {},
+    orderRequest: boolean,
+    orderFailed: boolean,
+    order: TOrder | {},
+    sum: number,
+}
+
+const initialState: TIngredientsState = {
     ingredientsRequest: false,
     ingredientsFailed: false,
     ingredients: [],
@@ -72,33 +100,34 @@ const ingredientsSlice = createSlice({
             state.sum = res
         }
     },
-    extraReducers: {
-        [fetchIngredients.pending]: (state) => {
-            state.ingredientsRequest = true
-            state.ingredientsFailed = false
-        },
-        [fetchIngredients.fulfilled]: (state, action) => {
-            state.ingredientsRequest = false
-            state.ingredientsFailed = false
-            state.ingredients = action.payload.data
-        },
-        [fetchIngredients.rejected]: (state) => {
-            state.ingredientsRequest = false
-            state.ingredientsFailed = true
-        },
-        [fetchOrder.pending]: (state) => {
-            state.orderRequest = true
-            state.orderFailed = false
-        },
-        [fetchOrder.fulfilled]: (state, action) => {
-            state.orderRequest = false
-            state.orderFailed = false
-            state.order = action.payload.order
-        },
-        [fetchOrder.rejected]: (state) => {
-            state.orderRequest = false
-            state.orderFailed = true
-        },
+    extraReducers: (builder) => {
+        builder
+            .addCase(fetchIngredients.pending, (state) => {
+                state.ingredientsRequest = true
+                state.ingredientsFailed = false
+            })
+            .addCase(fetchIngredients.fulfilled, (state, action: PayloadAction<any>) => {
+                state.ingredientsRequest = false
+                state.ingredientsFailed = false
+                state.ingredients = action.payload.data
+            })
+            .addCase(fetchIngredients.rejected, (state) => {
+                state.ingredientsRequest = false
+                state.ingredientsFailed = true
+            })
+            .addCase(fetchOrder.pending, (state) => {
+                state.orderRequest = true
+                state.orderFailed = false
+            })
+            .addCase(fetchOrder.fulfilled, (state, action) => {
+                state.orderRequest = false
+                state.orderFailed = false
+                state.order = action.payload.order
+            })
+            .addCase(fetchOrder.rejected, (state) => {
+                state.orderRequest = false
+                state.orderFailed = true
+            })
     }
 })
 

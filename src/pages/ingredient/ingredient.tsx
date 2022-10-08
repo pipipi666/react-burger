@@ -5,13 +5,14 @@ import { useParams } from "react-router-dom";
 import IngredientDetails from 'components/ingredient-details/ingredient-details';
 import { fetchIngredients, getCurrentIngredient } from 'services/slices/ingredientsSlice';
 import { IData } from 'utils/types';
+import { RootState } from 'services/store';
 
 export default function IngredientPage() {
 
     const dispatch = useDispatch<any>();
     const { id } = useParams<{ id: string }>();
     const { currentIngredient } = useSelector((state: any) => state.ingredients);
-    const { ingredients } = useSelector((state: any) => state.ingredients);
+    const { ingredients } = useSelector((state: RootState) => state.ingredients);
 
     useEffect(() => {
         dispatch(fetchIngredients());

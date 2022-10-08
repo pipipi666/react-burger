@@ -24,6 +24,16 @@ export interface ILogin {
     success: boolean;
 }
 
+export interface IProfile {
+    accessToken: string;
+    refreshToken: string;
+    user: {
+        emailUser: string;
+        nameUser: string
+    };
+    success: boolean;
+}
+
 export interface IForm {
     [name: string]: string;
 }

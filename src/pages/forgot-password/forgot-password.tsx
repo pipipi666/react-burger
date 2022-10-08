@@ -6,6 +6,7 @@ import { ROUTES } from 'utils/constsRoute';
 import { isAuth } from 'utils/utils';
 import { fetchForgotPassword, forgotPasswordFormSet } from 'services/slices/authSlice';
 import React, { ChangeEvent, FormEvent, useState } from 'react';
+import { RootState } from 'services/store';
 
 export default function ForgotPasswordPage() {
 
@@ -20,7 +21,7 @@ export default function ForgotPasswordPage() {
     const dispatch = useDispatch<any>();
     const auth = isAuth();
     const [isEmptyEmail, setEmptyEmail] = useState(false);
-    const { email } = useSelector((state: any) => state.auth.formForgotPassword);
+    const { email } = useSelector((state: RootState) => state.auth.formForgotPassword);
 
     const onFormChange = (e: ChangeEvent<HTMLInputElement>) => {
         dispatch(forgotPasswordFormSet([e.target.name, e.target.value]))

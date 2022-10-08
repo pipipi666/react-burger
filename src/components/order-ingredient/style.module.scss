@@ -1,0 +1,17 @@
+.container {
+    display: flex;
+    gap: 16px;
+    width: 100%;
+    align-items: center;
+    .img {
+        height: 64px;
+        width: 64px;
+    }
+    .name {
+        flex: 1;
+    }
+    .price {
+        display: flex;
+        gap: 9px;
+    }
+}

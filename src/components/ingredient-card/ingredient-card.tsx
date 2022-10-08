@@ -6,6 +6,7 @@ import { useSelector } from 'react-redux';
 import { FC, useMemo } from 'react';
 import { IData } from 'utils/types';
 import { ROUTES } from '../../utils/constsRoute';
+import { RootState } from 'services/store';
 
 interface IProps {
     item: IData;
@@ -14,7 +15,7 @@ interface IProps {
 
 export const IngredientCard: FC<IProps> = ({ item, handleClick }) => {
 
-    const { constructorIngredients } = useSelector((state: any) => state.ingredients);
+    const { constructorIngredients } = useSelector((state: RootState) => state.ingredients);
 
     const counter = useMemo(() =>
         constructorIngredients &&

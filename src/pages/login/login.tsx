@@ -6,6 +6,7 @@ import { Registration } from 'components/registration/registration';
 import { fetchLogin, loginFormSet } from 'services/slices/authSlice';
 import { ROUTES } from 'utils/constsRoute';
 import { ChangeEvent, FormEvent, useState } from 'react';
+import { RootState } from 'services/store';
 
 interface LocationState {
     from: {
@@ -28,11 +29,11 @@ export default function LoginPage() {
     ];
     const dispatch = useDispatch<any>();
     const location = useLocation<LocationState>();
-    const { error, loginFailed } = useSelector((state: any) => state.auth);
+    const { error, loginFailed } = useSelector((state: RootState) => state.auth);
     const [errorEmail, setErrorEmail] = useState(false);
     const [errorPassword, setErrorPassword] = useState(false);
     const auth = isAuth();
-    const { email, password } = useSelector((state: any) => state.auth.formLogin);
+    const { email, password } = useSelector((state: RootState) => state.auth.formLogin);
     const nextLocation = location.state?.from.pathname || ROUTES.HOME;
 
     const onFormChange = (e: ChangeEvent<HTMLInputElement>) => {

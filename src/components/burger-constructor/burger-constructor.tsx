@@ -11,12 +11,13 @@ import OrderDetails from 'components/order-details/order-details';
 import { ROUTES } from 'utils/constsRoute';
 import { addIngredient, deleteIngredient, fetchOrder, setIngredients, total } from 'services/slices/ingredientsSlice';
 import { IData } from 'utils/types';
+import { AppDispatch, RootState } from 'services/store';
 
 export default function BurgerConstructor() {
 
-    const dispatch = useDispatch<any>();
+    const dispatch = useDispatch<AppDispatch>();
     const { constructorIngredients } = useSelector((state: any) => state.ingredients);
-    const { sum } = useSelector((state: any) => state.ingredients);
+    const { sum } = useSelector((state: RootState) => state.ingredients);
     const auth = isAuth();
     const history = useHistory();
     const [isModalVisible, setModalVisible] = useState(false);
