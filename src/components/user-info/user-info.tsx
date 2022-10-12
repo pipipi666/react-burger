@@ -1,23 +1,22 @@
 import { Input, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import React, { ChangeEvent, FormEvent, SyntheticEvent, useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 import { fetchProfile, profileFormSet, updateProfile } from 'services/slices/authSlice';
-import { RootState } from 'services/store';
+import { useAppDispatch, useAppSelector } from 'utils/hooks';
 import style from './style.module.scss';
 
 export default function UserInfo() {
 
-    const dispatch = useDispatch<any>();
+    const dispatch = useAppDispatch();
     const [changed, setChanged] = useState(false);
-    const { getProfileRequest, getProfileFailed, setProfileRequest, setProfileFailed } = useSelector((state: RootState) => state.auth);
+    const { getProfileRequest, getProfileFailed, setProfileRequest, setProfileFailed } = useAppSelector(state => state.auth);
     const {
         nameUser,
         emailUser
-    } = useSelector((state: RootState) => state.auth.user);
+    } = useAppSelector(state => state.auth.user);
     const {
         name,
         email
-    } = useSelector((state: RootState) => state.auth.formProfile);
+    } = useAppSelector(state => state.auth.formProfile);
     const [errorEmail, setErrorEmail] = useState(false);
     const [errorName, setErrorName] = useState(false);
 

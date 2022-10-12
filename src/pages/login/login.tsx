@@ -1,12 +1,11 @@
 import { Input } from '@ya.praktikum/react-developer-burger-ui-components';
-import { useDispatch, useSelector } from 'react-redux';
 import { Redirect, useLocation } from 'react-router-dom';
 import { isAuth } from 'utils/utils';
 import { Registration } from 'components/registration/registration';
 import { fetchLogin, loginFormSet } from 'services/slices/authSlice';
 import { ROUTES } from 'utils/constsRoute';
 import { ChangeEvent, FormEvent, useState } from 'react';
-import { RootState } from 'services/store';
+import { useAppDispatch, useAppSelector } from 'utils/hooks';
 
 interface LocationState {
     from: {
@@ -27,13 +26,13 @@ export default function LoginPage() {
             path: ROUTES.FORGOT_PASSWORD
         }
     ];
-    const dispatch = useDispatch<any>();
+    const dispatch = useAppDispatch();
     const location = useLocation<LocationState>();
-    const { error, loginFailed } = useSelector((state: RootState) => state.auth);
+    const { error, loginFailed } = useAppSelector(state => state.auth);
     const [errorEmail, setErrorEmail] = useState(false);
     const [errorPassword, setErrorPassword] = useState(false);
     const auth = isAuth();
-    const { email, password } = useSelector((state: RootState) => state.auth.formLogin);
+    const { email, password } = useAppSelector(state => state.auth.formLogin);
     const nextLocation = location.state?.from.pathname || ROUTES.HOME;
 
     const onFormChange = (e: ChangeEvent<HTMLInputElement>) => {

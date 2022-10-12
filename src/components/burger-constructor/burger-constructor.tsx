@@ -3,7 +3,6 @@ import style from './style.module.scss';
 import { useState, useEffect, useMemo } from 'react';
 import { useDrop } from "react-dnd";
 import { useHistory } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
 import { isAuth } from 'utils/utils';
 import { Modal } from 'components/modal/modal';
 import { ConstructorElementWrapper } from 'components/constructor-element/constructor-element-wrapper';
@@ -11,13 +10,13 @@ import OrderDetails from 'components/order-details/order-details';
 import { ROUTES } from 'utils/constsRoute';
 import { addIngredient, deleteIngredient, fetchOrder, setIngredients, total } from 'services/slices/ingredientsSlice';
 import { IData } from 'utils/types';
-import { AppDispatch, RootState } from 'services/store';
+import { useAppDispatch, useAppSelector } from 'utils/hooks';
 
 export default function BurgerConstructor() {
 
-    const dispatch = useDispatch<AppDispatch>();
-    const { constructorIngredients } = useSelector((state: any) => state.ingredients);
-    const { sum } = useSelector((state: RootState) => state.ingredients);
+    const dispatch = useAppDispatch();
+    const { constructorIngredients } = useAppSelector((state) => state.ingredients);
+    const { sum } = useAppSelector(state => state.ingredients);
     const auth = isAuth();
     const history = useHistory();
     const [isModalVisible, setModalVisible] = useState(false);

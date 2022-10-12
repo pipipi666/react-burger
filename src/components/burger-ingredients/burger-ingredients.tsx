@@ -3,7 +3,6 @@ import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
 import style from './style.module.scss';
 import { Modal } from 'components/modal/modal';
 import IngredientDetails from 'components/ingredient-details/ingredient-details';
-import { useSelector, useDispatch } from 'react-redux';
 import { useLocation, useHistory, useParams } from "react-router-dom";
 import { ROUTES } from 'utils/constsRoute';
 import { IngredientsCategory } from '../ingredients-category/ingredients-category';

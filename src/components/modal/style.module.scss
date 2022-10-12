@@ -8,6 +8,7 @@
     position: absolute;
     top: 10%;
     left: calc(50% - 360px);
+    z-index: 10;
     .header {
         height: 64px;
         display: flex;
@@ -15,7 +16,18 @@
         justify-content: space-between;
     }
     .content {
-        width: 520px;
-        margin: 0 60px 20px;
+        margin: 0 auto 0;
+        &::-webkit-scrollbar {
+            width: 8px;
+        }
+        &::-webkit-scrollbar-track {
+            background: #2F2F37;
+        }
+        &::-webkit-scrollbar-thumb {
+            background-color:#8585AD;
+        }
+        max-height: calc(100vh - 250px);
+        overflow-y: auto;
+        overflow-x: hidden;
     }
 }

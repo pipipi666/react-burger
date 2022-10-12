@@ -1,15 +1,19 @@
 .container {
     background-color: #1C1C21;
-    height: 246px;
     border-radius: 40px;
     padding: 24px;
     box-sizing: border-box;
+    .link {
+        text-decoration: none;
+        color: #F2F2F3;
+
     .title {
         display: flex;
         justify-content: space-between;
     }
     .pics {
         height: 64px;
+        padding-left: 15px;
         display: flex;
         justify-content: space-between;
         align-items: center;
@@ -18,5 +22,55 @@
             align-items: center;
             gap: 8px;
         }
+        .img {
+            display: flex;
+            .img__wrapper {
+                height: 64px;
+                width: 64px;
+                background: linear-gradient(#4C4CFF,#801AB2 );
+                border-radius: 50%;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                margin-left: -15px;
+                position: relative;
+                &:nth-child(-n+5) {
+                    z-index: 1;
+                }
+                &:nth-child(-n+4) {
+                    z-index: 2;
+                }
+                &:nth-child(-n+3) {
+                    z-index: 3;
+                }
+                &:nth-child(-n+2) {
+                    z-index: 4;
+                }
+                &:nth-child(-n+1) {
+                    z-index: 5;
+                }
+                img {
+                    object-fit: cover;
+                    height: 60px;
+                    width: 60px;
+                    background-color: #131316;
+                    border-radius: 50%;
+                }
+                .count {
+                    position: absolute;
+                    background-color: rgba(0, 0, 0, 0.5);
+                    width: 58px;
+                    height: 58px;
+                    border-radius: 50%;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                }
+            }
+        }
+    }
+    .done {
+        color: #00CCCC;
+    }
     }
 }

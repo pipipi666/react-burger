@@ -1,12 +1,11 @@
 import { Input } from '@ya.praktikum/react-developer-burger-ui-components';
-import { useDispatch, useSelector } from 'react-redux';
 import { Redirect, useLocation } from 'react-router-dom';
 import { Registration } from 'components/registration/registration';
 import { isAuth } from 'utils/utils';
 import { ROUTES } from 'utils/constsRoute';
 import { fetchResetPassword, resetPasswordFormSet } from 'services/slices/authSlice';
 import { ChangeEvent, FormEvent, useState } from 'react';
-import { RootState } from 'services/store';
+import { useAppDispatch, useAppSelector } from 'utils/hooks';
 
 interface LocationState {
     from: string;
@@ -22,14 +21,14 @@ export default function ResetPasswordPage() {
             path: ROUTES.LOGIN
         }
     ];
-    const dispatch = useDispatch<any>();
+    const dispatch = useAppDispatch();
     const location = useLocation<LocationState>();
     const auth = isAuth();
     const [isEmptyPassword, setEmptyPassword] = useState(false);
     const [isEmptyToken, setEmptyToken] = useState(false);
-    const { error, resetPasswordFailed } = useSelector((state: RootState) => state.auth);
-    const { password, token } = useSelector((state: RootState) => state.auth.formResetPassword);
-    const { resetPasswordSuccess } = useSelector((state: RootState) => state.auth);
+    const { error, resetPasswordFailed } = useAppSelector(state=> state.auth);
+    const { password, token } = useAppSelector(state => state.auth.formResetPassword);
+    const { resetPasswordSuccess } = useAppSelector(state => state.auth);
 
     const onFormChange = (e:  ChangeEvent<HTMLInputElement>) => {
         dispatch(resetPasswordFormSet([e.target.name, e.target.value]))

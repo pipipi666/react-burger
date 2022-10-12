@@ -1,12 +1,12 @@
 import { NavLink, useHistory, useLocation } from 'react-router-dom';
 import { ROUTES } from 'utils/constsRoute';
-import { useDispatch } from 'react-redux';
 import style from './style.module.scss';
 import { fetchLogout } from 'services/slices/authSlice';
+import { useAppDispatch } from 'utils/hooks';
 
 export default function AsideNav() {
 
-    const dispatch = useDispatch<any>();
+    const dispatch = useAppDispatch();
     const history = useHistory();
     const location = useLocation();
     const classLink = `text text_type_main-medium text_color_inactive ${style.link}`;

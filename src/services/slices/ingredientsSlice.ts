@@ -1,8 +1,7 @@
 import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 import { checkReponse, fetchWithRefresh, getAccessToken } from "utils/utils";
 import { API_URL_INGREDIENTS, API_URL_ORDERS } from "utils/constsAPI";
-import { IData } from "utils/types";
-import { AppDispatch, RootState } from "services/store";
+import { IData, TIngredientsState, TOrder } from "utils/types";
 
 export type TIngredientsActions = ReturnType<typeof fetchIngredients> |
     ReturnType<typeof fetchOrder> |
@@ -11,7 +10,15 @@ export type TIngredientsActions = ReturnType<typeof fetchIngredients> |
     ReturnType<typeof getCurrentIngredient> |
     ReturnType<typeof deleteCurrentIngredient> |
     ReturnType<typeof setIngredients> |
-    ReturnType<typeof total>
+    ReturnType<typeof total> |
+    ReturnType<typeof setOrders> |
+    ReturnType<typeof setOrdersTotal> |
+    ReturnType<typeof setOrdersTotalToday> |
+    ReturnType<typeof wsSuccess> |
+    ReturnType<typeof wsError> |
+    ReturnType<typeof wsClose> |
+    ReturnType<typeof getCurrentOrder> |
+    ReturnType<typeof deleteCurrentOrder>
 
 export const fetchIngredients = createAsyncThunk(
     'ingredients/fetchIngredients',
@@ -34,34 +41,20 @@ export const fetchOrder = createAsyncThunk(
     }, rejectWithValue)
 )
 
-type TOrder = {
-    number: string
-}
-
-type TIngredientsState = {
-    ingredientsRequest: boolean,
-    ingredientsFailed: boolean,
-    ingredients: Array<IData>,
-    constructorIngredients: Array<IData>,
-    lastIndexConstructor: number,
-    currentIngredient: IData | {},
-    orderRequest: boolean,
-    orderFailed: boolean,
-    order: TOrder | {},
-    sum: number,
-}
-
 const initialState: TIngredientsState = {
     ingredientsRequest: false,
     ingredientsFailed: false,
     ingredients: [],
     constructorIngredients: [],
     lastIndexConstructor: 0,
-    currentIngredient: {},
     orderRequest: false,
     orderFailed: false,
-    order: {},
-    sum: 0
+    sum: 0,
+    orders:[],
+    isSocket: false,
+    isSocketError: false,
+    ordersTotal: 0,
+    ordersTotalToday:0,
 }
 
 const ingredientsSlice = createSlice({
@@ -81,7 +74,13 @@ const ingredientsSlice = createSlice({
             state.currentIngredient = action.payload
         },
         deleteCurrentIngredient: (state) => {
-            state.currentIngredient = {}
+            if(state.currentIngredient) state.currentIngredient = undefined
+        },
+        getCurrentOrder: (state, action) => {
+            state.currentOrder = action.payload
+        },
+        deleteCurrentOrder: (state) => {
+            if(state.currentOrder) state.currentOrder = undefined
         },
         setIngredients: (state, action) => {
             state.constructorIngredients = action.payload
@@ -98,7 +97,42 @@ const ingredientsSlice = createSlice({
                 return accumulator + currentValue.price;
             }, sum);
             state.sum = res
-        }
+        },
+        setOrders: (state, action) => {
+            const orders = action.payload
+            orders && orders.map((x: TOrder) => {
+                const date = new Date(x.createdAt)
+                const now = new Date(Date.now())
+                const difference = Math.ceil((now.valueOf() - date.valueOf())/(24*60*60*1000)) ;
+                let days = (difference > 4 ? `${difference} дней назад` : difference > 1 ? `${difference} дня назад` : difference ? 'Вчера' : 'Сегодня' )
+                x.createdAt = `${days}, ${date.toLocaleString('ru',{hour: '2-digit', minute:'2-digit',timeZoneName:"shortOffset"})}`
+                let sum = 0;
+                const orderIngredients = state.ingredients.filter(item => x.ingredients.includes(item._id))
+                const res = orderIngredients.reduce(function (accumulator, currentValue) {
+                    return accumulator + currentValue.price;
+                }, sum);
+                x.total = res
+                return x
+            })
+            state.orders = orders
+        },
+        setOrdersTotal: (state, action) => {
+            state.ordersTotal = action.payload
+        },
+        setOrdersTotalToday: (state, action) => {
+            state.ordersTotalToday = action.payload
+        },
+        wsSuccess: (state) => {
+            state.isSocket = true
+            state.isSocketError = false
+        },
+        wsError: (state) => {
+            state.isSocketError = true
+            state.isSocket = false
+        },
+        wsClose: (state) => {
+            state.isSocket = false
+        },
     },
     extraReducers: (builder) => {
         builder
@@ -137,7 +171,15 @@ export const {
     getCurrentIngredient,
     deleteCurrentIngredient,
     setIngredients,
-    total
+    total,
+    setOrders,
+    setOrdersTotal,
+    setOrdersTotalToday,
+    wsSuccess,
+    wsError,
+    wsClose,
+    getCurrentOrder,
+    deleteCurrentOrder
 } = ingredientsSlice.actions;
 
 export default ingredientsSlice.reducer;

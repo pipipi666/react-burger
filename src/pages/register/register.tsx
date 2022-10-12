@@ -1,12 +1,11 @@
 import { Input } from '@ya.praktikum/react-developer-burger-ui-components';
 import { ChangeEvent, FormEvent, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 import { isAuth } from 'utils/utils';
 import { Registration } from 'components/registration/registration';
 import { ROUTES } from 'utils/constsRoute';
 import { fetchRegister, registerFormSet } from 'services/slices/authSlice';
-import { RootState } from 'services/store';
+import { useAppDispatch, useAppSelector } from 'utils/hooks';
 
 export default function RegisterPage() {
 
@@ -17,18 +16,18 @@ export default function RegisterPage() {
             path: ROUTES.LOGIN
         }
     ];
-    const dispatch = useDispatch<any>();
+    const dispatch = useAppDispatch();
     const [errorName, setErrorName] = useState(false);
     const [errorEmail, setErrorEmail] = useState(false);
     const [errorPassword, setErrorPassword] = useState(false);
     const auth = isAuth();
-    const { error } = useSelector((state: RootState) => state.auth);
-    const { registerFailed } = useSelector((state: RootState) => state.auth);
+    const { error } = useAppSelector(state=> state.auth);
+    const { registerFailed } = useAppSelector(state => state.auth);
     const {
         name,
         email,
         password
-    } = useSelector((state: RootState) => state.auth.formRegister);
+    } = useAppSelector(state => state.auth.formRegister);
 
     const onFormChange = (e: ChangeEvent<HTMLInputElement>) => {
         dispatch(registerFormSet([e.target.name, e.target.value]))

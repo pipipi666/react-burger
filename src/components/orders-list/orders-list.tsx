@@ -1,49 +1,59 @@
 import style from './style.module.scss';
 import { OrderCard } from 'components/order-card/order-card';
+import { FC, useCallback, useEffect, useState } from 'react';
+import { useAppDispatch, useAppSelector } from 'utils/hooks';
+import { deleteCurrentOrder, fetchIngredients, getCurrentOrder } from 'services/slices/ingredientsSlice';
+import { useHistory, useLocation, useParams } from 'react-router-dom';
+import { ROUTES } from 'utils/constsRoute';
+import { Modal } from 'components/modal/modal';
+import { OrderInfoDetails } from 'components/order-info-details/order-info-details';
+import { TOrder } from 'utils/types';
 
-export default function OrdersList() {
+interface IProps {
+    orders: Array<TOrder>;
+}
 
-    const orders = [
-        {
-            id: '#034535',
-            time: ' Сегодня, 16:20 i-GMT+3',
-            name: 'Death Star Starship Main бургер',
-            status: 'Создан',
-            price: 480
-        },
-        {
-            id: '#0335',
-            time: ' Сегодня, 16:20 i-GMT+3',
-            name: 'Death Star Starship Main бургер',
-            status: 'Создан',
-            price: 11111
-        },
-        {
-            id: '#034444535',
-            time: ' Сегодня, 16:20 i-GMT+3',
-            name: 'Death Star Starship Main бургер',
-            status: 'Создан',
-            price: 4123
-        },
-        {
-            id: '#0341535',
-            time: ' Сегодня, 16:20 i-GMT+3',
-            name: 'Death Star Starship Main бургер',
-            status: 'Создан',
-            price: 4451
-        },
-        {
-            id: '#03453123123125',
-            time: ' Сегодня, 16:20 i-GMT+3',
-            name: 'Death Star Starship Main бургер',
-            status: 'Создан',
-            price: 486
+export const OrdersList:FC<IProps> = ({orders}) => {
+    const dispatch = useAppDispatch()
+    const location = useLocation();
+    const history = useHistory();
+    const [isModalVisible, setModalVisible] = useState(location.pathname !== ROUTES.FEED && location.pathname !== ROUTES.ORDERS);
+    const { id } = useParams<{ id: string }>();
+    const {currentOrder} = useAppSelector(state => state.ingredients)
+
+    useEffect(() => {
+        dispatch(fetchIngredients());
+    }, [dispatch]);
+
+    useEffect(() => {
+        if (!currentOrder && orders.length > 0) {
+            const tmp = orders.find((item: TOrder) => item._id === id)
+            dispatch(getCurrentOrder(tmp))
         }
-    ]
+    }, [dispatch, currentOrder, orders, id]);
+
+    const handleClick = useCallback((currentId: string) => {
+        const id = orders.find((item: TOrder) => item._id === currentId)
+        dispatch(getCurrentOrder(id))
+        setModalVisible(true);
+    }, [orders, dispatch]);
+
+    const handleClose = () => {
+        setModalVisible(false);
+        dispatch(deleteCurrentOrder())
+        history.replace({
+            pathname: location.pathname.includes(ROUTES.FEED) ? ROUTES.FEED : ROUTES.ORDERS
+        });
+    };
 
     return (
         <section className={style.wrapper}>
-            {orders.map(order => <OrderCard order={order} key={order.id} />)}
+            {orders.map((order: TOrder) => <OrderCard order={order} key={order._id} handleClick={handleClick} />)}
+            {isModalVisible && currentOrder &&
+                <Modal title={currentOrder.number} close={handleClose}>
+                    <OrderInfoDetails />
+                </Modal>
+            }
         </section >
     );
 }

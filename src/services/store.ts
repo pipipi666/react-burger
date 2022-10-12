@@ -1,20 +1,21 @@
-import { useDispatch } from 'react-redux';
-import { configureStore } from '@reduxjs/toolkit';
+import { Action, configureStore } from '@reduxjs/toolkit';
 import thunk, { ThunkAction } from 'redux-thunk';
 import ingredientsReducer, { TIngredientsActions } from './slices/ingredientsSlice';
 import authReducer, { TAuthActions } from './slices/authSlice';
+import { applyMiddleware, compose } from 'redux';
+import { socketMiddleware } from './socketMiddleware';
 
 export const store = configureStore({
     reducer: {
         ingredients: ingredientsReducer,
         auth: authReducer
     },
-    middleware: [thunk]
+    middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(socketMiddleware())
 });
 
 export type AppDispatch = typeof store.dispatch
-export type RootReducer = typeof ingredientsReducer | typeof authReducer
+//export type RootReducer = typeof ingredientsReducer | typeof authReducer
 export type RootState = ReturnType<typeof store.getState>
-type TAppActions = TIngredientsActions | TAuthActions
-export type AppThunk = ThunkAction<void, RootState, unknown, TAppActions>
-export type Dispatch = <TReturnType = void>(action: TAppActions | AppThunk) => TReturnType;
+export type TAppActions = TIngredientsActions | TAuthActions
+export type AppThunk = ThunkAction<void, RootState, unknown, Action<TAppActions>>
+export type Dispatch = <TReturnType = void>(action: TAppActions) => TReturnType;

@@ -2,11 +2,10 @@ import style from './style.module.scss';
 import { Counter, CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import { Link } from "react-router-dom";
 import { useDrag } from 'react-dnd';
-import { useSelector } from 'react-redux';
 import { FC, useMemo } from 'react';
 import { IData } from 'utils/types';
 import { ROUTES } from '../../utils/constsRoute';
-import { RootState } from 'services/store';
+import { useAppSelector } from 'utils/hooks';
 
 interface IProps {
     item: IData;
@@ -15,7 +14,7 @@ interface IProps {
 
 export const IngredientCard: FC<IProps> = ({ item, handleClick }) => {
 
-    const { constructorIngredients } = useSelector((state: RootState) => state.ingredients);
+    const { constructorIngredients } = useAppSelector(state => state.ingredients);
 
     const counter = useMemo(() =>
         constructorIngredients &&

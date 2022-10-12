@@ -1,38 +1,38 @@
 import style from './style.module.scss';
-import { useSelector } from 'react-redux';
 import { useMemo } from 'react';
+import { useAppSelector } from 'utils/hooks';
 
 export default function IngredientDetails() {
 
-    const { currentIngredient } = useSelector((state: any) => state.ingredients);
+    const { currentIngredient } = useAppSelector(state => state.ingredients);
     const stats = useMemo(() => [
         {
             name: 'Калории, ккал',
-            value: currentIngredient.calories
+            value: currentIngredient?.calories
         },
         {
             name: 'Белки, г',
-            value: currentIngredient.proteins
+            value: currentIngredient?.proteins
         },
         {
             name: 'Жиры, г',
-            value: currentIngredient.fat
+            value: currentIngredient?.fat
         },
         {
             name: 'Углеводы, г',
-            value: currentIngredient.carbohydrates
+            value: currentIngredient?.carbohydrates
         },
     ], [currentIngredient])
 
     return (
         <div className={style.content}>
             <img
-                src={currentIngredient.image_large}
-                alt={currentIngredient.name}
+                src={currentIngredient?.image_large}
+                alt={currentIngredient?.name}
                 className={style.img}
             />
             <p className="text text_type_main-medium mt-4 mb-8">
-                {currentIngredient.name}
+                {currentIngredient?.name}
             </p>
             <ul className={style.energy}>
                 {stats.map((stat, index) =>

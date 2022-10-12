@@ -1,15 +1,35 @@
-.lists {
-    display: flex;
-    justify-content: space-between;
-    .list {
-        width: 280px;
-        .ul {
-            padding: 0;
-            .li {
-                list-style: none;
-            }
-            .done {
-                color: #00CCCC;
+.container {
+    overflow: auto;
+    height: 100%;
+    &::-webkit-scrollbar {
+        width: 8px;
+    }
+    &::-webkit-scrollbar-track {
+        background: #2F2F37;
+    }
+    &::-webkit-scrollbar-thumb {
+        background-color:#8585AD;
+    }
+    .lists {
+        display: flex;
+        justify-content: space-between;
+        padding-right: 20px;
+        .list {
+            .ul {
+                padding: 0;
+                height: 300px;
+                display: flex;
+                flex-direction: column;
+                width: fit-content;
+                flex-wrap: wrap;
+                column-gap: 10px;
+                .li {
+                    list-style: none;
+                    width: fit-content;
+                }
+                .done {
+                    color: #00CCCC;
+                }
             }
         }
     }

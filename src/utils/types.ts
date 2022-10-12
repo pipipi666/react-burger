@@ -12,6 +12,7 @@ export interface IData {
     readonly image_large: string;
     readonly __v: number;
     dropId?: number;
+    count?: number;
 }
 
 export interface ILogin {
@@ -47,4 +48,38 @@ export interface IOptions {
         Authorization?: string;
     },
     body?: BodyInit;
+}
+
+export interface ILocationState {
+    from: string;
+}
+
+export type TOrder = {
+    _id: string;
+    ingredients: Array<string>;
+    status: 'done' | 'pending' | 'created';
+    name: string;
+    createdAt: string;
+    updatedAt: string;
+    number: number;
+    total?: number;
+}
+
+export type TIngredientsState = {
+    ingredientsRequest: boolean,
+    ingredientsFailed: boolean,
+    ingredients: Array<IData>,
+    constructorIngredients: Array<IData>,
+    lastIndexConstructor: number,
+    currentIngredient?: IData,
+    orderRequest: boolean,
+    orderFailed: boolean,
+    order?: TOrder,
+    sum: number,
+    orders: Array<TOrder>,
+    isSocket: boolean,
+    isSocketError: boolean,
+    ordersTotal: number,
+    ordersTotalToday: number,
+    currentOrder?: TOrder
 }

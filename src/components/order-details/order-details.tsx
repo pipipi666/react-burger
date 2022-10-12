@@ -1,10 +1,10 @@
 import style from './style.module.scss';
-import { useSelector } from 'react-redux';
 import background from "image/graphics.svg";
+import { useAppSelector } from 'utils/hooks';
 
 export default function OrderDetails() {
 
-    const { order, orderRequest, orderFailed } = useSelector((state: any) => state.ingredients);
+    const { order, orderRequest, orderFailed } = useAppSelector(state => state.ingredients);
 
     const loading = (
         <div className={style.loader}>Loading...</div>
@@ -19,7 +19,7 @@ export default function OrderDetails() {
     const content = (
         <>
             <p className="text text_type_digits-large mt-4 mb-8">
-                {order.number}
+                {order?.number}
             </p>
             <p className="text text_type_main-medium">
                 идентификатор заказа

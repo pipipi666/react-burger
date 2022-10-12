@@ -26,7 +26,7 @@ export default function App() {
           <FeedPage />
         </Route>
         <Route path={ROUTES.FEED_ORDER} exact>
-          <OrderInfoPage />
+          <FeedPage />
         </Route>
         <Route path={ROUTES.LOGIN} exact>
           <LoginPage />
@@ -40,6 +40,9 @@ export default function App() {
         <ProtectedRoute path={ROUTES.ORDERS} exact>
           <ProfilePage />
         </ProtectedRoute>
+        <Route path={ROUTES.ORDER} exact>
+          <ProfilePage />
+        </Route>
         <Route path={ROUTES.FORGOT_PASSWORD} exact>
           <ForgotPasswordPage />
         </Route>

@@ -1,5 +1,6 @@
 import { ILogin, IForm, IOptions } from './types';
 import { API_URL_TOKEN } from "./constsAPI";
+import { TAuthState } from 'services/slices/authSlice';
 
 export const checkReponse = (res: Response) => {
     return res.ok ? res.json() : res.json().then((err: Error) => Promise.reject(err));

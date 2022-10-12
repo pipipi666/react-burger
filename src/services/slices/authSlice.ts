@@ -1,4 +1,3 @@
-import { IProfile } from './../../utils/types';
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { checkReponse, getAccessToken, getRefreshToken, getToken, fetchForm, setForm, fetchWithRefresh } from "utils/utils";
 import {
@@ -102,7 +101,7 @@ export const updateProfile = createAsyncThunk<ILogin, undefined, {state: RootSta
         }, rejectWithValue)
 );
 
-type TAuthState = {
+export type TAuthState = {
     formLogin: {
         email: string,
         password: string

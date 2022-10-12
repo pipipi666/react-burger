@@ -1,12 +1,11 @@
 import style from './style.module.scss';
 import { DragIcon, ConstructorElement } from '@ya.praktikum/react-developer-burger-ui-components';
 import React, { DragEvent, useRef } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 import { useDrop, useDrag } from "react-dnd";
 import { deleteIngredient, setIngredients } from 'services/slices/ingredientsSlice';
 import { IData } from '../../utils/types';
 import { FC } from 'react';
-import { AppDispatch } from 'services/store';
+import { useAppDispatch, useAppSelector } from 'utils/hooks';
 
 interface IProps {
     item: IData;
@@ -14,8 +13,8 @@ interface IProps {
 
 export const ConstructorElementWrapper: FC<IProps> = ({ item }) => {
 
-    const dispatch = useDispatch<AppDispatch>();
-    const { constructorIngredients } = useSelector((state: any) => state.ingredients);
+    const dispatch = useAppDispatch();
+    const { constructorIngredients } = useAppSelector(state => state.ingredients);
     const ref = useRef<HTMLDivElement>(null);
 
     const [{ handlerId }, drop] = useDrop({
@@ -42,8 +41,8 @@ export const ConstructorElementWrapper: FC<IProps> = ({ item }) => {
             const dragCard = constructorIngredients.find((card: IData) => card.dropId === dragIndex);
             const hoverCard = constructorIngredients.find((card: IData) => card.dropId === hoverIndex);
             const newCards = constructorIngredients.map((item: IData) =>
-                item.dropId === dragCard.dropId ? hoverCard
-                    : item.dropId === hoverCard.dropId ? dragCard
+                item.dropId === dragCard?.dropId ? hoverCard
+                    : item.dropId === hoverCard?.dropId ? dragCard
                         : item)
             dispatch(setIngredients(newCards))
         },
