@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import {
   HomePage,
   ForgotPasswordPage,
@@ -7,11 +7,11 @@ import {
   ProfilePage,
   RegisterPage,
   ResetPasswordPage,
-  FeedPage
-} from '../../pages'
-import Header from '../app-header/app-header';
-import { ProtectedRoute } from '../protected-route/protected-route';
-import { ROUTES } from '../../utils/constsRoute';
+  FeedPage,
+} from "../../pages";
+import Header from "../app-header/app-header";
+import { ProtectedRoute } from "../protected-route/protected-route";
+import { ROUTES } from "../../utils/constsRoute";
 
 export default function App() {
   return (

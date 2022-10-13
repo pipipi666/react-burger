@@ -1,12 +1,10 @@
-import { FC } from 'react';
-import style from './style.module.scss';
+import { FC } from "react";
+import style from "./style.module.scss";
 
 interface IProps {
-    close: () => void;
+  close: () => void;
 }
 
 export const ModalOverlay: FC<IProps> = ({ close }) => {
-    return (
-        <div className={style.overlay} onClick={close} />
-    );
-}
+  return <div className={style.overlay} onClick={close} />;
+};

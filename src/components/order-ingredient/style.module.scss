@@ -1,29 +1,29 @@
 .container {
+  display: flex;
+  gap: 16px;
+  width: 100%;
+  align-items: center;
+  .img {
+    height: 64px;
+    width: 64px;
+    background: linear-gradient(#4c4cff, #801ab2);
+    border-radius: 50%;
     display: flex;
-    gap: 16px;
-    width: 100%;
+    justify-content: center;
     align-items: center;
-    .img {
-        height: 64px;
-        width: 64px;
-        background: linear-gradient(#4C4CFF,#801AB2 );
-        border-radius: 50%;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        img {
-            object-fit: cover;
-            height: 60px;
-            width: 60px;
-            background-color: #131316;
-            border-radius: 50%;
-        }
+    img {
+      object-fit: cover;
+      height: 60px;
+      width: 60px;
+      background-color: #131316;
+      border-radius: 50%;
     }
-    .name {
-        flex: 1;
-    }
-    .price {
-        display: flex;
-        gap: 9px;
-    }
+  }
+  .name {
+    flex: 1;
+  }
+  .price {
+    display: flex;
+    gap: 9px;
+  }
 }

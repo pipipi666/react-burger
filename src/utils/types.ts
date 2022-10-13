@@ -49,8 +49,8 @@ export interface IForm {
 
 export interface IOptions {
     method?: 'POST' | 'PATCH';
-    mode: 'cors';
-    credentials: 'same-origin';
+    mode?: 'cors';
+    credentials?: 'same-origin';
     headers: {
         'Content-Type': 'application/json';
         Authorization?: string;
