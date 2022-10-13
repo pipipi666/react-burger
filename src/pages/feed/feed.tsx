@@ -10,13 +10,15 @@ import { OrderInfoPage } from 'pages/orfer-info/order-info';
 import { ILocationState } from 'utils/types';
 
 export default function FeedPage() {
-    const {orders} = useAppSelector((state) => state.ingredients)
-    const dispatch = useAppDispatch()
+    const {orders} = useAppSelector((state) => state.ingredients);
+    const dispatch = useAppDispatch();
     const location = useLocation<ILocationState>();
 
     useEffect(() => {
-        dispatch({type:'WS_CONNECTION_START', payload: "wss://norma.nomoreparties.space/orders/all"})
-        return dispatch(wsClose())
+        dispatch({type:'WS_CONNECTION_START', payload: "wss://norma.nomoreparties.space/orders/all"});
+        return () => {
+            dispatch(wsClose());
+        }
     }, [dispatch]);
 
     if ((location.pathname !== ROUTES.FEED) && (location.state?.from !== ROUTES.FEED)) {

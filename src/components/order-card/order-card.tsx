@@ -1,21 +1,20 @@
 import { CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import style from './style.module.scss';
-import { FC, useEffect } from 'react';
+import { FC } from 'react';
 import { ROUTES } from '../../utils/constsRoute';
 import { Link, useLocation } from 'react-router-dom';
-import { useAppDispatch, useAppSelector } from 'utils/hooks';
-import { fetchIngredients } from 'services/slices/ingredientsSlice';
+import { useAppSelector } from 'utils/hooks';
 import { TOrder } from 'utils/types';
 
 interface IProps {
     order: TOrder;
-    handleClick: (currentId: string) => void
+    handleClick: (currentId: string) => void;
 }
 
 export const OrderCard: FC<IProps> = ({ order, handleClick }) => {
-    const location = useLocation()
-    const {ingredients} = useAppSelector((state) => state.ingredients)
-    const orderIngredients = ingredients.filter(item => order.ingredients.includes(item._id))
+    const location = useLocation();
+    const {ingredients} = useAppSelector((state) => state.ingredients);
+    const orderIngredients = ingredients.filter(item => order.ingredients.includes(item._id));
 
     return (
         <div className={style.container} onClick={() => handleClick(order._id)}>

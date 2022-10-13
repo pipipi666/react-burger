@@ -53,7 +53,6 @@ export default function BurgerConstructor() {
         if (auth) {
             setModalVisible(true);
             const ingredients = constructorIngredients.map((item: IData) => (item._id));
-            {/* @ts-ignore */}
             dispatch(fetchOrder(ingredients))
         }
         else history.push(ROUTES.LOGIN)

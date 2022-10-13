@@ -1,42 +1,15 @@
 import { OrderIngredient } from 'components/order-ingredient/order-ingredient';
 import style from './order-info-details.module.scss';
 import { CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
-import { FC, useEffect, useMemo } from 'react';
-import { useAppDispatch, useAppSelector } from 'utils/hooks';
-import { fetchIngredients, getCurrentOrder, wsClose } from 'services/slices/ingredientsSlice';
-import { useParams } from 'react-router-dom';
-import { IData, TOrder } from 'utils/types';
+import { FC, useMemo } from 'react';
+import { useAppSelector } from 'utils/hooks';
+import { IData } from 'utils/types';
 
 export const OrderInfoDetails:FC = () => {
-    const order = useAppSelector((state) => state.ingredients.currentOrder)
-    const dispatch = useAppDispatch()
-    const ingredients = useAppSelector(state => JSON.parse(JSON.stringify(state.ingredients.ingredients)))
+    const order = useAppSelector((state) => state.ingredients.currentOrder);
+    const ingredients = useAppSelector(state => JSON.parse(JSON.stringify(state.ingredients.ingredients)));
     const orderIngredients = useMemo(() => order && ingredients.filter((item: IData) => order.ingredients.includes(item._id)), [ingredients, order]);
-    order && orderIngredients.map((item: IData) => item.count = order.ingredients.filter((x) => x === item._id).length)
-    const { id } = useParams<{ id: string }>();
-    const { currentOrder } = useAppSelector(state => state.ingredients);
-    const { orders } = useAppSelector(state => state.ingredients);
-
-    // useEffect(() => {
-    //     dispatch(fetchIngredients());
-    // }, [dispatch]);
-
-    // useEffect(() => {
-    //     if (!currentOrder && orders.length > 0) {
-    //         const tmp = orders.find((item: TOrder) => item._id === id)
-    //         dispatch(getCurrentOrder(tmp))
-    //     }
-    // }, [dispatch, currentOrder, orders, id]);
-
-    // useEffect(() => {
-    //     dispatch({type:'WS_CONNECTION_START', payload: "wss://norma.nomoreparties.space/orders/all"})
-    //     return dispatch(wsClose())
-    // }, []);
-
-    // useEffect(() => {
-    //     ingredients.length === 0 && dispatch(fetchIngredients());
-    // }, []);
-    // console.log('order', order);
+    order && orderIngredients.map((item: IData) => item.count = order.ingredients.filter((x) => x === item._id).length);
 
     if(order) return (
         <div className={style.container}>

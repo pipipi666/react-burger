@@ -22,7 +22,7 @@ export default function IngredientDetails() {
             name: 'Углеводы, г',
             value: currentIngredient?.carbohydrates
         },
-    ], [currentIngredient])
+    ], [currentIngredient]);
 
     return (
         <div className={style.content}>

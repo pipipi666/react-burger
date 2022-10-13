@@ -1,6 +1,5 @@
-import type { Middleware, MiddlewareAPI } from 'redux';
+import type { Middleware } from 'redux';
 import { setOrders, wsClose, wsError, wsSuccess, setOrdersTotal, setOrdersTotalToday } from './slices/ingredientsSlice';
-import type { TAppActions, AppDispatch, RootState } from './store';
 
 export const socketMiddleware = (): Middleware => {
     let socket: WebSocket | null = null;
@@ -31,5 +30,5 @@ export const socketMiddleware = (): Middleware => {
       }
       next(action);
     };
-    }) as Middleware;
+    });
 };

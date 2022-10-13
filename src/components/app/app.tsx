@@ -12,7 +12,6 @@ import {
 import Header from '../app-header/app-header';
 import { ProtectedRoute } from '../protected-route/protected-route';
 import { ROUTES } from '../../utils/constsRoute';
-import { OrderInfoPage } from 'pages/orfer-info/order-info';
 
 export default function App() {
   return (

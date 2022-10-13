@@ -28,32 +28,32 @@ export const fetchLogin = createAsyncThunk<ILogin, undefined, {state: RootState}
     'auth/fetchLogin',
     (_, { getState, rejectWithValue }) => fetchForm(
         API_URL_LOGIN,
-        getState().auth.formLogin,
-        rejectWithValue)
+        getState().auth.formLogin)
+        .catch(err => rejectWithValue(err.message))
 );
 
 export const fetchRegister = createAsyncThunk<ILogin, undefined, {state: RootState}>(
     'auth/fetchRegister',
     (_, { getState, rejectWithValue }) => fetchForm(
         API_URL_REGISTER,
-        getState().auth.formRegister,
-        rejectWithValue)
+        getState().auth.formRegister)
+        .catch(err => rejectWithValue(err.message))
 );
 
 export const fetchForgotPassword = createAsyncThunk<ILogin, undefined, {state: RootState}>(
     'auth/fetchForgotPassword',
     (_, { getState, rejectWithValue }) => fetchForm(
         API_URL_PASSWORD_FORGOT,
-        getState().auth.formForgotPassword,
-        rejectWithValue)
+        getState().auth.formForgotPassword)
+        .catch(err => rejectWithValue(err.message))
 );
 
 export const fetchResetPassword = createAsyncThunk<ILogin, undefined, {state: RootState}>(
     'auth/fetchResetPassword',
     (_, { getState, rejectWithValue }) => fetchForm(
         API_URL_PASSWORD_RESET,
-        getState().auth.formResetPassword,
-        rejectWithValue)
+        getState().auth.formResetPassword)
+        .catch(err => rejectWithValue(err.message))
 );
 
 export const fetchLogout = createAsyncThunk(
@@ -81,8 +81,8 @@ export const fetchProfile = createAsyncThunk(
                 'Content-Type': 'application/json',
                 Authorization: 'Bearer ' + getAccessToken()
             }
-        },
-        rejectWithValue)
+        })
+        .catch(err => rejectWithValue(err.message))
 );
 
 export const updateProfile = createAsyncThunk<ILogin, undefined, {state: RootState}>(
@@ -98,7 +98,8 @@ export const updateProfile = createAsyncThunk<ILogin, undefined, {state: RootSta
                 Authorization: 'Bearer ' + getAccessToken()
             },
             body: JSON.stringify({ ...getState().auth.formProfile })
-        }, rejectWithValue)
+        })
+        .catch(err => rejectWithValue(err.message))
 );
 
 export type TAuthState = {

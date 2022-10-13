@@ -15,6 +15,14 @@ export interface IData {
     count?: number;
 }
 
+export type TIngredientsThunk = {
+    data: Array<IData>
+}
+
+export type TOrderThunk = {
+    order: TOrder
+}
+
 export interface ILogin {
     accessToken: string;
     refreshToken: string;

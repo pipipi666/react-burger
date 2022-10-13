@@ -20,9 +20,9 @@ export const Modal: FC<IProps> = ({ close, title, children }) => {
     useEffect(() => {
         const handleEsc = (e: KeyboardEvent) => {
             e.key === "Escape" && close();
-        }
-        window.addEventListener('keydown', handleEsc)
-        return () => window.removeEventListener('keydown', handleEsc)
+        };
+        window.addEventListener('keydown', handleEsc);
+        return () => window.removeEventListener('keydown', handleEsc);
     }, [close]);
 
     return ReactDOM.createPortal(

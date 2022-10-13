@@ -17,7 +17,9 @@ export default function ProfilePage() {
     const location = useLocation<ILocationState>();
     useEffect(() => {
         dispatch({type:'WS_CONNECTION_START', payload: `wss://norma.nomoreparties.space/orders?token=${getAccessToken()}`})
-        return dispatch(wsClose())
+        return () => {
+            dispatch(wsClose())
+        }
     }, [dispatch]);
 
     if ((location.pathname !== ROUTES.PROFILE) && (location.pathname !== ROUTES.ORDERS) && (location.state?.from !== ROUTES.ORDERS)) {

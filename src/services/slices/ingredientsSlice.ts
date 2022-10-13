@@ -1,7 +1,7 @@
-import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { checkReponse, fetchWithRefresh, getAccessToken } from "utils/utils";
 import { API_URL_INGREDIENTS, API_URL_ORDERS } from "utils/constsAPI";
-import { IData, TIngredientsState, TOrder } from "utils/types";
+import { TIngredientsState, TIngredientsThunk, TOrder, TOrderThunk } from "utils/types";
 
 export type TIngredientsActions = ReturnType<typeof fetchIngredients> |
     ReturnType<typeof fetchOrder> |
@@ -20,13 +20,13 @@ export type TIngredientsActions = ReturnType<typeof fetchIngredients> |
     ReturnType<typeof getCurrentOrder> |
     ReturnType<typeof deleteCurrentOrder>
 
-export const fetchIngredients = createAsyncThunk(
+export const fetchIngredients = createAsyncThunk<TIngredientsThunk,void>(
     'ingredients/fetchIngredients',
     () => fetch(API_URL_INGREDIENTS)
         .then(res => checkReponse(res))
 )
 
-export const fetchOrder = createAsyncThunk(
+export const fetchOrder = createAsyncThunk<TOrderThunk,string[]>(
     'ingredients/fetchOrder',
     (ingredients, { rejectWithValue }) => fetchWithRefresh(
         API_URL_ORDERS, {
@@ -38,7 +38,8 @@ export const fetchOrder = createAsyncThunk(
             Authorization: 'Bearer ' + getAccessToken()
         },
         body: JSON.stringify({ ingredients })
-    }, rejectWithValue)
+    })
+    .catch(err => rejectWithValue(err.message))
 )
 
 const initialState: TIngredientsState = {
@@ -140,7 +141,7 @@ const ingredientsSlice = createSlice({
                 state.ingredientsRequest = true
                 state.ingredientsFailed = false
             })
-            .addCase(fetchIngredients.fulfilled, (state, action: PayloadAction<any>) => {
+            .addCase(fetchIngredients.fulfilled, (state, action) => {
                 state.ingredientsRequest = false
                 state.ingredientsFailed = false
                 state.ingredients = action.payload.data

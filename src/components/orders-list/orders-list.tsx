@@ -14,33 +14,33 @@ interface IProps {
 }
 
 export const OrdersList:FC<IProps> = ({orders}) => {
-    const dispatch = useAppDispatch()
+    const dispatch = useAppDispatch();
     const location = useLocation();
     const history = useHistory();
     const [isModalVisible, setModalVisible] = useState(location.pathname !== ROUTES.FEED && location.pathname !== ROUTES.ORDERS);
     const { id } = useParams<{ id: string }>();
-    const {currentOrder} = useAppSelector(state => state.ingredients)
+    const {currentOrder, ingredients} = useAppSelector(state => state.ingredients)
 
     useEffect(() => {
-        dispatch(fetchIngredients());
-    }, [dispatch]);
+        if (!ingredients || (ingredients && ingredients.length === 0)) dispatch(fetchIngredients());
+    }, [dispatch, ingredients]);
 
     useEffect(() => {
         if (!currentOrder && orders.length > 0) {
-            const tmp = orders.find((item: TOrder) => item._id === id)
-            dispatch(getCurrentOrder(tmp))
+            const tmp = orders.find((item: TOrder) => item._id === id);
+            dispatch(getCurrentOrder(tmp));
         }
     }, [dispatch, currentOrder, orders, id]);
 
     const handleClick = useCallback((currentId: string) => {
-        const id = orders.find((item: TOrder) => item._id === currentId)
-        dispatch(getCurrentOrder(id))
+        const id = orders.find((item: TOrder) => item._id === currentId);
+        dispatch(getCurrentOrder(id));
         setModalVisible(true);
     }, [orders, dispatch]);
 
     const handleClose = () => {
         setModalVisible(false);
-        dispatch(deleteCurrentOrder())
+        dispatch(deleteCurrentOrder());
         history.replace({
             pathname: location.pathname.includes(ROUTES.FEED) ? ROUTES.FEED : ROUTES.ORDERS
         });

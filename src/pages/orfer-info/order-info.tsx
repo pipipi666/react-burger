@@ -19,7 +19,7 @@ export const OrderInfoPage = () => {
     }, [dispatch, ingredients]);
 
     useEffect(() => {
-        if (!currentOrder && orders.length > 0) {
+        if (!currentOrder && orders && orders.length > 0) {
             const tmp = orders.find((item: TOrder) => item._id === id)
             dispatch(getCurrentOrder(tmp))
         }
@@ -27,7 +27,9 @@ export const OrderInfoPage = () => {
 
     useEffect(() => {
         dispatch({type:'WS_CONNECTION_START', payload: "wss://norma.nomoreparties.space/orders/all"})
-        return dispatch(wsClose())
+        return () => {
+            dispatch(wsClose())
+        }
     }, [dispatch]);
 
     return (
