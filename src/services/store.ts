@@ -1,12 +1,19 @@
-import { configureStore } from '@reduxjs/toolkit';
-import thunk from 'redux-thunk';
-import ingredientsReducer from './slices/ingredientsSlice';
-import authReducer from './slices/authSlice';
+import { configureStore } from "@reduxjs/toolkit";
+import ingredientsReducer, {
+  TIngredientsActions,
+} from "./slices/ingredientsSlice";
+import authReducer, { TAuthActions } from "./slices/authSlice";
+import { socketMiddleware } from "./socketMiddleware";
 
 export const store = configureStore({
-    reducer: {
-        ingredients: ingredientsReducer,
-        auth: authReducer
-    },
-    middleware: [thunk]
+  reducer: {
+    ingredients: ingredientsReducer,
+    auth: authReducer,
+  },
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware().concat(socketMiddleware()),
 });
+
+export type AppDispatch = typeof store.dispatch;
+export type RootState = ReturnType<typeof store.getState>;
+export type TAppActions = TIngredientsActions | TAuthActions;

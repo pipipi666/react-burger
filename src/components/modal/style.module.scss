@@ -1,21 +1,33 @@
 .modal {
-    box-sizing: border-box;
-    background-color: #1C1C21;
-    width: 720px;
-    height: fit-content;
-    border-radius: 40px;
-    padding: 40px;
-    position: absolute;
-    top: 10%;
-    left: calc(50% - 360px);
-    .header {
-        height: 64px;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
+  box-sizing: border-box;
+  background-color: #1c1c21;
+  width: 720px;
+  height: fit-content;
+  border-radius: 40px;
+  padding: 40px;
+  position: absolute;
+  top: 10%;
+  left: calc(50% - 360px);
+  z-index: 10;
+  .header {
+    height: 64px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .content {
+    margin: 0 auto 0;
+    &::-webkit-scrollbar {
+      width: 8px;
     }
-    .content {
-        width: 520px;
-        margin: 0 60px 20px;
+    &::-webkit-scrollbar-track {
+      background: #2f2f37;
     }
+    &::-webkit-scrollbar-thumb {
+      background-color: #8585ad;
+    }
+    max-height: calc(100vh - 300px);
+    overflow-y: auto;
+    overflow-x: hidden;
+  }
 }

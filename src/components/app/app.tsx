@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import {
   HomePage,
   ForgotPasswordPage,
@@ -7,11 +7,11 @@ import {
   ProfilePage,
   RegisterPage,
   ResetPasswordPage,
-  FeedPage
-} from '../../pages'
-import Header from '../app-header/app-header';
-import { ProtectedRoute } from '../protected-route/protected-route';
-import { ROUTES } from '../../utils/constsRoute';
+  FeedPage,
+} from "../../pages";
+import Header from "../app-header/app-header";
+import { ProtectedRoute } from "../protected-route/protected-route";
+import { ROUTES } from "../../utils/constsRoute";
 
 export default function App() {
   return (
@@ -22,6 +22,9 @@ export default function App() {
           <HomePage />
         </Route>
         <Route path={ROUTES.FEED} exact>
+          <FeedPage />
+        </Route>
+        <Route path={ROUTES.FEED_ORDER} exact>
           <FeedPage />
         </Route>
         <Route path={ROUTES.LOGIN} exact>
@@ -36,6 +39,9 @@ export default function App() {
         <ProtectedRoute path={ROUTES.ORDERS} exact>
           <ProfilePage />
         </ProtectedRoute>
+        <Route path={ROUTES.ORDER} exact>
+          <ProfilePage />
+        </Route>
         <Route path={ROUTES.FORGOT_PASSWORD} exact>
           <ForgotPasswordPage />
         </Route>
