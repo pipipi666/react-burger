@@ -108,9 +108,12 @@ export default function BurgerIngredients() {
 
   const content = (
     <>
-      <h1 className="text text_type_main-large mt-10 mb-5">Соберите бургер</h1>
+      <h1 className={`text text_type_main-large mt-10 mb-5 ${style.h1}`}>
+        Соберите бургер
+      </h1>
       <div className={style.nav}>
         <div
+          className={style.tab__wrapper}
           onClick={() => {
             handleScroll(refBuns.current!);
           }}
@@ -120,6 +123,7 @@ export default function BurgerIngredients() {
           </Tab>
         </div>
         <div
+          className={style.tab__wrapper}
           onClick={() => {
             handleScroll(refSauces.current!);
           }}
@@ -133,6 +137,7 @@ export default function BurgerIngredients() {
           </Tab>
         </div>
         <div
+          className={style.tab__wrapper}
           onClick={() => {
             handleScroll(refFilling.current!);
           }}

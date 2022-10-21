@@ -40,7 +40,7 @@ export default function UserInfo() {
   }, [email, emailUser, name, nameUser]);
 
   const onFormChange = (e: ChangeEvent<HTMLInputElement>) => {
-    dispatch(profileFormSet([e.target.name, e.target.value]));
+    dispatch(profileFormSet({ name: e.target.name, value: e.target.value }));
   };
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
@@ -54,8 +54,8 @@ export default function UserInfo() {
 
   const handleCancelClick = (e: SyntheticEvent<Element, Event>) => {
     e.preventDefault();
-    dispatch(profileFormSet(["email", emailUser]));
-    dispatch(profileFormSet(["name", nameUser]));
+    dispatch(profileFormSet({ name: "email", value: emailUser }));
+    dispatch(profileFormSet({ name: "name", value: nameUser }));
   };
 
   const loading = <p className="text text_type_main-medium">Загрузка...</p>;

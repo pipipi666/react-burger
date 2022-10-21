@@ -31,7 +31,7 @@ export default function LoginPage() {
   const nextLocation = location.state?.from || ROUTES.HOME;
 
   const onFormChange = (e: ChangeEvent<HTMLInputElement>) => {
-    dispatch(loginFormSet([e.target.name, e.target.value]));
+    dispatch(loginFormSet({ name: e.target.name, value: e.target.value }));
   };
 
   const handleFormSubmit = (e: FormEvent<HTMLFormElement>) => {

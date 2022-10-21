@@ -25,7 +25,9 @@ export default function ForgotPasswordPage() {
   const { email } = useAppSelector((state) => state.auth.formForgotPassword);
 
   const onFormChange = (e: ChangeEvent<HTMLInputElement>) => {
-    dispatch(forgotPasswordFormSet([e.target.name, e.target.value]));
+    dispatch(
+      forgotPasswordFormSet({ name: e.target.name, value: e.target.value })
+    );
   };
 
   const handleFormSubmit = (e: FormEvent<HTMLFormElement>) => {

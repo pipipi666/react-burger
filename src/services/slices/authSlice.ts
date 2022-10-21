@@ -5,7 +5,6 @@ import {
   getRefreshToken,
   getToken,
   fetchForm,
-  setForm,
   fetchWithRefresh,
 } from "utils/utils";
 import {
@@ -17,7 +16,7 @@ import {
   API_URL_USER,
 } from "utils/constsAPI";
 import { RootState } from "services/store";
-import { ILogin } from "utils/types";
+import { ILogin, TAuthState } from "utils/types";
 
 export type TAuthActions =
   | ReturnType<typeof fetchLogin>
@@ -113,52 +112,6 @@ export const updateProfile = createAsyncThunk<
   }).catch((err) => rejectWithValue(err.message))
 );
 
-export type TAuthState = {
-  formLogin: {
-    email: string;
-    password: string;
-  };
-  formRegister: {
-    name: string;
-    email: string;
-    password: string;
-  };
-  formForgotPassword: {
-    email: string;
-  };
-  formResetPassword: {
-    password: string;
-    token: string;
-  };
-  user: {
-    nameUser: string;
-    emailUser: string;
-  };
-  formProfile: {
-    name: string;
-    email: string;
-  };
-  loginRequest: boolean;
-  loginFailed: boolean;
-  registerRequest: boolean;
-  registerFailed: boolean;
-  forgotPasswordRequest: boolean;
-  forgotPasswordFailed: boolean;
-  resetPasswordRequest: boolean;
-  resetPasswordFailed: boolean;
-  resetPasswordSuccess: boolean;
-  getProfileRequest: boolean;
-  getProfileFailed: boolean;
-  setProfileRequest: boolean;
-  setProfileFailed: boolean;
-  tokenRequest: boolean;
-  tokenFailed: boolean;
-  logoutRequest: boolean;
-  logoutFailed: boolean;
-  logoutSuccess: boolean;
-  error: string;
-};
-
 const initialState: TAuthState = {
   formLogin: {
     email: "",
@@ -210,19 +163,24 @@ const authSlice = createSlice({
   initialState,
   reducers: {
     loginFormSet: (state, action) => {
-      setForm(state, action, "formLogin");
+      //setForm(state, action, "formLogin");
+      state.formLogin[action.payload.name] = action.payload.value;
     },
     registerFormSet: (state, action) => {
-      setForm(state, action, "formRegister");
+      state.formRegister[action.payload.name] = action.payload.value;
+      //setForm(state, action, "formRegister");
     },
     forgotPasswordFormSet: (state, action) => {
-      setForm(state, action, "formForgotPassword");
+      state.formForgotPassword[action.payload.name] = action.payload.value;
+      //setForm(state, action, "formForgotPassword");
     },
     resetPasswordFormSet: (state, action) => {
-      setForm(state, action, "formResetPassword");
+      state.formResetPassword[action.payload.name] = action.payload.value;
+      //setForm(state, action, "formResetPassword");
     },
     profileFormSet: (state, action) => {
-      setForm(state, action, "formProfile");
+      state.formProfile[action.payload.name] = action.payload.value;
+      //setForm(state, action, "formProfile");
     },
   },
   extraReducers: (builder) => {
@@ -326,6 +284,7 @@ const authSlice = createSlice({
       .addCase(fetchProfile.rejected, (state) => {
         state.getProfileRequest = false;
         state.getProfileFailed = true;
+        fetchLogout();
       })
       .addCase(updateProfile.pending, (state) => {
         state.setProfileRequest = true;

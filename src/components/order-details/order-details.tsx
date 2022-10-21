@@ -15,7 +15,9 @@ export default function OrderDetails() {
 
   const content = (
     <>
-      <p className="text text_type_digits-large mt-4 mb-8">{order?.number}</p>
+      <p className={`text text_type_digits-large mt-4 mb-8 ${style.number}`}>
+        {order?.number}
+      </p>
       <p className="text text_type_main-medium">идентификатор заказа</p>
       <img alt="done" src={background} className={style.done__img} />
       <p className="text text_type_main-default">Ваш заказ начали готовить</p>
