@@ -14,12 +14,10 @@ import { useState } from "react";
 export default function Header() {
   const [menuActive, setMenuActive] = useState(false);
   const toggleMenu = () => {
-    console.log("click");
-
     setMenuActive(!menuActive);
   };
   return (
-    <header className={style.header}>
+    <header data-testid="header" className={style.header}>
       <Link to={ROUTES.HOME} className={style.logo}>
         <img className={style.logo__img} src={logo} alt="logo" />
       </Link>

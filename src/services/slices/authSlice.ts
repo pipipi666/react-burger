@@ -163,24 +163,19 @@ const authSlice = createSlice({
   initialState,
   reducers: {
     loginFormSet: (state, action) => {
-      //setForm(state, action, "formLogin");
       state.formLogin[action.payload.name] = action.payload.value;
     },
     registerFormSet: (state, action) => {
       state.formRegister[action.payload.name] = action.payload.value;
-      //setForm(state, action, "formRegister");
     },
     forgotPasswordFormSet: (state, action) => {
       state.formForgotPassword[action.payload.name] = action.payload.value;
-      //setForm(state, action, "formForgotPassword");
     },
     resetPasswordFormSet: (state, action) => {
       state.formResetPassword[action.payload.name] = action.payload.value;
-      //setForm(state, action, "formResetPassword");
     },
     profileFormSet: (state, action) => {
       state.formProfile[action.payload.name] = action.payload.value;
-      //setForm(state, action, "formProfile");
     },
   },
   extraReducers: (builder) => {

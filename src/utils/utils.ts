@@ -10,10 +10,6 @@ export const checkResponse = (res: Response) => {
 export const requestWithCheck = (url: string, options?: IOptions) =>
   fetch(url, options).then(checkResponse);
 
-// export const setForm = (state: any, action: TForm, form: keyof TAuthState) => {
-//   state[form][action.payload.name] = action.payload.value;
-// };
-
 export const getToken = (res: ILogin) => {
   if (res.accessToken && res.refreshToken) {
     const token = res.accessToken.split("Bearer ")[1];
