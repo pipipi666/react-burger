@@ -2,11 +2,11 @@ import {
   fetchForgotPassword,
   fetchProfile,
   fetchResetPassword,
+  initialState,
   updateProfile,
-} from "./../services/slices/authSlice";
+} from "./authSlice";
 import configureMockStore from "redux-mock-store";
 import thunk from "redux-thunk";
-import { TAuthState } from "utils/types";
 import { getAccessToken, getRefreshToken } from "utils/utils";
 import authReducer, {
   fetchLogin,
@@ -17,53 +17,7 @@ import authReducer, {
   profileFormSet,
   registerFormSet,
   resetPasswordFormSet,
-} from "../services/slices/authSlice";
-
-const initialState: TAuthState = {
-  formLogin: {
-    email: "",
-    password: "",
-  },
-  formRegister: {
-    name: "",
-    email: "",
-    password: "",
-  },
-  formForgotPassword: {
-    email: "",
-  },
-  formResetPassword: {
-    password: "",
-    token: "",
-  },
-  user: {
-    nameUser: "",
-    emailUser: "",
-  },
-  formProfile: {
-    name: "",
-    email: "",
-  },
-  loginRequest: false,
-  loginFailed: false,
-  registerRequest: false,
-  registerFailed: false,
-  forgotPasswordRequest: false,
-  forgotPasswordFailed: false,
-  resetPasswordRequest: false,
-  resetPasswordFailed: false,
-  resetPasswordSuccess: false,
-  getProfileRequest: false,
-  getProfileFailed: false,
-  setProfileRequest: false,
-  setProfileFailed: false,
-  tokenRequest: false,
-  tokenFailed: false,
-  logoutRequest: false,
-  logoutFailed: false,
-  logoutSuccess: false,
-  error: "",
-};
+} from "./authSlice";
 
 const formMock = { name: "email", value: "value" };
 const tokenMock = { accessToken: "Bearer access", refreshToken: "refresh" };

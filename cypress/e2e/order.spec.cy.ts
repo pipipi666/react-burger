@@ -15,7 +15,7 @@ const addItem = (index) => {
 
 describe("constructor page works correctly", () => {
   before(function () {
-    cy.visit("http://localhost:3000");
+    cy.visit("/");
   });
   it("should drag ingredient to constructor", function () {
     addItem(0);

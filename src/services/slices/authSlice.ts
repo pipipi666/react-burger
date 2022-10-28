@@ -112,7 +112,7 @@ export const updateProfile = createAsyncThunk<
   }).catch((err) => rejectWithValue(err.message))
 );
 
-const initialState: TAuthState = {
+export const initialState: TAuthState = {
   formLogin: {
     email: "",
     password: "",

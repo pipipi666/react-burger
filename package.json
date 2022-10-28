@@ -33,7 +33,9 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "cypress": "cypress open cache clear",
+    "deploy-script": "npm run build && scp -i ~/.ssh/pipipi666 -r ./build/* pipipi666@62.84.127.80:/home/pipipi666/stellar-frontend"
   },
   "eslintConfig": {
     "extends": [

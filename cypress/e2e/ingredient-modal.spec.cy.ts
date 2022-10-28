@@ -2,7 +2,7 @@ import cypress from "cypress";
 
 describe("constructor page works correctly", () => {
   before(function () {
-    cy.visit("http://localhost:3000");
+    cy.visit("/");
   });
   it("should open modal after ingredient click", function () {
     cy.get("[class*=list__item]").first().click();

@@ -7,27 +7,12 @@ import {
   fetchOrder,
   getCurrentIngredient,
   getCurrentOrder,
+  initialState,
   setIngredients,
   total,
 } from "services/slices/ingredientsSlice";
-import { IData, TIngredientsState, TOrder } from "utils/types";
-import ingredientsReducer from "../services/slices/ingredientsSlice";
-
-const initialState: TIngredientsState = {
-  ingredientsRequest: false,
-  ingredientsFailed: false,
-  ingredients: [],
-  constructorIngredients: [],
-  lastIndexConstructor: 0,
-  orderRequest: false,
-  orderFailed: false,
-  sum: 0,
-  orders: [],
-  isSocket: false,
-  isSocketError: false,
-  ordersTotal: 0,
-  ordersTotalToday: 0,
-};
+import { IData, TOrder } from "utils/types";
+import ingredientsReducer from "./ingredientsSlice";
 
 const ingredientsMock: IData[] = [
   {

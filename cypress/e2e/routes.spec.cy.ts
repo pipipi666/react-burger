@@ -2,7 +2,7 @@ import cypress from "cypress";
 
 describe("app works correctly with routes", () => {
   before(function () {
-    cy.visit("http://localhost:3000");
+    cy.visit("/");
   });
   it("should open constructor page by default", function () {
     cy.contains("Перетащите ингредиенты сюда");

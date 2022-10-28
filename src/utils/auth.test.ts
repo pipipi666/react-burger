@@ -1,5 +1,5 @@
-import { API_URL_REGISTER } from "./../utils/constsAPI";
-import { fetchForm } from "./../utils/utils";
+import { API_URL_REGISTER } from "./constsAPI";
+import { fetchForm } from "./utils";
 
 describe("Check checkResponse function", () => {
   beforeEach(() => {

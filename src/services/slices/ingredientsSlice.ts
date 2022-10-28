@@ -47,7 +47,7 @@ export const fetchOrder = createAsyncThunk<TOrderThunk, string[]>(
     }).catch((err) => rejectWithValue(err.message))
 );
 
-const initialState: TIngredientsState = {
+export const initialState: TIngredientsState = {
   ingredientsRequest: false,
   ingredientsFailed: false,
   ingredients: [],
