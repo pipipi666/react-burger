@@ -23,14 +23,18 @@ export const Modal: FC<IProps> = ({ close, title, children }) => {
   return ReactDOM.createPortal(
     <>
       <ModalOverlay close={close} />
-      <div className={style.modal} onClick={(e) => e.stopPropagation()}>
+      <div
+        data-cy="modal"
+        className={style.modal}
+        onClick={(e) => e.stopPropagation()}
+      >
         <header className={style.header}>
           {typeof title === "number" ? (
             <span className="text text_type_digits-default">#{title}</span>
           ) : (
             <span className="text text_type_main-large">{title}</span>
           )}
-          <div onClick={() => close()}>
+          <div data-cy="close" onClick={() => close()}>
             <CloseIcon type="primary" />
           </div>
         </header>

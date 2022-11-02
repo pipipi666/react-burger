@@ -78,18 +78,24 @@ export default function BurgerConstructor() {
 
   const handleRemove = (item: IData) => dispatch(deleteIngredient(item));
 
-  const targetClassName = `${style.container} ${isHover ? style.drop : ""}`;
+  const targetClassName = `${style.container} ${
+    isHover && constructorIngredients.length === 0 ? style.drop : ""
+  }`;
 
   if (constructorIngredients.length === 0) {
     return (
-      <section ref={dropTarget} className={targetClassName}>
+      <section
+        data-cy="constructor"
+        ref={dropTarget}
+        className={targetClassName}
+      >
         <h1>Перетащите ингредиенты сюда</h1>
       </section>
     );
   }
 
   return (
-    <section ref={dropTarget} className={targetClassName}>
+    <section data-cy="constructor" ref={dropTarget} className={targetClassName}>
       <div className={style.main}>
         {bun && (
           <div className="ml-8">

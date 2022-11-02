@@ -1,7 +1,7 @@
 .container {
-  width: 600px;
   padding-top: 100px;
   box-sizing: border-box;
+  width: 100%;
   .main {
     display: flex;
     flex-direction: column;
@@ -33,5 +33,5 @@
 }
 
 .drop {
-  border: 1px solid white;
+  text-decoration: underline;
 }

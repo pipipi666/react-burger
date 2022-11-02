@@ -27,7 +27,7 @@ export default function RegisterPage() {
   );
 
   const onFormChange = (e: ChangeEvent<HTMLInputElement>) => {
-    dispatch(registerFormSet([e.target.name, e.target.value]));
+    dispatch(registerFormSet({ name: e.target.name, value: e.target.value }));
   };
 
   const handleFormSubmit = (e: FormEvent<HTMLFormElement>) => {

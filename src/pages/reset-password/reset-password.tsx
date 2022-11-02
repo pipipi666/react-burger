@@ -31,7 +31,9 @@ export default function ResetPasswordPage() {
   const { resetPasswordSuccess } = useAppSelector((state) => state.auth);
 
   const onFormChange = (e: ChangeEvent<HTMLInputElement>) => {
-    dispatch(resetPasswordFormSet([e.target.name, e.target.value]));
+    dispatch(
+      resetPasswordFormSet({ name: e.target.name, value: e.target.value })
+    );
   };
 
   const handleFormSubmit = (e: FormEvent<HTMLFormElement>) => {

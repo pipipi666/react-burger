@@ -8,7 +8,7 @@
   position: absolute;
   top: 10%;
   left: calc(50% - 360px);
-  z-index: 10;
+  z-index: 30;
   .header {
     height: 64px;
     display: flex;
@@ -17,6 +17,9 @@
   }
   .content {
     margin: 0 auto 0;
+    max-height: calc(100vh - 300px);
+    overflow-y: auto;
+    overflow-x: hidden;
     &::-webkit-scrollbar {
       width: 8px;
     }
@@ -26,8 +29,19 @@
     &::-webkit-scrollbar-thumb {
       background-color: #8585ad;
     }
-    max-height: calc(100vh - 300px);
-    overflow-y: auto;
-    overflow-x: hidden;
+  }
+  @media screen and (max-width: 800px) {
+    height: 100vh;
+    width: calc(100vw - 0px);
+    margin: 0;
+    top: 0;
+    right: 0;
+    left: 0;
+    border-radius: 0;
+    padding: 16px 8px;
+    background-color: #131316;
+    .content {
+      max-height: fit-content;
+    }
   }
 }
