@@ -24,10 +24,10 @@ export default function LoginPage() {
   const dispatch = useAppDispatch();
   const location = useLocation<ILocationState>();
   const { error, loginFailed } = useAppSelector((state) => state.auth);
+  const { email, password } = useAppSelector((state) => state.auth.formLogin);
   const [errorEmail, setErrorEmail] = useState(false);
   const [errorPassword, setErrorPassword] = useState(false);
   const auth = isAuth();
-  const { email, password } = useAppSelector((state) => state.auth.formLogin);
   const nextLocation = location.state?.from || ROUTES.HOME;
 
   const onFormChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -36,8 +36,9 @@ export default function LoginPage() {
 
   const handleFormSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (email && password) dispatch(fetchLogin());
-    else {
+    if (email && password) {
+      dispatch(fetchLogin());
+    } else {
       setErrorPassword(!password);
       setErrorEmail(!email);
     }

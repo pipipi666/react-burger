@@ -18,6 +18,7 @@ import {
 } from "services/slices/ingredientsSlice";
 import { useAppDispatch, useAppSelector } from "utils/hooks";
 import { Tab } from "utils/libComponentsWithTypes";
+import Loader from "components/loader/loader";
 
 export default function BurgerIngredients() {
   const dispatch = useAppDispatch();
@@ -25,10 +26,12 @@ export default function BurgerIngredients() {
   const history = useHistory();
   const { id } = useParams<{ id: string }>();
   const [current, setCurrent] = useState("buns");
-  const { ingredients, ingredientsRequest, ingredientsFailed } = useAppSelector(
-    (state) => state.ingredients
-  );
-  const { currentIngredient } = useAppSelector((state) => state.ingredients);
+  const {
+    ingredients,
+    ingredientsRequest,
+    ingredientsFailed,
+    currentIngredient,
+  } = useAppSelector((state) => state.ingredients);
   const sauces = useMemo(
     () => ingredients.filter((item) => item.type === "sauce"),
     [ingredients]
@@ -87,18 +90,12 @@ export default function BurgerIngredients() {
   const handleClose = () => {
     setModalVisible(false);
     dispatch(deleteCurrentIngredient());
-    history.replace({
-      pathname: ROUTES.HOME,
-    });
+    history.replace(ROUTES.HOME);
   };
 
   const handleScroll = (ref: HTMLDivElement) => {
     ref.scrollIntoView({ block: "start", behavior: "smooth" });
   };
-
-  const loading = (
-    <p className="text text_type_main-medium mt-10">Загрузка...</p>
-  );
 
   const fail = (
     <p className="text text_type_main-medium mt-10">
@@ -108,7 +105,7 @@ export default function BurgerIngredients() {
 
   const content = (
     <>
-      <h1 className={`text text_type_main-large mt-10 mb-5 ${style.h1}`}>
+      <h1 className={"text text_type_main-large mt-10 mb-5"}>
         Соберите бургер
       </h1>
       <div className={style.nav}>
@@ -188,7 +185,7 @@ export default function BurgerIngredients() {
 
   return (
     <section className={style.container}>
-      {ingredientsRequest ? loading : ingredientsFailed ? fail : content}
+      {ingredientsRequest ? <Loader /> : ingredientsFailed ? fail : content}
     </section>
   );
 }

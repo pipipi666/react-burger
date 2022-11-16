@@ -20,8 +20,7 @@ export default function RegisterPage() {
   const [errorEmail, setErrorEmail] = useState(false);
   const [errorPassword, setErrorPassword] = useState(false);
   const auth = isAuth();
-  const { error } = useAppSelector((state) => state.auth);
-  const { registerFailed } = useAppSelector((state) => state.auth);
+  const { error, registerFailed } = useAppSelector((state) => state.auth);
   const { name, email, password } = useAppSelector(
     (state) => state.auth.formRegister
   );

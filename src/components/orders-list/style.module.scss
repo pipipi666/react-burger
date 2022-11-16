@@ -1,17 +1,15 @@
+@import "assets/style/global.scss";
+
 .wrapper {
   display: flex;
   flex-direction: column;
   gap: 24px;
-  overflow: auto;
   height: 100%;
   width: 100%;
-  &::-webkit-scrollbar {
-    width: 8px;
-  }
-  &::-webkit-scrollbar-track {
-    background: #2f2f37;
-  }
-  &::-webkit-scrollbar-thumb {
-    background-color: #8585ad;
+  @include scroll;
+  .empty {
+    width: 480px;
+    max-width: 100vw;
+    text-align: center;
   }
 }

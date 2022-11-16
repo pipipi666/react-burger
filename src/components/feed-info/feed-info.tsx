@@ -12,11 +12,11 @@ export default function FeedInfo() {
   );
   const dispatch = useAppDispatch();
   const done = useMemo(
-    () => orders.filter((order) => order.status === "done"),
+    () => orders?.filter((order) => order.status === "done"),
     [orders]
   );
   const atWork = useMemo(
-    () => orders.filter((order) => order.status === "pending"),
+    () => orders?.filter((order) => order.status === "pending"),
     [orders]
   );
 
@@ -33,7 +33,7 @@ export default function FeedInfo() {
         <div className={style.list}>
           <p className="text text_type_main-medium">Готовы:</p>
           <ul className={style.ul}>
-            {done.map((order: TOrder) => (
+            {done?.map((order: TOrder) => (
               <li
                 className={`text text_type_digits-default ${style.li} ${style.done}`}
                 key={order._id}
@@ -46,7 +46,7 @@ export default function FeedInfo() {
         <div className={style.list}>
           <p className="text text_type_main-medium">В работе:</p>
           <ul className={style.ul}>
-            {atWork.map((order: TOrder) => (
+            {atWork?.map((order: TOrder) => (
               <li
                 className={`text text_type_digits-default ${style.li}`}
                 key={order._id}
@@ -58,16 +58,16 @@ export default function FeedInfo() {
         </div>
       </div>
       <div>
-        <p className="text text_type_main-medium mt-15">
-          Выполнено за все время:
+        <p className="text text_type_main-medium">Выполнено за все время:</p>
+        <p className={`text text_type_digits-large ${style.number}`}>
+          {ordersTotal}
         </p>
-        <p className="text text_type_digits-large">{ordersTotal}</p>
       </div>
       <div>
-        <p className="text text_type_main-medium mt-15">
-          Выполнено за сегодня:
+        <p className="text text_type_main-medium">Выполнено за сегодня:</p>
+        <p className={`text text_type_digits-large ${style.number}`}>
+          {ordersTotalToday}
         </p>
-        <p className="text text_type_digits-large">{ordersTotalToday}</p>
       </div>
     </section>
   );

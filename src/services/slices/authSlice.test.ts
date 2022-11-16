@@ -1,14 +1,9 @@
-import {
+import authReducer, {
   fetchForgotPassword,
   fetchProfile,
   fetchResetPassword,
   initialState,
   updateProfile,
-} from "./authSlice";
-import configureMockStore from "redux-mock-store";
-import thunk from "redux-thunk";
-import { getAccessToken, getRefreshToken } from "utils/utils";
-import authReducer, {
   fetchLogin,
   fetchLogout,
   fetchRegister,
@@ -18,6 +13,9 @@ import authReducer, {
   registerFormSet,
   resetPasswordFormSet,
 } from "./authSlice";
+import configureMockStore from "redux-mock-store";
+import thunk from "redux-thunk";
+import { getAccessToken, getRefreshToken } from "utils/utils";
 
 const formMock = { name: "email", value: "value" };
 const tokenMock = { accessToken: "Bearer access", refreshToken: "refresh" };

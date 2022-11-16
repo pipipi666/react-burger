@@ -1,8 +1,8 @@
 .header {
-  height: 88px;
+  height: var(--header-height);
+  width: 100vw;
   display: flex;
-  background-color: #1c1c21;
-  min-width: 100vw;
+  background-color: var(--bg-secondary-color);
   .logo {
     display: none;
     justify-content: center;
@@ -18,7 +18,6 @@
     height: 24px;
     width: 24px;
     align-self: center;
-    margin-right: 8px;
     z-index: 22;
     cursor: pointer;
     &::before,
@@ -28,8 +27,8 @@
       position: absolute;
       height: 2px;
       width: 100%;
-      background-color: #fff;
-      color: #fff;
+      background-color: var(--text-primary-color);
+      color: var(--text-primary-color);
       left: 3px;
       border-radius: 10px;
       width: 18px;
@@ -48,34 +47,39 @@
   .main {
     display: flex;
     margin: auto;
-    width: 1280px;
-    padding: 0 8px 0;
+    width: var(--layout-width);
+    padding: var(--padding-small);
     h1 {
       display: none;
     }
     .left {
       display: flex;
-      gap: 8px;
-      width: calc(100% / 3);
+      gap: var(--gap-small);
+      flex: 1;
     }
     .right {
       display: flex;
       justify-content: flex-end;
-      width: calc(100% / 3);
+      flex: 1;
+      .profile {
+        display: flex;
+      }
+      .profile__menu {
+        display: none;
+        margin: 0;
+        padding-left: 32px;
+      }
     }
     .center {
       display: flex;
       justify-content: center;
-      width: calc(100% / 3);
     }
   }
-  @media screen and (max-width: 800px) {
-    height: 64px;
+  @media screen and (max-width: 900px) {
     justify-content: space-between;
-    box-sizing: border-box;
+    padding: var(--padding-small);
     .logo {
       display: flex;
-      margin-left: 8px;
     }
     .main {
       position: absolute;
@@ -85,9 +89,10 @@
       position: fixed;
       top: 0;
       left: 0;
-      width: 100%;
-      height: 100%;
-      background-color: #1c1c21;
+      width: 100vw;
+      height: 100vh;
+      padding: var(--padding-small);
+      background-color: var(--bg-secondary-color);
       a {
         padding: 0;
       }
@@ -104,13 +109,33 @@
         display: flex;
         flex-direction: column;
         gap: 0;
-        width: fit-content;
+        flex: 0;
+        .profile__menu {
+          display: block;
+        }
         a {
           height: 48px;
         }
       }
       .left {
         order: 1;
+      }
+      .profile {
+        justify-content: space-between;
+        align-items: center;
+        padding-right: 12px;
+        cursor: pointer;
+        .submenu {
+          display: flex;
+          border: 8px solid transparent;
+        }
+        .submenu__opened {
+          border-bottom: 8px solid var(--text-secondary-color);
+        }
+        .submenu__closed {
+          border-top: 8px solid var(--text-secondary-color);
+          margin-top: 8px;
+        }
       }
     }
     .burger,

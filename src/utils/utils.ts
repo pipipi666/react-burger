@@ -1,5 +1,5 @@
 import { ILogin, IForm, IOptions, TError } from "./types";
-import { API_URL_TOKEN } from "./constsAPI";
+import { API_URL_TOKEN, API_URL_LOGOUT } from "./constsAPI";
 
 export const checkResponse = (res: Response) => {
   return res.ok
@@ -35,6 +35,20 @@ const fetchRefresh = () =>
     body: JSON.stringify({ token: getRefreshToken() }),
   });
 
+export const logout = () => {
+  try {
+    const token = getRefreshToken();
+    localStorage.clear();
+    return requestWithCheck(API_URL_LOGOUT, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ token: token }),
+    });
+  } catch (err: unknown) {
+    throw Error;
+  }
+};
+
 export const fetchWithRefresh = async (URL: string, options: IOptions) => {
   try {
     const res = await fetch(URL, options);
@@ -47,7 +61,7 @@ export const fetchWithRefresh = async (URL: string, options: IOptions) => {
       options.headers.Authorization = "Bearer " + getAccessToken();
       const res = await fetch(URL, options);
       return await checkResponse(res);
-    }
+    } else throw Error;
   }
 };
 

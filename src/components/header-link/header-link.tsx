@@ -5,7 +5,7 @@ import { FC, ReactNode } from "react";
 interface IProps {
   title: string;
   route: string;
-  children: ReactNode;
+  children?: ReactNode;
   handleClick: () => void;
 }
 

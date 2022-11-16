@@ -12,8 +12,9 @@ import { useAppDispatch, useAppSelector } from "utils/hooks";
 export default function IngredientPage() {
   const dispatch = useAppDispatch();
   const { id } = useParams<{ id: string }>();
-  const { currentIngredient } = useAppSelector((state) => state.ingredients);
-  const { ingredients } = useAppSelector((state) => state.ingredients);
+  const { ingredients, currentIngredient } = useAppSelector(
+    (state) => state.ingredients
+  );
 
   useEffect(() => {
     dispatch(fetchIngredients());
@@ -28,10 +29,10 @@ export default function IngredientPage() {
 
   return (
     <>
-      <h1 className="text text_type_main-large mt-30">Детали ингредиента</h1>
-      <main className={style.main}>
-        {currentIngredient && <IngredientDetails />}
-      </main>
+      <h1 className={`text text_type_main-large mt-30 ${style.h1}`}>
+        Детали ингредиента
+      </h1>
+      {currentIngredient && <IngredientDetails />}
     </>
   );
 }

@@ -1,31 +1,47 @@
 import style from "./profile.module.scss";
-import { useLocation } from "react-router-dom";
+import { Redirect, useHistory, useLocation } from "react-router-dom";
 import UserInfo from "components/user-info/user-info";
 import { OrdersList } from "components/orders-list/orders-list";
 import AsideNav from "components/aside-nav/aside-nav";
 import { ROUTES } from "utils/constsRoute";
 import { useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "utils/hooks";
-import { getAccessToken } from "utils/utils";
-import { wsClose } from "services/slices/ingredientsSlice";
+import { getAccessToken, isAuth } from "utils/utils";
+import { fetchIngredients, wsClose } from "services/slices/ingredientsSlice";
 import { OrderInfoPage } from "pages/orfer-info/order-info";
 import { ILocationState } from "utils/types";
 import { WS_ORDERS_USER } from "utils/constsAPI";
 import { WS_CONNECTION_START } from "services/actions/wsActions";
+import { fetchProfile } from "services/slices/authSlice";
 
 export default function ProfilePage() {
-  const { orders } = useAppSelector((state) => state.ingredients);
+  const { orders, ingredients } = useAppSelector((state) => state.ingredients);
+  const { user } = useAppSelector((state) => state.auth);
   const dispatch = useAppDispatch();
   const location = useLocation<ILocationState>();
+  const history = useHistory();
+  const auth = isAuth();
+
   useEffect(() => {
-    dispatch({
-      type: WS_CONNECTION_START,
-      payload: WS_ORDERS_USER + getAccessToken(),
-    });
+    !user?.nameUser && !user?.emailUser && dispatch(fetchProfile());
+  }, [user, dispatch]);
+
+  useEffect(() => {
+    if (!ingredients || (ingredients && ingredients.length === 0))
+      dispatch(fetchIngredients());
+  }, []);
+
+  useEffect(() => {
+    if (user.nameUser) {
+      dispatch({
+        type: WS_CONNECTION_START,
+        payload: WS_ORDERS_USER + getAccessToken(),
+      });
+    }
     return () => {
       dispatch(wsClose());
     };
-  }, [dispatch]);
+  }, [dispatch, user]);
 
   if (
     location.pathname !== ROUTES.PROFILE &&
@@ -35,18 +51,30 @@ export default function ProfilePage() {
     return <OrderInfoPage />;
   }
 
+  if (!auth) return <Redirect to={ROUTES.LOGIN} />;
+
   return (
-    <main className={style.wrapper}>
-      <AsideNav />
-      <section className={style.info}>
-        {location.pathname === ROUTES.PROFILE ? (
-          <UserInfo />
-        ) : (
-          <div className={style.list}>
-            <OrdersList orders={orders} />
-          </div>
-        )}
-      </section>
-    </main>
+    <div className={style.page}>
+      <main className={style.wrapper}>
+        <AsideNav />
+        <section className={style.info}>
+          {location.pathname === ROUTES.PROFILE ? (
+            <>
+              <p className={`text text_type_main-medium mt-4 ${style.title}`}>
+                Профиль
+              </p>
+              <UserInfo />
+            </>
+          ) : (
+            <div className={style.list}>
+              <p className={`text text_type_main-medium mb-4 ${style.title}`}>
+                История заказов
+              </p>
+              <OrdersList orders={orders} />
+            </div>
+          )}
+        </section>
+      </main>
+    </div>
   );
 }

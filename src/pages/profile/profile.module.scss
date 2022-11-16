@@ -1,13 +1,37 @@
-.wrapper {
-  display: flex;
-  gap: 60px;
-  width: 1240px;
-  margin: auto;
-  .info {
-    width: 860px;
-    .list {
-      margin-top: 44px;
-      height: calc(100vh - 132px);
+@import "assets/style/global.scss";
+
+.page {
+  @include page;
+  .wrapper {
+    display: flex;
+    gap: 60px;
+    @include layout;
+    .info {
+      flex: 1;
+      .list {
+        margin-top: 44px;
+        height: calc(100vh - 132px);
+        @media screen and (max-width: 900px) {
+          margin-top: 16px;
+          height: calc(100vh - 126px);
+        }
+      }
+      .title {
+        display: none;
+        @media screen and (max-width: 900px) {
+          display: block;
+          text-align: center;
+        }
+      }
+    }
+    @media screen and (max-width: 900px) {
+      padding: var(--padding-small);
+      .info {
+        margin: auto;
+        .list {
+          height: calc(100vh - 80px);
+        }
+      }
     }
   }
 }

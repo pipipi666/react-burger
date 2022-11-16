@@ -1,4 +1,4 @@
-import {
+import ingredientsReducer, {
   addIngredient,
   deleteCurrentIngredient,
   deleteCurrentOrder,
@@ -12,7 +12,6 @@ import {
   total,
 } from "services/slices/ingredientsSlice";
 import { IData, TOrder } from "utils/types";
-import ingredientsReducer from "./ingredientsSlice";
 
 const ingredientsMock: IData[] = [
   {

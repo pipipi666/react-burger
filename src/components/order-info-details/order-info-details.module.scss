@@ -1,21 +1,15 @@
+@import "assets/style/global.scss";
+
 .container {
-  overflow: hidden;
+  max-height: inherit;
+  display: flex;
+  flex-direction: column;
   .images {
     display: flex;
     flex-direction: column;
-    gap: 16px;
-    max-height: 312px;
+    gap: var(--gap-default);
     padding-right: 24px;
-    overflow: auto;
-    &::-webkit-scrollbar {
-      width: 8px;
-    }
-    &::-webkit-scrollbar-track {
-      background: #2f2f37;
-    }
-    &::-webkit-scrollbar-thumb {
-      background-color: #8585ad;
-    }
+    @include scroll;
   }
   .total {
     padding-right: 24px;
@@ -25,11 +19,39 @@
     .price {
       display: flex;
       gap: 9px;
+      height: 25px;
     }
   }
   .done {
-    color: #00cccc;
+    color: var(--text-success-color);
   }
-  @media screen and (max-width: 800px) {
+  @media screen and (max-width: 900px) {
+    margin-bottom: 40px;
+    .name {
+      font-size: 20px;
+      margin-top: 24px;
+    }
+    .ingredients {
+      margin-top: 24px;
+    }
+    .images {
+      padding-right: 0;
+    }
+    .total {
+      position: absolute;
+      bottom: 0;
+      background-color: var(--bg-secondary-color);
+      margin-left: -8px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      width: 100vw;
+      padding: var(--padding-small);
+      .price {
+        font-size: 22px;
+        display: flex;
+        align-items: center;
+      }
+    }
   }
 }

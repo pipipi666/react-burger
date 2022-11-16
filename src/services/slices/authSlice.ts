@@ -1,15 +1,13 @@
-import { requestWithCheck } from "./../../utils/utils";
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import {
   getAccessToken,
-  getRefreshToken,
   getToken,
   fetchForm,
   fetchWithRefresh,
+  logout,
 } from "utils/utils";
 import {
   API_URL_LOGIN,
-  API_URL_LOGOUT,
   API_URL_PASSWORD_FORGOT,
   API_URL_PASSWORD_RESET,
   API_URL_REGISTER,
@@ -73,13 +71,7 @@ export const fetchResetPassword = createAsyncThunk<
 );
 
 export const fetchLogout = createAsyncThunk("auth/fetchLogout", () => {
-  const token = getRefreshToken();
-  localStorage.clear();
-  return requestWithCheck(API_URL_LOGOUT, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ token: token }),
-  });
+  logout().catch((err) => localStorage.clear());
 });
 
 export const fetchProfile = createAsyncThunk(
@@ -92,7 +84,10 @@ export const fetchProfile = createAsyncThunk(
         "Content-Type": "application/json",
         Authorization: "Bearer " + getAccessToken(),
       },
-    }).catch((err) => rejectWithValue(err.message))
+    }).catch((err) => {
+      localStorage.clear();
+      return rejectWithValue(err.message);
+    })
 );
 
 export const updateProfile = createAsyncThunk<
@@ -109,7 +104,10 @@ export const updateProfile = createAsyncThunk<
       Authorization: "Bearer " + getAccessToken(),
     },
     body: JSON.stringify({ ...getState().auth.formProfile }),
-  }).catch((err) => rejectWithValue(err.message))
+  }).catch((err) => {
+    localStorage.clear();
+    return rejectWithValue(err.message);
+  })
 );
 
 export const initialState: TAuthState = {
@@ -270,16 +268,15 @@ const authSlice = createSlice({
       .addCase(fetchProfile.fulfilled, (state, action) => {
         state.getProfileRequest = false;
         state.getProfileFailed = false;
-        state.user.nameUser = action.payload.user.name;
-        state.user.emailUser = action.payload.user.email;
-        state.formProfile.email = action.payload.user.email;
-        state.formProfile.name = action.payload.user.name;
+        state.user.nameUser = action.payload?.user.name;
+        state.user.emailUser = action.payload?.user.email;
+        state.formProfile.email = action.payload?.user.email;
+        state.formProfile.name = action.payload?.user.name;
         state.error = "";
       })
       .addCase(fetchProfile.rejected, (state) => {
         state.getProfileRequest = false;
         state.getProfileFailed = true;
-        fetchLogout();
       })
       .addCase(updateProfile.pending, (state) => {
         state.setProfileRequest = true;

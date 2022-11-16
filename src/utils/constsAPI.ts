@@ -11,6 +11,6 @@ export const API_URL_LOGOUT = API_URL_AUTH + "logout";
 export const API_URL_TOKEN = API_URL_AUTH + "token";
 export const API_URL_USER = API_URL_AUTH + "user";
 
-export const WS_BASE_URL = "wss://norma.nomoreparties.space/orders"
-export const WS_ORDERS_ALL = WS_BASE_URL + "/all"
-export const WS_ORDERS_USER = WS_BASE_URL + "?token="
+export const WS_BASE_URL = "wss://norma.nomoreparties.space/orders";
+export const WS_ORDERS_ALL = WS_BASE_URL + "/all";
+export const WS_ORDERS_USER = WS_BASE_URL + "?token=";

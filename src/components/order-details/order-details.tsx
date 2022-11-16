@@ -1,16 +1,11 @@
 import style from "./style.module.scss";
-import background from "image/graphics.svg";
+import background from "assets/image/graphics.svg";
 import { useAppSelector } from "utils/hooks";
+import Loader from "components/loader/loader";
 
 export default function OrderDetails() {
   const { order, orderRequest, orderFailed } = useAppSelector(
     (state) => state.ingredients
-  );
-
-  const loading = <div className={style.loader}>Loading...</div>;
-
-  const fail = (
-    <p className="text text_type_main-medium">Ошибка выполнения запроса</p>
   );
 
   const content = (
@@ -29,7 +24,13 @@ export default function OrderDetails() {
 
   return (
     <div className={style.content}>
-      {orderRequest ? loading : orderFailed ? fail : content}
+      {orderRequest ? (
+        <Loader />
+      ) : orderFailed ? (
+        <p className="text text_type_main-medium">Ошибка выполнения запроса</p>
+      ) : (
+        content
+      )}
     </div>
   );
 }

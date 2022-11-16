@@ -1,6 +1,9 @@
-import { requestWithCheck } from "./../../utils/utils";
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { fetchWithRefresh, getAccessToken } from "utils/utils";
+import {
+  requestWithCheck,
+  fetchWithRefresh,
+  getAccessToken,
+} from "utils/utils";
 import { API_URL_INGREDIENTS, API_URL_ORDERS } from "utils/constsAPI";
 import {
   TIngredientsState,
@@ -56,7 +59,6 @@ export const initialState: TIngredientsState = {
   orderRequest: false,
   orderFailed: false,
   sum: 0,
-  orders: [],
   isSocket: false,
   isSocketError: false,
   ordersTotal: 0,
@@ -119,7 +121,7 @@ const ingredientsSlice = createSlice({
         orders.map((x: TOrder) => {
           const date = new Date(x.createdAt);
           const now = new Date(Date.now());
-          const difference = Math.ceil(
+          const difference = Math.floor(
             (now.valueOf() - date.valueOf()) / (24 * 60 * 60 * 1000)
           );
           let days =

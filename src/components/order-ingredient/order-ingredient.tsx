@@ -17,7 +17,7 @@ export const OrderIngredient: FC<IProps> = ({ ingredient }) => {
         {ingredient.name}
       </span>
       <div className={style.price}>
-        <span className={`text text_type_digits-default`}>
+        <span className={`text text_type_digits-default ${style.number}`}>
           {ingredient.count} x {ingredient.price}
         </span>
         <CurrencyIcon type="primary" />

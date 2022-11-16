@@ -2,20 +2,27 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  text-align: center;
   .energy {
     width: 520px;
     display: flex;
-    gap: 20px;
-    padding: 0;
     justify-content: space-between;
-    .energy__prop {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
+    padding: 0;
   }
   .img {
     width: 480px;
     height: 240px;
+  }
+  @media screen and (max-width: 900px) {
+    .energy {
+      width: 100vw;
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      row-gap: 32px;
+    }
+    .img {
+      width: 240px;
+      height: 120px;
+    }
   }
 }

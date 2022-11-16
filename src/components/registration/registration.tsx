@@ -1,5 +1,5 @@
 import style from "./style.module.scss";
-import { useHistory } from "react-router-dom";
+import { Redirect, useHistory } from "react-router-dom";
 import { FC, FormEvent, ReactNode } from "react";
 import { Button } from "utils/libComponentsWithTypes";
 
@@ -26,31 +26,29 @@ export const Registration: FC<IProps> = ({
 }) => {
   const history = useHistory();
   const handleClick = (path: string) => {
-    history.push({ pathname: path });
+    history.push(path);
   };
 
   return (
     <div className={style.wrapper}>
-      <div className={style.container}>
-        <form className={style.main} onSubmit={handleFormSubmit}>
-          <h2 className="text text_type_main-medium mt-10">{title}</h2>
-          {children}
-          <Button htmlType="submit" type="primary" size="large">
-            {buttonName}
+      <form className={style.main} onSubmit={handleFormSubmit}>
+        <h2 className="text text_type_main-medium mt-10">{title}</h2>
+        {children}
+        <Button htmlType="submit" type="primary" size="large">
+          {buttonName}
+        </Button>
+      </form>
+      {links.map((item, index: number) => (
+        <p
+          key={index}
+          className="text text_type_main-default text_color_inactive mb-4"
+        >
+          <span className="pr-2">{item.text}</span>
+          <Button type="secondary" onClick={() => handleClick(item.path)}>
+            {item.button}
           </Button>
-        </form>
-        {links.map((item, index: number) => (
-          <p
-            key={index}
-            className="text text_type_main-default text_color_inactive mb-4"
-          >
-            <span className="pr-2">{item.text}</span>
-            <Button type="secondary" onClick={() => handleClick(item.path)}>
-              {item.button}
-            </Button>
-          </p>
-        ))}
-      </div>
+        </p>
+      ))}
     </div>
   );
 };

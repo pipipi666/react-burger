@@ -1,33 +1,33 @@
 .container {
-  background-color: #1c1c21;
+  background-color: var(--bg-secondary-color);
   border-radius: 40px;
   padding: 24px;
-  box-sizing: border-box;
   .link {
     text-decoration: none;
-    color: #f2f2f3;
-
+    color: var(--text-primary-color);
     .title {
       display: flex;
       justify-content: space-between;
+      gap: 40px;
+      text-align: right;
     }
     .pics {
       height: 64px;
       padding-left: 15px;
       display: flex;
       justify-content: space-between;
-      align-items: center;
+      gap: var(--gap-default);
       .price {
         display: flex;
         align-items: center;
-        gap: 8px;
+        gap: var(--gap-small);
       }
       .img {
         display: flex;
         .img__wrapper {
           height: 64px;
           width: 64px;
-          background: linear-gradient(#4c4cff, #801ab2);
+          background: var(--gradient);
           border-radius: 50%;
           display: flex;
           justify-content: center;
@@ -53,12 +53,12 @@
             object-fit: cover;
             height: 60px;
             width: 60px;
-            background-color: #131316;
+            background-color: var(--bg-primary-color);
             border-radius: 50%;
           }
           .count {
             position: absolute;
-            background-color: rgba(0, 0, 0, 0.5);
+            background-color: var(--bg-modal);
             width: 58px;
             height: 58px;
             border-radius: 50%;
@@ -66,11 +66,35 @@
             justify-content: center;
             align-items: center;
           }
+          @media screen and (max-width: 400px) {
+            height: 32px;
+            width: 32px;
+            margin-left: -8px;
+            img {
+              height: 28px;
+              width: 28px;
+            }
+            .count {
+              width: 26px;
+              height: 26px;
+              div {
+                font-size: 20px;
+              }
+            }
+          }
         }
       }
     }
     .done {
-      color: #00cccc;
+      color: var(--text-success-color);
+    }
+  }
+  @media screen and (max-width: 400px) {
+    padding: var(--padding-default);
+    .link {
+      .pics {
+        padding-left: 8px;
+      }
     }
   }
 }

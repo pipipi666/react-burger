@@ -30,9 +30,13 @@ export const Modal: FC<IProps> = ({ close, title, children }) => {
       >
         <header className={style.header}>
           {typeof title === "number" ? (
-            <span className="text text_type_digits-default">#{title}</span>
+            <span className={`text text_type_digits-default ${style.number}`}>
+              #{title}
+            </span>
           ) : (
-            <span className="text text_type_main-large">{title}</span>
+            <span className={`text text_type_main-large ${style.title}`}>
+              {title}
+            </span>
           )}
           <div data-cy="close" onClick={() => close()}>
             <CloseIcon type="primary" />
