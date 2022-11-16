@@ -1,8 +1,8 @@
+@import "assets/style/global.scss";
+
 .modal {
-  box-sizing: border-box;
-  background-color: #1c1c21;
+  background-color: var(--bg-secondary-color);
   width: 720px;
-  height: fit-content;
   border-radius: 40px;
   padding: 40px;
   position: absolute;
@@ -16,30 +16,28 @@
     justify-content: space-between;
   }
   .content {
-    margin: 0 auto 0;
     max-height: calc(100vh - 300px);
-    overflow-y: auto;
-    overflow-x: hidden;
-    &::-webkit-scrollbar {
-      width: 8px;
-    }
-    &::-webkit-scrollbar-track {
-      background: #2f2f37;
-    }
-    &::-webkit-scrollbar-thumb {
-      background-color: #8585ad;
-    }
+    @include scroll;
   }
-  @media screen and (max-width: 800px) {
+  @media screen and (max-width: 900px) {
     height: 100vh;
-    width: calc(100vw - 0px);
+    width: 100vw;
     margin: 0;
     top: 0;
     right: 0;
     left: 0;
     border-radius: 0;
-    padding: 16px 8px;
-    background-color: #131316;
+    padding: 8px;
+    background-color: var(--bg-primary-color);
+    .header {
+      justify-content: flex-end;
+      .number {
+        flex: 1;
+      }
+      .title {
+        display: none;
+      }
+    }
     .content {
       max-height: fit-content;
     }

@@ -8,13 +8,29 @@ import {
 import { Link } from "react-router-dom";
 import { HeaderLink } from "components/header-link/header-link";
 import { ROUTES } from "utils/constsRoute";
-import logo from "../../image/logo.png";
+import logo from "assets/image/logo.svg";
 import { useState } from "react";
+import { useAppDispatch } from "utils/hooks";
+import { fetchLogout } from "services/slices/authSlice";
+import { isAuth } from "utils/utils";
 
 export default function Header() {
+  const dispatch = useAppDispatch();
   const [menuActive, setMenuActive] = useState(false);
+  const [subMenuActive, setSubMenuActive] = useState(false);
+  const auth = isAuth();
   const toggleMenu = () => {
     setMenuActive(!menuActive);
+  };
+  const closeMenu = () => {
+    setMenuActive(false);
+  };
+  const toggleSubMenu = () => {
+    setSubMenuActive(!subMenuActive);
+  };
+  const handleLogOutClick = () => {
+    dispatch(fetchLogout());
+    closeMenu();
   };
   return (
     <header data-testid="header" className={style.header}>
@@ -35,14 +51,14 @@ export default function Header() {
           <HeaderLink
             title="Конструктор"
             route={ROUTES.HOME}
-            handleClick={toggleMenu}
+            handleClick={closeMenu}
           >
             <BurgerIcon type="secondary" />
           </HeaderLink>
           <HeaderLink
             title="Лента заказов"
             route={ROUTES.FEED}
-            handleClick={toggleMenu}
+            handleClick={closeMenu}
           >
             <ListIcon type="secondary" />
           </HeaderLink>
@@ -51,13 +67,47 @@ export default function Header() {
           <Logo />
         </Link>
         <div className={style.right}>
-          <HeaderLink
-            title="Личный кабинет"
-            route={ROUTES.PROFILE}
-            handleClick={toggleMenu}
-          >
-            <ProfileIcon type="secondary" />
-          </HeaderLink>
+          <div className={style.profile} onClick={toggleSubMenu}>
+            <HeaderLink
+              title="Личный кабинет"
+              route={ROUTES.PROFILE}
+              handleClick={closeMenu}
+            >
+              <ProfileIcon type="secondary" />
+            </HeaderLink>
+            {auth && (
+              <div
+                className={`${style.submenu} ${
+                  subMenuActive ? style.submenu__opened : style.submenu__closed
+                }`}
+              ></div>
+            )}
+          </div>
+          {subMenuActive && auth && (
+            <ul className={style.profile__menu}>
+              <li className={style.li}>
+                <HeaderLink
+                  title="Профиль"
+                  route={ROUTES.PROFILE}
+                  handleClick={closeMenu}
+                />
+              </li>
+              <li className={style.li}>
+                <HeaderLink
+                  title="История заказов"
+                  route={ROUTES.ORDERS}
+                  handleClick={closeMenu}
+                />
+              </li>
+              <li className={style.li}>
+                <HeaderLink
+                  title="Выход"
+                  route={ROUTES.LOGIN}
+                  handleClick={handleLogOutClick}
+                />
+              </li>
+            </ul>
+          )}
         </div>
       </div>
     </header>

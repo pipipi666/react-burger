@@ -1,4 +1,5 @@
 import { Input } from "@ya.praktikum/react-developer-burger-ui-components";
+import Loader from "components/loader/loader";
 import React, {
   ChangeEvent,
   FormEvent,
@@ -30,10 +31,6 @@ export default function UserInfo() {
   const [errorName, setErrorName] = useState(false);
 
   useEffect(() => {
-    !nameUser && !emailUser && dispatch(fetchProfile());
-  }, [nameUser, emailUser, dispatch]);
-
-  useEffect(() => {
     email !== emailUser || name !== nameUser
       ? setChanged(true)
       : setChanged(false);
@@ -57,12 +54,6 @@ export default function UserInfo() {
     dispatch(profileFormSet({ name: "email", value: emailUser }));
     dispatch(profileFormSet({ name: "name", value: nameUser }));
   };
-
-  const loading = <p className="text text_type_main-medium">Загрузка...</p>;
-
-  const fail = (
-    <p className="text text_type_main-medium">Ошибка выполнения запроса</p>
-  );
 
   const success = (
     <form className={style.content} onSubmit={handleSubmit}>
@@ -107,11 +98,15 @@ export default function UserInfo() {
 
   return (
     <div className={style.wrapper}>
-      {getProfileRequest || setProfileRequest
-        ? loading
-        : getProfileFailed || setProfileFailed
-        ? fail
-        : success}
+      {getProfileRequest || setProfileRequest ? (
+        <div className={style.loader}>
+          <Loader />
+        </div>
+      ) : getProfileFailed || setProfileFailed ? (
+        <p className="text text_type_main-medium">Ошибка выполнения запроса</p>
+      ) : (
+        success
+      )}
     </div>
   );
 }

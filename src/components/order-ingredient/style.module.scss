@@ -1,12 +1,12 @@
 .container {
   display: flex;
-  gap: 16px;
+  gap: var(--gap-default);
   width: 100%;
   align-items: center;
   .img {
     height: 64px;
     width: 64px;
-    background: linear-gradient(#4c4cff, #801ab2);
+    background: var(--gradient);
     border-radius: 50%;
     display: flex;
     justify-content: center;
@@ -15,7 +15,7 @@
       object-fit: cover;
       height: 60px;
       width: 60px;
-      background-color: #131316;
+      background-color: var(--bg-primary-color);
       border-radius: 50%;
     }
   }
@@ -25,5 +25,22 @@
   .price {
     display: flex;
     gap: 9px;
+  }
+  @media screen and (max-width: 900px) {
+    .price {
+      .number {
+        font-size: 20px;
+        display: flex;
+        align-items: center;
+      }
+    }
+    .img {
+      height: 32px;
+      width: 32px;
+      img {
+        height: 28px;
+        width: 28px;
+      }
+    }
   }
 }

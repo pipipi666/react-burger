@@ -11,13 +11,14 @@ import {
 import { TOrder } from "utils/types";
 import { WS_ORDERS_ALL } from "utils/constsAPI";
 import { WS_CONNECTION_START } from "services/actions/wsActions";
+import Loader from "components/loader/loader";
 
 export const OrderInfoPage = () => {
   const dispatch = useAppDispatch();
   const { id } = useParams<{ id: string }>();
-  const { currentOrder } = useAppSelector((state) => state.ingredients);
-  const { orders } = useAppSelector((state) => state.ingredients);
-  const { ingredients } = useAppSelector((state) => state.ingredients);
+  const { currentOrder, orders, ingredients } = useAppSelector(
+    (state) => state.ingredients
+  );
 
   useEffect(() => {
     dispatch(fetchIngredients());
@@ -47,7 +48,7 @@ export const OrderInfoPage = () => {
           <OrderInfoDetails />
         </div>
       ) : (
-        <span className="text text_type_main-large">Загрузка...</span>
+        <Loader />
       )}
     </div>
   );

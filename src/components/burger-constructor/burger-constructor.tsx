@@ -24,10 +24,9 @@ import { Button } from "utils/libComponentsWithTypes";
 
 export default function BurgerConstructor() {
   const dispatch = useAppDispatch();
-  const { constructorIngredients } = useAppSelector(
+  const { constructorIngredients, sum } = useAppSelector(
     (state) => state.ingredients
   );
-  const { sum } = useAppSelector((state) => state.ingredients);
   const auth = isAuth();
   const history = useHistory();
   const [isModalVisible, setModalVisible] = useState(false);
@@ -54,7 +53,7 @@ export default function BurgerConstructor() {
     accept: "ingredient",
     drop(item: IData) {
       if (item.type === "bun" && bun) {
-        handleRemove(bun);
+        dispatch(deleteIngredient(bun));
       }
       dispatch(addIngredient(item));
     },
@@ -76,13 +75,11 @@ export default function BurgerConstructor() {
     dispatch(setIngredients([]));
   };
 
-  const handleRemove = (item: IData) => dispatch(deleteIngredient(item));
-
   const targetClassName = `${style.container} ${
-    isHover && constructorIngredients.length === 0 ? style.drop : ""
+    isHover && !constructorIngredients.length && style.drop
   }`;
 
-  if (constructorIngredients.length === 0) {
+  if (!constructorIngredients.length) {
     return (
       <section
         data-cy="constructor"
@@ -98,7 +95,7 @@ export default function BurgerConstructor() {
     <section data-cy="constructor" ref={dropTarget} className={targetClassName}>
       <div className={style.main}>
         {bun && (
-          <div className="ml-8">
+          <div className={style.bun}>
             <ConstructorElement
               type="top"
               isLocked={true}
@@ -114,7 +111,7 @@ export default function BurgerConstructor() {
           ))}
         </div>
         {bun && (
-          <div className="ml-8">
+          <div className={style.bun}>
             <ConstructorElement
               type="bottom"
               isLocked={true}

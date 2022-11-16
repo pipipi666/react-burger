@@ -38,7 +38,7 @@ export default function IngredientDetails() {
       </p>
       <ul className={style.energy}>
         {stats.map((stat, index) => (
-          <li className={style.energy__prop} key={index}>
+          <li key={index}>
             <p className="text text_type_main-default text_color_inactive mb-2">
               {stat.name}
             </p>

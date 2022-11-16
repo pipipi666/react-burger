@@ -9,7 +9,7 @@ import {
   deleteIngredient,
   setIngredients,
 } from "services/slices/ingredientsSlice";
-import { IData } from "../../utils/types";
+import { IData } from "utils/types";
 import { FC } from "react";
 import { useAppDispatch, useAppSelector } from "utils/hooks";
 

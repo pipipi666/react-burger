@@ -1,16 +1,44 @@
+@import "assets/style/global.scss";
+
 .wrapper {
-  width: 1240px;
-  margin: auto;
+  @include layout;
+  .nav {
+    padding: 0;
+    display: none;
+    li > div {
+      width: 50vw;
+      padding: var(--padding-default);
+    }
+  }
   .main {
     display: flex;
-    gap: 60px;
+    gap: 40px;
     height: calc(100vh - 188px);
     .list {
-      width: 600px;
+      flex: 1;
+      max-width: 100vw;
     }
     .stats {
-      width: 580px;
-      height: 100%;
+      flex: 1;
+    }
+  }
+  @media screen and (max-width: 900px) {
+    padding: 0;
+    .main {
+      height: calc(100vh - 120px);
+      justify-content: center;
+      padding: var(--padding-small);
+      .stats,
+      .list {
+        display: none;
+      }
+      .active {
+        display: flex;
+      }
+    }
+    .nav {
+      display: flex;
+      margin: 0;
     }
   }
 }

@@ -74,7 +74,7 @@ export type TIngredientsState = {
   orderFailed: boolean;
   order?: TOrder;
   sum: number;
-  orders: Array<TOrder>;
+  orders?: Array<TOrder>;
   isSocket: boolean;
   isSocketError: boolean;
   ordersTotal: number;

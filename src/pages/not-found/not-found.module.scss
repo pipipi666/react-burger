@@ -1,6 +1,4 @@
 .main {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin-top: calc((100vh - 88px) / 2 - 160px);
+  margin-top: calc(var(--layout-height) / 2 - 160px);
+  text-align: center;
 }

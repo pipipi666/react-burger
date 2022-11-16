@@ -37,7 +37,7 @@ export const OrderCard: FC<IProps> = ({ order, handleClick }) => {
           </span>
         </div>
         <p className="text text_type_main-medium mt-6 mb-2">{order.name}</p>
-        {location.pathname === ROUTES.ORDERS &&
+        {location.pathname.includes(ROUTES.ORDERS) &&
           (order.status === "done" ? (
             <div className="text text_type_main-default mb-6">
               <span className={style.done}>Выполнен</span>

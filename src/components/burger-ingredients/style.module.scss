@@ -1,36 +1,30 @@
+@import "assets/style/global.scss";
+
 .container {
   width: 600px;
+  max-width: calc(100vw - 530px);
   text-align: left;
   .nav {
     display: flex;
-  }
-  .h1 {
-    text-align: left;
+    .tab__wrapper {
+      flex: 1;
+    }
+    .tab__wrapper > div {
+      min-width: unset;
+      width: 100%;
+      padding-left: 0;
+      padding-right: 0;
+    }
   }
   .ingredients {
     max-height: calc(100vh - 284px);
-    overflow: auto;
-    &::-webkit-scrollbar {
-      width: 8px;
-    }
-    &::-webkit-scrollbar-track {
-      background: #2f2f37;
-    }
-    &::-webkit-scrollbar-thumb {
-      background-color: #8585ad;
-    }
+    @include scroll;
   }
-  @media screen and (max-width: 600px) {
+  @media screen and (max-width: 900px) {
+    max-width: unset;
     width: 100vw;
-    .h1 {
-      text-align: center;
-      font-size: 28px;
-    }
-    .tab__wrapper {
-      width: calc(100% / 3);
-      display: flex;
-      div {
-      }
+    .ingredients {
+      max-height: calc(100vh - 196px);
     }
   }
 }
