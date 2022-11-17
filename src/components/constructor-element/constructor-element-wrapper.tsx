@@ -3,7 +3,7 @@ import {
   DragIcon,
   ConstructorElement,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import { DragEvent, useRef } from "react";
+import { useRef } from "react";
 import { useDrop, useDrag } from "react-dnd";
 import {
   deleteIngredient,
