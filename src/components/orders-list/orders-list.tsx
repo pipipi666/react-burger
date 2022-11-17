@@ -1,6 +1,6 @@
 import style from "./style.module.scss";
-import { OrderCard } from "components/order-card/order-card";
-import { FC, useCallback, useEffect, useState } from "react";
+import OrderCard from "components/order-card/order-card";
+import { useCallback, useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "utils/hooks";
 import {
   deleteCurrentOrder,
@@ -9,8 +9,8 @@ import {
 } from "services/slices/ingredientsSlice";
 import { useHistory, useLocation, useParams } from "react-router-dom";
 import { ROUTES } from "utils/constsRoute";
-import { Modal } from "components/modal/modal";
-import { OrderInfoDetails } from "components/order-info-details/order-info-details";
+import Modal from "components/modal/modal";
+import OrderInfoDetails from "components/order-info-details/order-info-details";
 import { TOrder } from "utils/types";
 import Loader from "components/loader/loader";
 
@@ -18,7 +18,7 @@ interface IProps {
   orders?: Array<TOrder>;
 }
 
-export const OrdersList: FC<IProps> = ({ orders }) => {
+export default function OrdersList({ orders }: IProps) {
   const dispatch = useAppDispatch();
   const location = useLocation();
   const history = useHistory();
@@ -31,7 +31,9 @@ export const OrdersList: FC<IProps> = ({ orders }) => {
   );
 
   useEffect(() => {
-    if (!ingredients?.length) dispatch(fetchIngredients());
+    if (!ingredients?.length) {
+      dispatch(fetchIngredients());
+    }
   }, []);
 
   useEffect(() => {
@@ -47,7 +49,7 @@ export const OrdersList: FC<IProps> = ({ orders }) => {
       dispatch(getCurrentOrder(id));
       setModalVisible(true);
     },
-    [orders, dispatch]
+    [orders]
   );
 
   const handleClose = () => {
@@ -80,4 +82,4 @@ export const OrdersList: FC<IProps> = ({ orders }) => {
       )}
     </section>
   );
-};
+}

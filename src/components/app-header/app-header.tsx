@@ -6,7 +6,7 @@ import {
   ProfileIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { Link } from "react-router-dom";
-import { HeaderLink } from "components/header-link/header-link";
+import HeaderLink from "components/header-link/header-link";
 import { ROUTES } from "utils/constsRoute";
 import logo from "assets/image/logo.svg";
 import { useState } from "react";
@@ -19,19 +19,24 @@ export default function Header() {
   const [menuActive, setMenuActive] = useState(false);
   const [subMenuActive, setSubMenuActive] = useState(false);
   const auth = isAuth();
+
   const toggleMenu = () => {
     setMenuActive(!menuActive);
   };
+
   const closeMenu = () => {
     setMenuActive(false);
   };
+
   const toggleSubMenu = () => {
     setSubMenuActive(!subMenuActive);
   };
+
   const handleLogOutClick = () => {
     dispatch(fetchLogout());
     closeMenu();
   };
+
   return (
     <header data-testid="header" className={style.header}>
       <Link to={ROUTES.HOME} className={style.logo}>

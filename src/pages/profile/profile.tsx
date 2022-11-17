@@ -1,7 +1,7 @@
 import style from "./profile.module.scss";
-import { Redirect, useHistory, useLocation } from "react-router-dom";
+import { Redirect, useLocation } from "react-router-dom";
 import UserInfo from "components/user-info/user-info";
-import { OrdersList } from "components/orders-list/orders-list";
+import OrdersList from "components/orders-list/orders-list";
 import AsideNav from "components/aside-nav/aside-nav";
 import { ROUTES } from "utils/constsRoute";
 import { useEffect } from "react";
@@ -19,7 +19,6 @@ export default function ProfilePage() {
   const { user } = useAppSelector((state) => state.auth);
   const dispatch = useAppDispatch();
   const location = useLocation<ILocationState>();
-  const history = useHistory();
   const auth = isAuth();
 
   useEffect(() => {
@@ -27,8 +26,9 @@ export default function ProfilePage() {
   }, [user, dispatch]);
 
   useEffect(() => {
-    if (!ingredients || (ingredients && ingredients.length === 0))
+    if (!ingredients || (ingredients && !ingredients.length)) {
       dispatch(fetchIngredients());
+    }
   }, []);
 
   useEffect(() => {
@@ -51,7 +51,9 @@ export default function ProfilePage() {
     return <OrderInfoPage />;
   }
 
-  if (!auth) return <Redirect to={ROUTES.LOGIN} />;
+  if (!auth) {
+    return <Redirect to={ROUTES.LOGIN} />;
+  }
 
   return (
     <div className={style.page}>

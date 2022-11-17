@@ -1,7 +1,7 @@
 import { Input } from "@ya.praktikum/react-developer-burger-ui-components";
 import { Redirect, useLocation } from "react-router-dom";
 import { isAuth } from "utils/utils";
-import { Registration } from "components/registration/registration";
+import Registration from "components/registration/registration";
 import { fetchLogin, loginFormSet } from "services/slices/authSlice";
 import { ROUTES } from "utils/constsRoute";
 import { ChangeEvent, FormEvent, useState } from "react";

@@ -15,7 +15,7 @@ export default function AsideNav() {
   };
 
   return (
-    <div className={style.left}>
+    <nav className={style.left}>
       <ul className={style.list}>
         <li className={style.list__item}>
           <NavLink
@@ -54,6 +54,6 @@ export default function AsideNav() {
           ? "В этом разделе вы можете просмотреть свою историю заказов"
           : "В этом разделе вы можете изменить свои персональные данные"}
       </p>
-    </div>
+    </nav>
   );
 }

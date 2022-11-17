@@ -1,7 +1,6 @@
 import style from "./style.module.scss";
-import { IngredientCard } from "components/ingredient-card/ingredient-card";
+import IngredientCard from "components/ingredient-card/ingredient-card";
 import { IData } from "utils/types";
-import { FC } from "react";
 
 interface IProps {
   title: string;
@@ -9,11 +8,11 @@ interface IProps {
   handleClick: (currentId: string) => void;
 }
 
-export const IngredientsCategory: FC<IProps> = ({
+export default function IngredientsCategory({
   title,
   ingredients,
   handleClick,
-}) => {
+}: IProps) {
   return (
     <>
       <h2 className="text text_type_main-medium mt-10 mb-6 ml-2">{title}</h2>
@@ -28,4 +27,4 @@ export const IngredientsCategory: FC<IProps> = ({
       </div>
     </>
   );
-};
+}

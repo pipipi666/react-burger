@@ -1,16 +1,10 @@
-import React, {
-  useMemo,
-  useState,
-  useEffect,
-  useRef,
-  useCallback,
-} from "react";
+import { useMemo, useState, useEffect, useRef } from "react";
 import style from "./style.module.scss";
-import { Modal } from "components/modal/modal";
+import Modal from "components/modal/modal";
 import IngredientDetails from "components/ingredient-details/ingredient-details";
 import { useLocation, useHistory, useParams } from "react-router-dom";
 import { ROUTES } from "utils/constsRoute";
-import { IngredientsCategory } from "../ingredients-category/ingredients-category";
+import IngredientsCategory from "../ingredients-category/ingredients-category";
 import {
   deleteCurrentIngredient,
   fetchIngredients,
@@ -18,7 +12,6 @@ import {
 } from "services/slices/ingredientsSlice";
 import { useAppDispatch, useAppSelector } from "utils/hooks";
 import { Tab } from "utils/libComponentsWithTypes";
-import Loader from "components/loader/loader";
 
 export default function BurgerIngredients() {
   const dispatch = useAppDispatch();
@@ -26,12 +19,12 @@ export default function BurgerIngredients() {
   const history = useHistory();
   const { id } = useParams<{ id: string }>();
   const [current, setCurrent] = useState("buns");
-  const {
-    ingredients,
-    ingredientsRequest,
-    ingredientsFailed,
-    currentIngredient,
-  } = useAppSelector((state) => state.ingredients);
+  const [isModalVisible, setModalVisible] = useState(
+    location.pathname !== ROUTES.HOME
+  );
+  const { ingredients, currentIngredient } = useAppSelector(
+    (state) => state.ingredients
+  );
   const sauces = useMemo(
     () => ingredients.filter((item) => item.type === "sauce"),
     [ingredients]
@@ -48,20 +41,6 @@ export default function BurgerIngredients() {
   const refFilling = useRef<HTMLDivElement>(null);
   const refSauces = useRef<HTMLDivElement>(null);
   const refIngredients = useRef<HTMLDivElement>(null);
-  const [isModalVisible, setModalVisible] = useState(
-    location.pathname !== ROUTES.HOME
-  );
-
-  useEffect(() => {
-    ingredients.length === 0 && dispatch(fetchIngredients());
-  }, [dispatch, ingredients]);
-
-  useEffect(() => {
-    if (!currentIngredient && ingredients.length > 0) {
-      const tmp = ingredients.find((item) => item._id === id);
-      dispatch(getCurrentIngredient(tmp));
-    }
-  }, [dispatch, currentIngredient, ingredients, id]);
 
   const onScroll = () => {
     const scrollIng = refIngredients.current?.scrollTop;
@@ -71,21 +50,21 @@ export default function BurgerIngredients() {
       refSauces.current &&
       refBuns.current?.clientHeight + refSauces.current.clientHeight / 2;
     if (scrollIng && startSauces && startFilling) {
-      if (scrollIng < startSauces) setCurrent("buns");
-      else if (scrollIng > startSauces && scrollIng < startFilling)
+      if (scrollIng < startSauces) {
+        setCurrent("buns");
+      } else if (scrollIng > startSauces && scrollIng < startFilling)
         setCurrent("sauces");
-      else if (scrollIng > startFilling) setCurrent("filling");
+      else if (scrollIng > startFilling) {
+        setCurrent("filling");
+      }
     }
   };
 
-  const handleClick = useCallback(
-    (currentId: string) => {
-      const id = ingredients.find((item) => item._id === currentId);
-      dispatch(getCurrentIngredient(id));
-      setModalVisible(true);
-    },
-    [ingredients, dispatch]
-  );
+  const handleClick = (currentId: string) => {
+    const id = ingredients.find((item) => item._id === currentId);
+    dispatch(getCurrentIngredient(id));
+    setModalVisible(true);
+  };
 
   const handleClose = () => {
     setModalVisible(false);
@@ -97,19 +76,24 @@ export default function BurgerIngredients() {
     ref.scrollIntoView({ block: "start", behavior: "smooth" });
   };
 
-  const fail = (
-    <p className="text text_type_main-medium mt-10">
-      Ошибка выполнения запроса
-    </p>
-  );
+  useEffect(() => {
+    !ingredients.length && dispatch(fetchIngredients());
+  }, [dispatch, ingredients]);
 
-  const content = (
-    <>
+  useEffect(() => {
+    if (!currentIngredient && ingredients.length > 0) {
+      const tmp = ingredients.find((item) => item._id === id);
+      dispatch(getCurrentIngredient(tmp));
+    }
+  }, [dispatch, currentIngredient, ingredients, id]);
+
+  return (
+    <section className={style.container}>
       <h1 className={"text text_type_main-large mt-10 mb-5"}>
         Соберите бургер
       </h1>
-      <div className={style.nav}>
-        <div
+      <ul className={style.nav}>
+        <li
           className={style.tab__wrapper}
           onClick={() => {
             handleScroll(refBuns.current!);
@@ -118,8 +102,8 @@ export default function BurgerIngredients() {
           <Tab value="buns" active={current === "buns"} onClick={setCurrent}>
             Булки
           </Tab>
-        </div>
-        <div
+        </li>
+        <li
           className={style.tab__wrapper}
           onClick={() => {
             handleScroll(refSauces.current!);
@@ -132,8 +116,8 @@ export default function BurgerIngredients() {
           >
             Соусы
           </Tab>
-        </div>
-        <div
+        </li>
+        <li
           className={style.tab__wrapper}
           onClick={() => {
             handleScroll(refFilling.current!);
@@ -146,8 +130,8 @@ export default function BurgerIngredients() {
           >
             Начинки
           </Tab>
-        </div>
-      </div>
+        </li>
+      </ul>
       <div
         className={style.ingredients}
         ref={refIngredients}
@@ -180,12 +164,6 @@ export default function BurgerIngredients() {
           <IngredientDetails />
         </Modal>
       )}
-    </>
-  );
-
-  return (
-    <section className={style.container}>
-      {ingredientsRequest ? <Loader /> : ingredientsFailed ? fail : content}
     </section>
   );
 }

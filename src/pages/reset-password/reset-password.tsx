@@ -1,6 +1,6 @@
 import { Input } from "@ya.praktikum/react-developer-burger-ui-components";
 import { Redirect, useLocation } from "react-router-dom";
-import { Registration } from "components/registration/registration";
+import Registration from "components/registration/registration";
 import { isAuth } from "utils/utils";
 import { ROUTES } from "utils/constsRoute";
 import {
@@ -38,8 +38,9 @@ export default function ResetPasswordPage() {
 
   const handleFormSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (password && token) dispatch(fetchResetPassword());
-    else {
+    if (password && token) {
+      dispatch(fetchResetPassword());
+    } else {
       setEmptyPassword(!password);
       setEmptyToken(!token);
     }

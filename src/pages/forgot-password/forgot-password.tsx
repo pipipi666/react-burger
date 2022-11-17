@@ -1,5 +1,5 @@
 import { Input } from "@ya.praktikum/react-developer-burger-ui-components";
-import { Registration } from "components/registration/registration";
+import Registration from "components/registration/registration";
 import { useHistory, Redirect } from "react-router-dom";
 import { ROUTES } from "utils/constsRoute";
 import { isAuth } from "utils/utils";

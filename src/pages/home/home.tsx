@@ -1,6 +1,6 @@
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
-import { Redirect, useHistory, useLocation } from "react-router-dom";
+import { Redirect, useLocation } from "react-router-dom";
 import IngredientPage from "../ingredient/ingredient";
 import BurgerConstructor from "components/burger-constructor/burger-constructor";
 import BurgerIngredients from "components/burger-ingredients/burger-ingredients";
@@ -16,22 +16,23 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { isAuth } from "utils/utils";
 import { fetchOrder, setIngredients } from "services/slices/ingredientsSlice";
-import { Modal } from "components/modal/modal";
+import Modal from "components/modal/modal";
 import OrderDetails from "components/order-details/order-details";
+import Loader from "components/loader/loader";
 
 export default function HomePage() {
   const location = useLocation<ILocationState>();
   const dispatch = useAppDispatch();
   const [isConstructor, setConstructor] = useState(false);
-  const { sum, constructorIngredients } = useAppSelector(
-    (state) => state.ingredients
-  );
+  const { sum, constructorIngredients, ingredientsRequest, ingredientsFailed } =
+    useAppSelector((state) => state.ingredients);
   const auth = isAuth();
   const [isModalVisible, setModalVisible] = useState(false);
 
   const handleClick = () => {
-    if (!isConstructor) setConstructor(true);
-    else if (sum > 0) {
+    if (!isConstructor) {
+      setConstructor(true);
+    } else if (sum > 0) {
       if (auth) {
         setModalVisible(true);
         const ingredients = constructorIngredients.map((item) => item._id);
@@ -46,15 +47,8 @@ export default function HomePage() {
     dispatch(setIngredients([]));
   };
 
-  if (
-    location.pathname !== ROUTES.HOME &&
-    location.state?.from !== ROUTES.HOME
-  ) {
-    return <IngredientPage />;
-  }
-
-  return (
-    <div className={style.wrapper}>
+  const content = (
+    <>
       <main
         className={`${style.main} ${
           !constructorIngredients.length && style.empty
@@ -94,6 +88,27 @@ export default function HomePage() {
         <Modal title="" close={handleClose}>
           <OrderDetails />
         </Modal>
+      )}
+    </>
+  );
+
+  if (
+    location.pathname !== ROUTES.HOME &&
+    location.state?.from !== ROUTES.HOME
+  ) {
+    return <IngredientPage />;
+  }
+
+  return (
+    <div className={style.wrapper}>
+      {ingredientsRequest ? (
+        <Loader />
+      ) : ingredientsFailed ? (
+        <p className="text text_type_main-medium mt-10">
+          Ошибка выполнения запроса
+        </p>
+      ) : (
+        content
       )}
     </div>
   );
