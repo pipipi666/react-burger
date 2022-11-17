@@ -87,13 +87,17 @@ const ingredientsSlice = createSlice({
       state.currentIngredient = action.payload;
     },
     deleteCurrentIngredient: (state) => {
-      if (state.currentIngredient) state.currentIngredient = undefined;
+      if (state.currentIngredient) {
+        state.currentIngredient = undefined;
+      }
     },
     getCurrentOrder: (state, action) => {
       state.currentOrder = action.payload;
     },
     deleteCurrentOrder: (state) => {
-      if (state.currentOrder) state.currentOrder = undefined;
+      if (state.currentOrder) {
+        state.currentOrder = undefined;
+      }
     },
     setIngredients: (state, action) => {
       state.constructorIngredients = action.payload;
@@ -106,7 +110,9 @@ const ingredientsSlice = createSlice({
         currentValue
       ) {
         if (currentValue.type === "bun") {
-          if (bunFlag) return accumulator;
+          if (bunFlag) {
+            return accumulator;
+          }
           bunFlag = true;
           return accumulator + currentValue.price * 2;
         }

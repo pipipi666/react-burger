@@ -1,6 +1,6 @@
 import style from "./style.module.scss";
-import { Redirect, useHistory } from "react-router-dom";
-import { FC, FormEvent, ReactNode } from "react";
+import { useHistory } from "react-router-dom";
+import { FormEvent, ReactNode } from "react";
 import { Button } from "utils/libComponentsWithTypes";
 
 interface ILink {
@@ -17,13 +17,13 @@ interface IProps {
   children: ReactNode;
 }
 
-export const Registration: FC<IProps> = ({
+export default function Registration({
   title,
   buttonName,
   links,
   handleFormSubmit,
   children,
-}) => {
+}: IProps) {
   const history = useHistory();
   const handleClick = (path: string) => {
     history.push(path);
@@ -51,4 +51,4 @@ export const Registration: FC<IProps> = ({
       ))}
     </div>
   );
-};
+}

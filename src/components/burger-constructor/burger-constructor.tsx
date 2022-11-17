@@ -3,12 +3,12 @@ import {
   CurrencyIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import style from "./style.module.scss";
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect, useMemo, useCallback } from "react";
 import { useDrop } from "react-dnd";
 import { useHistory } from "react-router-dom";
 import { isAuth } from "utils/utils";
-import { Modal } from "components/modal/modal";
-import { ConstructorElementWrapper } from "components/constructor-element/constructor-element-wrapper";
+import Modal from "components/modal/modal";
+import ConstructorElementWrapper from "components/constructor-element/constructor-element-wrapper";
 import OrderDetails from "components/order-details/order-details";
 import { ROUTES } from "utils/constsRoute";
 import {
@@ -24,30 +24,24 @@ import { Button } from "utils/libComponentsWithTypes";
 
 export default function BurgerConstructor() {
   const dispatch = useAppDispatch();
-  const { constructorIngredients, sum } = useAppSelector(
-    (state) => state.ingredients
-  );
   const auth = isAuth();
   const history = useHistory();
   const [isModalVisible, setModalVisible] = useState(false);
-
+  const { constructorIngredients, sum } = useAppSelector(
+    (state) => state.ingredients
+  );
   const ingredients = useMemo(
     () =>
       constructorIngredients &&
       constructorIngredients.filter((item) => item.type !== "bun"),
     [constructorIngredients]
   );
-
   const bun = useMemo(
     () =>
       constructorIngredients &&
       constructorIngredients.find((item) => item.type === "bun"),
     [constructorIngredients]
   );
-
-  useEffect(() => {
-    dispatch(total());
-  }, [constructorIngredients, dispatch]);
 
   const [{ isHover }, dropTarget] = useDrop({
     accept: "ingredient",
@@ -61,23 +55,26 @@ export default function BurgerConstructor() {
       isHover: monitor.isOver(),
     }),
   });
+  const targetClassName = `${style.container} ${
+    isHover && !constructorIngredients.length && style.drop
+  }`;
 
-  function handleOrder() {
+  const handleOrder = useCallback(() => {
     if (auth) {
       setModalVisible(true);
       const ingredients = constructorIngredients.map((item) => item._id);
       dispatch(fetchOrder(ingredients));
     } else history.push(ROUTES.LOGIN);
-  }
+  }, [auth]);
 
   const handleClose = () => {
     setModalVisible(false);
     dispatch(setIngredients([]));
   };
 
-  const targetClassName = `${style.container} ${
-    isHover && !constructorIngredients.length && style.drop
-  }`;
+  useEffect(() => {
+    dispatch(total());
+  }, [constructorIngredients, dispatch]);
 
   if (!constructorIngredients.length) {
     return (

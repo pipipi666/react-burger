@@ -1,5 +1,5 @@
 import style from "./order-info.module.scss";
-import { OrderInfoDetails } from "components/order-info-details/order-info-details";
+import OrderInfoDetails from "components/order-info-details/order-info-details";
 import { useAppDispatch, useAppSelector } from "utils/hooks";
 import { useParams } from "react-router-dom";
 import { useEffect } from "react";
@@ -16,9 +16,13 @@ import Loader from "components/loader/loader";
 export const OrderInfoPage = () => {
   const dispatch = useAppDispatch();
   const { id } = useParams<{ id: string }>();
-  const { currentOrder, orders, ingredients } = useAppSelector(
-    (state) => state.ingredients
-  );
+  const {
+    currentOrder,
+    orders,
+    ingredients,
+    ingredientsFailed,
+    isSocketError,
+  } = useAppSelector((state) => state.ingredients);
 
   useEffect(() => {
     dispatch(fetchIngredients());
@@ -40,7 +44,9 @@ export const OrderInfoPage = () => {
 
   return (
     <div className={style.wrapper}>
-      {currentOrder ? (
+      {ingredientsFailed || isSocketError ? (
+        <p className="text text_type_main-medium">Ошибка выполнения запроса</p>
+      ) : currentOrder ? (
         <div className={style.details}>
           <span className="text text_type_digits-default">
             #{currentOrder.number}

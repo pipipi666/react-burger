@@ -10,7 +10,7 @@ import {
   FeedPage,
 } from "../../pages";
 import Header from "../app-header/app-header";
-import { ProtectedRoute } from "../protected-route/protected-route";
+import ProtectedRoute from "../protected-route/protected-route";
 import { ROUTES } from "../../utils/constsRoute";
 
 export default function App() {

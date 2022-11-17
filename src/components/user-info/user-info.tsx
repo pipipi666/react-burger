@@ -1,17 +1,13 @@
 import { Input } from "@ya.praktikum/react-developer-burger-ui-components";
 import Loader from "components/loader/loader";
-import React, {
+import {
   ChangeEvent,
   FormEvent,
   SyntheticEvent,
   useEffect,
   useState,
 } from "react";
-import {
-  fetchProfile,
-  profileFormSet,
-  updateProfile,
-} from "services/slices/authSlice";
+import { profileFormSet, updateProfile } from "services/slices/authSlice";
 import { useAppDispatch, useAppSelector } from "utils/hooks";
 import { Button } from "utils/libComponentsWithTypes";
 import style from "./style.module.scss";
@@ -42,8 +38,9 @@ export default function UserInfo() {
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (email && name) dispatch(updateProfile());
-    else {
+    if (email && name) {
+      dispatch(updateProfile());
+    } else {
       setErrorName(!name);
       setErrorEmail(!email);
     }

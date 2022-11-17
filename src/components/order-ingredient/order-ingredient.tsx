@@ -1,13 +1,12 @@
 import style from "./style.module.scss";
 import { CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components";
-import { FC } from "react";
 import { IData } from "utils/types";
 
 interface IProps {
   ingredient: IData;
 }
 
-export const OrderIngredient: FC<IProps> = ({ ingredient }) => {
+export default function OrderIngredient({ ingredient }: IProps) {
   return (
     <div className={style.container}>
       <div className={style.img}>
@@ -24,4 +23,4 @@ export const OrderIngredient: FC<IProps> = ({ ingredient }) => {
       </div>
     </div>
   );
-};
+}

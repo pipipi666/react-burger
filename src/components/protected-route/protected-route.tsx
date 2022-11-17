@@ -1,8 +1,7 @@
 import { Route, Redirect } from "react-router-dom";
 import { isAuth } from "utils/utils";
 import { ROUTES } from "utils/constsRoute";
-import PropTypes from "prop-types";
-import { FC, ReactNode } from "react";
+import { ReactNode } from "react";
 
 interface IProps {
   children: ReactNode;
@@ -10,7 +9,7 @@ interface IProps {
   exact?: boolean;
 }
 
-export const ProtectedRoute: FC<IProps> = ({ children, ...rest }) => {
+export default function ProtectedRoute({ children, ...rest }: IProps) {
   const auth = isAuth();
 
   return (
@@ -30,8 +29,4 @@ export const ProtectedRoute: FC<IProps> = ({ children, ...rest }) => {
       }
     />
   );
-};
-
-ProtectedRoute.propTypes = {
-  children: PropTypes.element.isRequired,
-};
+}

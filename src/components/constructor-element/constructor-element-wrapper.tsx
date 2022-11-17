@@ -3,21 +3,20 @@ import {
   DragIcon,
   ConstructorElement,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import React, { DragEvent, useRef } from "react";
+import { DragEvent, useRef } from "react";
 import { useDrop, useDrag } from "react-dnd";
 import {
   deleteIngredient,
   setIngredients,
 } from "services/slices/ingredientsSlice";
 import { IData } from "utils/types";
-import { FC } from "react";
 import { useAppDispatch, useAppSelector } from "utils/hooks";
 
 interface IProps {
   item: IData;
 }
 
-export const ConstructorElementWrapper: FC<IProps> = ({ item }) => {
+export default function ConstructorElementWrapper({ item }: IProps) {
   const dispatch = useAppDispatch();
   const { constructorIngredients } = useAppSelector(
     (state) => state.ingredients
@@ -86,17 +85,17 @@ export const ConstructorElementWrapper: FC<IProps> = ({ item }) => {
     }),
   });
 
-  const opacity = isDragging ? 0 : 1;
   drag(drop(ref));
-  const preventDefault = (e: DragEvent<HTMLDivElement>) => e.preventDefault();
-  const handleRemove = (item: IData) => dispatch(deleteIngredient(item));
+  const opacity = isDragging ? 0 : 1;
+  const handleRemove = (item: IData) => {
+    dispatch(deleteIngredient(item));
+  };
 
   return (
     <div
       className={style.list__item}
       ref={ref}
       style={{ opacity }}
-      onDrop={preventDefault}
       data-handler-id={handlerId}
     >
       <DragIcon type="primary" />
@@ -108,4 +107,4 @@ export const ConstructorElementWrapper: FC<IProps> = ({ item }) => {
       />
     </div>
   );
-};
+}

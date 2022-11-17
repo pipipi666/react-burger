@@ -1,6 +1,6 @@
 import style from "./style.module.scss";
 import { NavLink } from "react-router-dom";
-import { FC, ReactNode } from "react";
+import { ReactNode } from "react";
 
 interface IProps {
   title: string;
@@ -9,12 +9,12 @@ interface IProps {
   handleClick: () => void;
 }
 
-export const HeaderLink: FC<IProps> = ({
+export default function HeaderLink({
   title,
   route,
   handleClick,
   children,
-}) => {
+}: IProps) {
   return (
     <NavLink
       exact
@@ -29,4 +29,4 @@ export const HeaderLink: FC<IProps> = ({
       </span>
     </NavLink>
   );
-};
+}

@@ -5,7 +5,7 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { Link } from "react-router-dom";
 import { useDrag } from "react-dnd";
-import { FC, useMemo } from "react";
+import { useMemo } from "react";
 import { IData } from "utils/types";
 import { ROUTES } from "../../utils/constsRoute";
 import { useAppDispatch, useAppSelector } from "utils/hooks";
@@ -20,7 +20,7 @@ interface IProps {
   handleClick: (currentId: string) => void;
 }
 
-export const IngredientCard: FC<IProps> = ({ item, handleClick }) => {
+export default function IngredientCard({ item, handleClick }: IProps) {
   const dispatch = useAppDispatch();
   const { constructorIngredients } = useAppSelector(
     (state) => state.ingredients
@@ -31,7 +31,6 @@ export const IngredientCard: FC<IProps> = ({ item, handleClick }) => {
       constructorIngredients.find((item) => item.type === "bun"),
     [constructorIngredients]
   );
-
   const counter = useMemo(
     () =>
       constructorIngredients &&
@@ -81,4 +80,4 @@ export const IngredientCard: FC<IProps> = ({ item, handleClick }) => {
       </div>
     </div>
   );
-};
+}
