@@ -29,6 +29,7 @@ export default function ProfilePage() {
     if (!ingredients || (ingredients && !ingredients.length)) {
       dispatch(fetchIngredients());
     }
+    // eslint-disable-next-line
   }, []);
 
   useEffect(() => {

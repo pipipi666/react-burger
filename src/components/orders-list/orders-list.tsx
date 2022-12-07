@@ -34,6 +34,7 @@ export default function OrdersList({ orders }: IProps) {
     if (!ingredients?.length) {
       dispatch(fetchIngredients());
     }
+    // eslint-disable-next-line
   }, []);
 
   useEffect(() => {
@@ -49,7 +50,7 @@ export default function OrdersList({ orders }: IProps) {
       dispatch(getCurrentOrder(id));
       setModalVisible(true);
     },
-    [orders]
+    [orders, dispatch]
   );
 
   const handleClose = () => {

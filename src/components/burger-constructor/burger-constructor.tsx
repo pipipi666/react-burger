@@ -65,7 +65,7 @@ export default function BurgerConstructor() {
       const ingredients = constructorIngredients.map((item) => item._id);
       dispatch(fetchOrder(ingredients));
     } else history.push(ROUTES.LOGIN);
-  }, [auth]);
+  }, [auth, history, constructorIngredients, dispatch]);
 
   const handleClose = () => {
     setModalVisible(false);
