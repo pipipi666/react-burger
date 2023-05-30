@@ -52,4 +52,4 @@ See the section about [deployment](https://facebook.github.io/create-react-app/d
 
 # Deploy
 
-[pipipi666.nomoredomains.icu](http://pipipi666.nomoredomains.icu/)
+[https://rainbow-semifreddo-f17094.netlify.app/](https://rainbow-semifreddo-f17094.netlify.app/)
